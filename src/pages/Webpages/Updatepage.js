@@ -73,11 +73,15 @@ console.log('webpage ', webpage)
           <Breadcrumbs title="Websites" breadcrumbItem="Update Website" />
 
           <Row>
-            <Historytimeline />
+
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Update Website</CardTitle>
+
+                <h4 className="me-4"> ID:  #1</h4>
+                <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+
+                  <CardTitle className="mb-4 mt-4">Update Website</CardTitle>
                   <form >
                   <Row>
                     <Col lg={12}>
@@ -168,6 +172,8 @@ console.log('webpage ', webpage)
                 </CardBody>
               </Card>
             </Col>
+
+            <Historytimeline />
           </Row>
       </div>
     </>

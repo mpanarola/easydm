@@ -15,95 +15,107 @@ class HistoryTimeline extends Component {
           <CardBody>
             <CardTitle className="h4 mb-5">Activity</CardTitle>
             <ul className="list-unstyled activity-wid">
-              <li className="activity-list w-50 d-inline-block">
-                <div className="activity-icon avatar-xs">
-                  <span className="avatar-title bg-soft-primary text-primary rounded-circle">
-                    <i className="mdi mdi-calendar-edit"></i>
-                  </span>
-                </div>
+              
+            <li className="activity-list">
+                
                 <div className="d-flex align-items-start">
                   <div className="me-3">
-                    <h5 className="font-size-14">20 Jan <i
+                    <h5 className="font-size-14">22 Apr 2023 4:12 PM <i
                       className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
                     </h5>
                   </div>
                   <div className="flex-1">
-                    <div>
-                      Responded to need “Volunteer Activities"
+                    <div className="font-size-15">
+                      <b>Ashish</b> Updated webpage url
                     </div>
                   </div>
                 </div>
-              </li>
 
-              <li className="activity-list w-50 d-inline-block">
                 <div className="activity-icon avatar-xs">
                   <span className="avatar-title bg-soft-primary text-primary rounded-circle">
-                    <i className="mdi mdi-account-multiple-outline"></i>
+                    <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
                   </span>
                 </div>
+
+              </li>
+
+              <li className="activity-list">
+                
                 <div className="d-flex align-items-start">
                   <div className="me-3">
-                    <h5 className="font-size-14">23 Jan <i
+                    <h5 className="font-size-14">10 Mar 2023 1:12 PM <i
                       className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
                     </h5>
                   </div>
                   <div className="flex-1">
-                    <div>
-                      Added an interest “Volunteer Activities”
+                    <div className="font-size-15">
+                      <b>Nilesh</b> Updated webpage category
                     </div>
                   </div>
                 </div>
-              </li>
 
-              <li className="activity-list w-50 d-inline-block">
                 <div className="activity-icon avatar-xs">
                   <span className="avatar-title bg-soft-primary text-primary rounded-circle">
-                    <i className="mdi mdi-square-edit-outline"></i>
+                    <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
                   </span>
                 </div>
-                <div className="d-flex align-items-start">
-                  <div className="me-3">
-                    <h5 className="font-size-14">24 Jan <i
-                      className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
-                    </h5>
-                  </div>
-                  <div className="flex-1 d-flex">
-                    <div>
-                      Everyone realizes why a new common language.. <Link to="#">Read
-                        more</Link>
-                    </div>
-                  </div>
-                </div>
+
               </li>
 
-              <li className="activity-list w-50 d-inline-block">
-                <div className="activity-icon avatar-xs">
-                  <span className="avatar-title bg-soft-primary text-primary rounded-circle">
-                    <i className="mdi mdi-account-multiple-outline"></i>
-                  </span>
-                </div>
+              <li className="activity-list">
+                
                 <div className="d-flex align-items-start">
                   <div className="me-3">
-                    <h5 className="font-size-14">26 Jan <i
+                    <h5 className="font-size-14">26 Fab 2023 6:32 PM <i
                       className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
                     </h5>
                   </div>
                   <div className="flex-1">
-                    <div>
-                      Joined the group “Boardsmanship Forum”
+                    <div className="font-size-15">
+                      <b>Milan</b> Updated webpage title
                     </div>
                   </div>
                 </div>
+
+                <div className="activity-icon avatar-xs">
+                  <span className="avatar-title bg-soft-primary text-primary rounded-circle">
+                    <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
+                  </span>
+                </div>
+
+              </li>
+
+              <li className="activity-list">
+                
+                <div className="d-flex align-items-start">
+                  <div className="me-3">
+                    <h5 className="font-size-14">26 Jan 2023 6:32 PM <i
+                      className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
+                    </h5>
+                  </div>
+                  <div className="flex-1">
+                    <div className="font-size-15">
+                      <b>Milan</b> Updated webpage url
+                    </div>
+                  </div>
+                </div>
+
+                <div className="activity-icon avatar-xs">
+                  <span className="avatar-title bg-soft-primary text-primary rounded-circle">
+                    <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
+                  </span>
+                </div>
+
               </li>
             </ul>
-            <div className="text-center mt-4">
+            {/* <div className="text-center mt-4">
               <Link
                 to="#"
                 className="btn btn-primary btn-md"
               >
                 View More <i className="mdi mdi-arrow-right ms-1" />
               </Link>
-            </div>
+            </div> */}
           </CardBody>
         </Card>
       </React.Fragment>

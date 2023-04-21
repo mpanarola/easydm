@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 
 import Performance from "./Performance"
 
+
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
@@ -22,6 +23,8 @@ const Updatepageview = () => {
   const [total_page_views, settotal_page_views] = useState(null);
 
   const history = useHistory();
+
+  const defaultValue="2020-06-06";
 
     // Webpages
     const optionGroupWebPage = [
@@ -79,7 +82,11 @@ const Updatepageview = () => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Update Page View</CardTitle>
+                  
+                  <h4 className="me-4"> ID:  #1</h4>
+                  <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+
+                  <CardTitle className="mb-4 mt-4">Update Page View</CardTitle>
                   <form >
                   <Row>
                   <Col lg={6}>
@@ -133,7 +140,6 @@ const Updatepageview = () => {
                         />
                       </div>
                     </Col>
-
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">

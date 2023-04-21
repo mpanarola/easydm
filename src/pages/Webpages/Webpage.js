@@ -86,7 +86,7 @@ const Webpage = () => {
         label: "Assigned To",
         field: "assigned_to",
         sort: "asc",
-        width: 270,
+        width: 200,
       },
       {
         label: "Effective From",
@@ -117,10 +117,10 @@ const Webpage = () => {
         assigned_to: (
           <div className="d-flex align-items-start">
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
             </div>
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
             </div>
           </div>
         ),
@@ -157,10 +157,10 @@ const Webpage = () => {
         assigned_to: (
           <div className="d-flex align-items-start">
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
             </div>
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
             </div>
           </div>
         ),
@@ -197,10 +197,10 @@ const Webpage = () => {
         assigned_to: (
           <div className="d-flex align-items-start">
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle"  title="Ashish" />
             </div>
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
             </div>
           </div>
         ),
@@ -237,10 +237,10 @@ const Webpage = () => {
         assigned_to: (
           <div className="d-flex align-items-start">
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
             </div>
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
             </div>
           </div>
         ),
@@ -277,11 +277,12 @@ const Webpage = () => {
         assigned_to: (
           <div className="d-flex align-items-start">
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
             </div>
             <div className="me-3 align-self-center">
-              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+              <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
             </div>
+            
           </div>
         ),
         effective_from: "30-Mar-2023",

@@ -35,20 +35,20 @@ const UpdateSchedular = () => {
 
     const history = useHistory();
 
-      // Webpages
-  const optionGroupWebPage = [
-    {
-      label: "Web Pages",
-      options: [
-        { label: "Home", value: "Home" },
-        { label: "About", value: "About" },
-        { label: "Contact", value: "Contact" },
-        { label: "Blogs", value: "Blogs" },
-        { label: "Events", value: "Events" },
-      ],
-    },
+    // Webpages
+    const optionGroupWebPage = [
+        {
+            label: "Web Pages",
+            options: [
+                { label: "Home", value: "Home" },
+                { label: "About", value: "About" },
+                { label: "Contact", value: "Contact" },
+                { label: "Blogs", value: "Blogs" },
+                { label: "Events", value: "Events" },
+            ],
+        },
 
-  ];
+    ];
 
 
     // User Status
@@ -111,37 +111,42 @@ const UpdateSchedular = () => {
     const goBack = (e) => {
         // history.goBack();
         history.push('/content_schedulers');
-      };
+    };
 
     return (
         <>
             <div className="page-content">
 
                 {/* Render Breadcrumbs */}
+
                 <Breadcrumbs title="Content Schedulers" breadcrumbItem="Update Content Scheduler" />
-                    
+
                 <Row>
-                <Historytimeline />
+
                     <Col lg="12">
+
                         <Card>
                             <CardBody>
-                                <CardTitle className="mb-4">Update Content Scheduler</CardTitle>
+                                <h4 className="me-4"> ID:  #1</h4>
+                                <label htmlFor="published_on">Published On :  27-Mar-2023</label>
 
+
+                                <CardTitle className="mb-4 mt-4">Update Content Scheduler</CardTitle>
                                 <form>
                                     <Row>
 
-                                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="web_page">Web Page</label>
-                        <Select
-                          id="web_page"
-                          isMulti={false}
-                          options={optionGroupWebPage}
-                          classNamePrefix="select2-selection"
-                        //   onChange={e => setweb_page(e.target.value)}
-                        />
-                      </div>
-                    </Col>
+                                        <Col lg={6}>
+                                            <div className="mb-3">
+                                                <label htmlFor="web_page">Web Page</label>
+                                                <Select
+                                                    id="web_page"
+                                                    isMulti={false}
+                                                    options={optionGroupWebPage}
+                                                    classNamePrefix="select2-selection"
+                                                //   onChange={e => setweb_page(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
 
                                         <Col lg={6}>
                                             <div className="mb-3">
@@ -151,7 +156,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="topic_title"
                                                     placeholder="Enter Topic Title"
-                                                    // onChange={e => settopic_title(e.target.value)}
+                                                // onChange={e => settopic_title(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -164,11 +169,11 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="doc_link"
                                                     placeholder="Enter Doc Link"
-                                                    // onChange={e => setdoc_link(e.target.value)}
+                                                // onChange={e => setdoc_link(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
-                                        
+
                                         <Col lg={6}>
 
                                             <div className="inner-repeater mb-4">
@@ -242,7 +247,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="expected_words"
                                                     placeholder="Enter Expected Words"
-                                                    // onChange={e => setexpected_words(e.target.value)}
+                                                // onChange={e => setexpected_words(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -255,7 +260,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="actual_words"
                                                     placeholder="Enter Actual Words"
-                                                    // onChange={e => setactual_words(e.target.value)}
+                                                // onChange={e => setactual_words(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -268,7 +273,7 @@ const UpdateSchedular = () => {
                                                     isMulti={false}
                                                     options={optionGroupMembers}
                                                     classNamePrefix="select2-selection"
-                                                    // onChange={e => setwritten_by(e.target.value)}
+                                                // onChange={e => setwritten_by(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -282,7 +287,7 @@ const UpdateSchedular = () => {
                                                     isMulti={false}
                                                     options={optionGroupType}
                                                     classNamePrefix="select2-selection"
-                                                    // onChange={e => settopic_type(e.target.value)}
+                                                // onChange={e => settopic_type(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -295,7 +300,7 @@ const UpdateSchedular = () => {
                                                     isMulti={false}
                                                     options={optionGroupStaus}
                                                     classNamePrefix="select2-selection"
-                                                    // onChange={e => setcontent_status(e.target.value)}
+                                                // onChange={e => setcontent_status(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -322,7 +327,7 @@ const UpdateSchedular = () => {
                             </CardBody>
                         </Card>
                     </Col>
-
+                    <Historytimeline />
                 </Row>
             </div>
         </>
