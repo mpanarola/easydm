@@ -186,8 +186,12 @@ const ContentScheduler = () => {
         content_type: "Blog",
         // doc_link: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a>),
         // referece_links: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a> ),
-        expected_words: "50",
-        actual_words: "50",
+        expected_words: (
+          <span class="bg-primary badge badge-secondary" style={{fontSize: "14px"}}>1450</span>
+        ),
+        actual_words: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>50</span>
+        ),
         assigned_by: "Milan",
         written_by: "Ashish",
         content_status: (

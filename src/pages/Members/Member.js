@@ -99,7 +99,7 @@ const Member = () => {
         email: "ashish@narola.email",
         type: "DM Executive",
         status: (
-          <span className="badge badge-soft-success font-size-14">Active</span>
+          <span className="bg-primary badge badge-secondary font-size-13">Active</span>
         ),
         created_on: "25-Mar-2023",
         action: (
@@ -139,7 +139,7 @@ const Member = () => {
         email: "nilesh@narola.email",
         type: "Graphic Designer",
         status: (
-          <span className="badge badge-soft-success font-size-14">Active</span>
+          <span className="bg-primary badge badge-secondary font-size-13">Active</span>
         ),
         created_on: "25-Mar-2023",
         action: (
@@ -179,7 +179,7 @@ const Member = () => {
         email: "milan@narola.email",
         type: "Content Writer",
         status: (
-          <span className="badge badge-soft-danger font-size-14">InActive</span>
+          <span className="bg-danger badge badge-secondary font-size-13">InActive</span>
         ),
         created_on: "27-Mar-2023",
         action: (
