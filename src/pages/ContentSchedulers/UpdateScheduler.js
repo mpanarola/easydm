@@ -119,7 +119,7 @@ const UpdateSchedular = () => {
 
                 {/* Render Breadcrumbs */}
                 <Breadcrumbs title="Content Schedulers" breadcrumbItem="Update Content Scheduler" />
-
+                    
                 <Row>
                 <Historytimeline />
                     <Col lg="12">

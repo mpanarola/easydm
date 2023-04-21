@@ -91,7 +91,9 @@ const Backlink = () => {
         // webpage_url: "",
         category: "Blogs",
         month_year: "Mar-23",
-        total_backlinks: "45",
+        total_backlinks: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>45 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -123,7 +125,9 @@ const Backlink = () => {
         ),
         category: "Industry",
         month_year: "Mar-23",
-        total_backlinks: "50",
+        total_backlinks:(
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>50 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -155,7 +159,9 @@ const Backlink = () => {
         ),
         category: "Career",
         month_year: "Mar-23",
-        total_backlinks: "25",
+        total_backlinks: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>25 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -187,7 +193,9 @@ const Backlink = () => {
         ),
         category: "Blogs",
         month_year: "Mar-23",
-        total_backlinks: "20",
+        total_backlinks: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>20 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -219,7 +227,9 @@ const Backlink = () => {
         ),
         category: "Services",
         month_year: "Mar-23",
-        total_backlinks: "10",
+        total_backlinks: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">

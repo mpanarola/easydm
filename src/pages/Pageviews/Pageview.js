@@ -57,7 +57,7 @@ const Backlink = () => {
         width: 270,
       },
       {
-        label: "Number of Page Views",
+        label: "Page Views",
         field: "total_pageviews",
         sort: "asc",
         width: 270,
@@ -91,7 +91,9 @@ const Backlink = () => {
         // webpage_url: "",
         category: "Blogs",
         month_year: "Mar-23",
-        total_pageviews: "350",
+        total_pageviews: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>350 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -123,7 +125,9 @@ const Backlink = () => {
         ),
         category: "Industry",
         month_year: "Mar-23",
-        total_pageviews: "1450",
+        total_pageviews: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>1450 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -155,7 +159,9 @@ const Backlink = () => {
         ),
         category: "Career",
         month_year: "Mar-23",
-        total_pageviews: "650",
+        total_pageviews: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>650 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -187,7 +193,9 @@ const Backlink = () => {
         ),
         category: "Blogs",
         month_year: "Mar-23",
-        total_pageviews: "200",
+        total_pageviews: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>200 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">
@@ -219,7 +227,9 @@ const Backlink = () => {
         ),
         category: "Services",
         month_year: "Mar-23",
-        total_pageviews: "500",
+        total_pageviews: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>500 +</span>
+        ),
         date: "27-Mar-2023",
         action: (
           <div className="d-flex">

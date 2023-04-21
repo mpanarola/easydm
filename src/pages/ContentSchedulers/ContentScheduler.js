@@ -191,7 +191,7 @@ const ContentScheduler = () => {
         assigned_by: "Milan",
         written_by: "Ashish",
         content_status: (
-        <span class="badge badge-soft-warning font-size-14">In Progress</span>
+        <span class="bg-warning badge badge-secondary font-size-13">In Progress</span>
         ),
         assigned_on: "27-Mar-2023",
         submiited_on: "27-Mar-2023",

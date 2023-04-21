@@ -15,7 +15,6 @@ class Performance extends Component {
               <div className="float-end">
                   <div className="input-group input-group">
                       <Input type="select" className="form-select form-select-sm">
-                          <option>Jan</option>
                           <option value="1" selected>Dec</option>
                           <option value="2">Nov</option>
                           <option value="3">Oct</option>
@@ -37,7 +36,7 @@ class Performance extends Component {
 
               <div className="align-items-start d-flex">
                   <div className="flex-1">
-                      <p className="mb-2">Total Links</p>
+                      <p className="mb-2">Total Views</p>
                       <h4>2,500</h4>
                       <p className="mb-0"><span className="badge badge-soft-success me-2"> 0.6% <i
                           className="mdi mdi-arrow-up"></i> </span> From previous period</p>

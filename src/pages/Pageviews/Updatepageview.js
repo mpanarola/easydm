@@ -138,7 +138,7 @@ const Updatepageview = () => {
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
                         <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => updatePageView()}>
-                          Create Page View
+                          Update Page View
                         </button>
 
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>

@@ -1,21 +1,15 @@
-import PropTypes from 'prop-types'
+
 import React, { useEffect } from "react"
 import { Row, Col, Alert, Container } from "reactstrap"
-
-// Redux
-import { connect } from "react-redux"
-import { withRouter, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
-// action
-import { userForgetPassword } from "../../store/actions"
-
 // import images
 import logo from "../../assets/images/logo-sm-dark.png"
 
-const ForgetPasswordPage = props => {
+const Recoverpw = props => {
   useEffect(() => {
     document.body.className = "authentication-bg";
     // remove classname when component will unmount
@@ -24,9 +18,6 @@ const ForgetPasswordPage = props => {
     };
   });
 
-  function handleValidSubmit(event, values) {
-    props.userForgetPassword(values, props.history)
-  }
 
   return (
     <React.Fragment>
@@ -44,7 +35,7 @@ const ForgetPasswordPage = props => {
                   <div className="bg-login-overlay"></div>
                   <div className="position-relative">
                     <h5 className="text-white font-size-20">Reset Password</h5>
-                    <p className="text-white-50 mb-0">Re-Password with EasyDM.</p>
+                    <p className="text-white-50 mb-0">Re-Password with Qovex.</p>
 
                     <a href="/" className="logo logo-admin mt-4">
                       <img src={logo} alt="" height="30" />
@@ -67,7 +58,6 @@ const ForgetPasswordPage = props => {
 
                     <AvForm
                       className="form-horizontal"
-                      onValidSubmit={(e, v) => handleValidSubmit(e, v)}
                     >
                       <div className="mb-3">
                         <AvField
@@ -94,13 +84,13 @@ const ForgetPasswordPage = props => {
                 </div>
               </div>
               <div className="mt-5 text-center">
-                  <p>Remember It ? <Link to="/login" className="fw-medium text-primary"> Sign In
+                <p>Remember It ? <Link href="/pages-login" className="fw-medium text-primary"> Sign In
                                 here</Link> </p>
-                  <p>
-                    © {new Date().getFullYear()} EasyDM. Crafted with{" "}
-                    <i className="mdi mdi-heart text-danger" /> by Narola
+                <p>
+                  © {new Date().getFullYear()} Qovex. Crafted with{" "}
+                  <i className="mdi mdi-heart text-danger" /> by Themesbrand
                 </p>
-                </div>
+              </div>
             </Col>
           </Row>
         </Container>
@@ -109,18 +99,4 @@ const ForgetPasswordPage = props => {
   )
 }
 
-ForgetPasswordPage.propTypes = {
-  forgetError: PropTypes.any,
-  forgetSuccessMsg: PropTypes.any,
-  history: PropTypes.object,
-  userForgetPassword: PropTypes.func
-}
-
-const mapStatetoProps = state => {
-  const { forgetError, forgetSuccessMsg } = state.ForgetPassword
-  return { forgetError, forgetSuccessMsg }
-}
-
-export default withRouter(
-  connect(mapStatetoProps, { userForgetPassword })(ForgetPasswordPage)
-)
+export default Recoverpw
