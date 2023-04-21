@@ -59,6 +59,12 @@ console.log('webpage ', webpage)
   };
 
 
+  const goBack = (e) => {
+    // history.goBack();
+    history.push('/webpages');
+  };
+
+
   return (
     <>
       <div className="page-content">
@@ -83,7 +89,7 @@ console.log('webpage ', webpage)
                           id="webpage"
                           placeholder="Enter Web Page"
                           onChange={e => setwebpage(e.target.value)}
-                          value={webpage}
+                          // value={webpage}
                         />
                       </div>
                     </Col>
@@ -95,8 +101,8 @@ console.log('webpage ', webpage)
                           className="form-control"
                           id="webpage_url"
                           placeholder="Enter Web Page URL"
-                          onChange={e => setwebpage_url(e.target.value)}
-                          value={webpage_url}
+                          // onChange={e => setwebpage_url(e.target.value)}
+                          // value={webpage_url}
                         />
                       </div>
                     </Col>
@@ -108,8 +114,8 @@ console.log('webpage ', webpage)
                       id="category"
                       options={optionGroupCategory}
                       classNamePrefix="select2-selection"
-                      onChange={e => setcategory(e.target.value)}
-                      value = {category}
+                      // onChange={e => setcategory(e.target.value)}
+                      // value = {category}
                     />
                       </div>
                     </Col>
@@ -139,8 +145,8 @@ console.log('webpage ', webpage)
                           type="date"
                           className="form-control"
                           id="effective_from"
-                          onChange={e => seteffective_from(e.target.value)}
-                          value={effective_from}
+                          // onChange={e => seteffective_from(e.target.value)}
+                          // value={effective_from}
                         />
                       </div>
                     </Col>
@@ -152,30 +158,13 @@ console.log('webpage ', webpage)
                           Update Website
                         </button>
 
-                        <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>
+                        <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>
-
                       </div>
-
-                     
-                      
-
                     </Col>
-
-                    
-
-
                   </Row>
-
                 </form>
-                  {/* <Row className="justify-content-end">
-                    <Col lg="10">
-                      <Button type="submit" color="primary">
-                        Create Task
-                      </Button>
-                    </Col>
-                  </Row> */}
                 </CardBody>
               </Card>
             </Col>

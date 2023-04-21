@@ -108,6 +108,10 @@ const UpdateSchedular = () => {
         history.push('/content_schedulers')
     };
 
+    const goBack = (e) => {
+        // history.goBack();
+        history.push('/content_schedulers');
+      };
 
     return (
         <>
@@ -134,7 +138,7 @@ const UpdateSchedular = () => {
                           isMulti={false}
                           options={optionGroupWebPage}
                           classNamePrefix="select2-selection"
-                          onChange={e => setweb_page(e.target.value)}
+                        //   onChange={e => setweb_page(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -147,7 +151,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="topic_title"
                                                     placeholder="Enter Topic Title"
-                                                    onChange={e => settopic_title(e.target.value)}
+                                                    // onChange={e => settopic_title(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -160,7 +164,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="doc_link"
                                                     placeholder="Enter Doc Link"
-                                                    onChange={e => setdoc_link(e.target.value)}
+                                                    // onChange={e => setdoc_link(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -238,7 +242,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="expected_words"
                                                     placeholder="Enter Expected Words"
-                                                    onChange={e => setexpected_words(e.target.value)}
+                                                    // onChange={e => setexpected_words(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -251,7 +255,7 @@ const UpdateSchedular = () => {
                                                     className="form-control"
                                                     id="actual_words"
                                                     placeholder="Enter Actual Words"
-                                                    onChange={e => setactual_words(e.target.value)}
+                                                    // onChange={e => setactual_words(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -264,7 +268,7 @@ const UpdateSchedular = () => {
                                                     isMulti={false}
                                                     options={optionGroupMembers}
                                                     classNamePrefix="select2-selection"
-                                                    onChange={e => setwritten_by(e.target.value)}
+                                                    // onChange={e => setwritten_by(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -278,7 +282,7 @@ const UpdateSchedular = () => {
                                                     isMulti={false}
                                                     options={optionGroupType}
                                                     classNamePrefix="select2-selection"
-                                                    onChange={e => settopic_type(e.target.value)}
+                                                    // onChange={e => settopic_type(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -291,7 +295,7 @@ const UpdateSchedular = () => {
                                                     isMulti={false}
                                                     options={optionGroupStaus}
                                                     classNamePrefix="select2-selection"
-                                                    onChange={e => setcontent_status(e.target.value)}
+                                                    // onChange={e => setcontent_status(e.target.value)}
                                                 />
                                             </div>
                                         </Col>
@@ -304,7 +308,7 @@ const UpdateSchedular = () => {
                                                     Update Content Scheduler
                                                 </button>
 
-                                                <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>
+                                                <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                                                     Back
                                                 </button>
 

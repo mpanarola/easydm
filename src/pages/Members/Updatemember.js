@@ -79,7 +79,7 @@ const Updatemember = () => {
                               type="file"
                               className="form-control"
                               id="profile_pic"
-                              onChange={e => setprofile_pic(e.target.value)}
+                              // onChange={e => setprofile_pic(e.target.value)}
                             />
                           </div>
                         </Col>
@@ -92,8 +92,8 @@ const Updatemember = () => {
                               className="form-control"
                               id="member_name"
                               placeholder="Enter Member Name"
-                              onChange={e => setname(e.target.value)}
-                              value = {name}
+                              // onChange={e => setname(e.target.value)}
+                              // value = {name}
                             />
                           </div>
                         </Col>
@@ -107,8 +107,8 @@ const Updatemember = () => {
                               className="form-control"
                               id="member_email"
                               placeholder="Enter Member Email"
-                              onChange={e => setemail(e.target.value)}
-                              value = {email}
+                              // onChange={e => setemail(e.target.value)}
+                              // value = {email}
                             />
                           </div>
                         </Col>
@@ -123,8 +123,8 @@ const Updatemember = () => {
                       isMulti={false}
                       options={optionGroupType}
                       classNamePrefix="select2-selection"
-                      onChange={e => settype(e.target.value)}
-                      value = {type}
+                      // onChange={e => settype(e.target.value)}
+                      // value = {type}
                     />
                       </div>
                     </Col>
@@ -137,8 +137,8 @@ const Updatemember = () => {
                       isMulti={false}
                       options={optionGroupStaus}
                       classNamePrefix="select2-selection"
-                      onChange={e => setstatus(e.target.value)}
-                      value = {status}
+                      // onChange={e => setstatus(e.target.value)}
+                      // value = {status}
                     />
                       </div>
                     </Col>

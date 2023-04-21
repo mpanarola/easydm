@@ -93,7 +93,7 @@ const Createmember = () => {
                               className="form-control"
                               id="member_name"
                               placeholder="Enter Member Name"
-                              onChange={e => setname(e.target.value)}
+                              // onChange={e => setname(e.target.value)}
                             />
                           </div>
                         </Col>
@@ -107,7 +107,7 @@ const Createmember = () => {
                               className="form-control"
                               id="member_email"
                               placeholder="Enter Member Email"
-                              onChange={e => setemail(e.target.value)}
+                              // onChange={e => setemail(e.target.value)}
                             />
                           </div>
                         </Col>
@@ -122,7 +122,7 @@ const Createmember = () => {
                       isMulti={false}
                       options={optionGroupType}
                       classNamePrefix="select2-selection"
-                      onChange={e => settype(e.target.value)}
+                      // onChange={e => settype(e.target.value)}
                     />
                       </div>
                     </Col>
@@ -135,7 +135,7 @@ const Createmember = () => {
                       isMulti={false}
                       options={optionGroupStaus}
                       classNamePrefix="select2-selection"
-                      onChange={e => setstatus(e.target.value)}
+                      // onChange={e => setstatus(e.target.value)}
                     />
                       </div>
                     </Col>

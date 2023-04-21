@@ -132,6 +132,7 @@ import Updatemember from "../pages/Members/Updatemember"
 import AddSchedular from "../pages/ContentSchedulers/CreateScheduler"
 import UpdateSchedular from "../pages/ContentSchedulers/UpdateScheduler"
 import Backlink from "../pages/Backlinks/Backlink"
+import Daybook from "../pages/Daybook/Daybook"
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -163,6 +164,8 @@ const userRoutes = [
   { path: "/page_views", component: Pageview },
   { path: "/create_page_view", component: Createpageview },
   { path: "/update_page_view", component: Updatepageview },
+
+  { path: "/daybooks", component: Daybook },
 
 
 

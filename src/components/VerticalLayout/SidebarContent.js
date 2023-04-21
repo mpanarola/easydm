@@ -136,6 +136,13 @@ const SidebarContent = props => {
               </Link>
             </li>
 
+            <li>
+              <Link to="/daybooks" className=" waves-effect">
+                <i className="mdi mdi-calendar-today"></i>
+                <span>{props.t("Daybook")}</span>
+              </Link>
+            </li>
+
 
             {/* <li>
               <Link to="/calendar" className=" waves-effect">

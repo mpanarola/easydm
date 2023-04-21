@@ -276,13 +276,13 @@ const Member = () => {
                       setconfirm_both(false)
                       setsuccess_dlg(true)
                       setdynamic_title("Deleted")
-                      setdynamic_description("Your file has been deleted.")
+                      setdynamic_description("Your member has been deleted.")
                     }}
                     onCancel={() => {
                       setconfirm_both(false)
                       setsuccess_dlg(true)
                       setdynamic_title("Cancelled")
-                      setdynamic_description("Your imaginary file is safe :)")
+                      setdynamic_description("Your member is safe :)")
                     }}
                   >
                     You won't be able to revert this!

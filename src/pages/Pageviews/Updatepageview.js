@@ -59,6 +59,10 @@ const Updatepageview = () => {
   };
 
 
+  const goBack = (e) => {
+    // history.goBack();
+    history.push('/page_views');
+  };
 
 
   return (
@@ -85,8 +89,8 @@ const Updatepageview = () => {
                       id="webpage"
                       options={optionGroupWebPage}
                       classNamePrefix="select2-selection"
-                      onChange={e => setwebpage(e.target.value)}
-                      value = {webpage}
+                      // onChange={e => setwebpage(e.target.value)}
+                      // value = {webpage}
                     />
                       </div>
                     </Col>
@@ -98,8 +102,8 @@ const Updatepageview = () => {
                       id="category"
                       options={optionGroupCategory}
                       classNamePrefix="select2-selection"
-                      onChange={e => setcategory(e.target.value)}
-                      value = {category}
+                      // onChange={e => setcategory(e.target.value)}
+                      // value = {category}
                     />
                       </div>
                     </Col>
@@ -111,8 +115,8 @@ const Updatepageview = () => {
                           type="date"
                           className="form-control"
                           id="month_year"
-                          onChange={e => setmonthyear(e.target.value)}
-                          value={monthyear}
+                          // onChange={e => setmonthyear(e.target.value)}
+                          // value={monthyear}
                         />
                       </div>
                     </Col>
@@ -124,8 +128,8 @@ const Updatepageview = () => {
                           type="number"
                           className="form-control"
                           id="total_pageviews"
-                          onChange={e => settotal_page_views(e.target.value)}
-                          value={total_page_views}
+                          // onChange={e => settotal_page_views(e.target.value)}
+                          // value={total_page_views}
                         />
                       </div>
                     </Col>
@@ -137,7 +141,7 @@ const Updatepageview = () => {
                           Create Page View
                         </button>
 
-                        <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>
+                        <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>
 
@@ -145,15 +149,7 @@ const Updatepageview = () => {
                     </Col>
 
                   </Row>
-
                 </form>
-                  {/* <Row className="justify-content-end">
-                    <Col lg="10">
-                      <Button type="submit" color="primary">
-                        Create Task
-                      </Button>
-                    </Col>
-                  </Row> */}
                 </CardBody>
               </Card>
             </Col>

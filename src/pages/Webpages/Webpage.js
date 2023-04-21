@@ -345,101 +345,6 @@ const Webpage = () => {
                 Add Website
               </Link>
             </div>
-
-            {/* <Modal
-              size="lg"
-              isOpen={modal}
-              toggle={() => {
-                setmodal(!modal)
-              }}
-            >
-              <ModalHeader
-                toggle={() => {
-                  setmodal(!modal)
-                }}
-                className="h4 mt-0 mb-4"
-              >
-                Add Website
-              </ModalHeader>
-              <ModalBody>
-                <form>
-                  <Row>
-                    <Col lg={12}>
-                      <div className="mb-3">
-                        <label htmlFor="name">Website</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="webpage"
-                          placeholder="Enter Web Page"
-                        />
-                      </div>
-                    </Col>
-                    <Col lg={12}>
-                      <div className="mb-3">
-                        <label htmlFor="webpage_url">Web Page URL</label>
-                        <input
-                          type="url"
-                          className="form-control"
-                          id="webpage_url"
-                          placeholder="Enter Web Page URL"
-                        />
-                      </div>
-                    </Col>
-
-                    <Col lg={12}>
-                      <div className="mb-3">
-                        <label htmlFor="category">Category</label>
-                        <Select
-                      id="category"
-                      options={optionGroupCategory}
-                      classNamePrefix="select2-selection"
-                    />
-                      </div>
-                    </Col>
-
-                    <Col lg={12}>
-                      <div className="mb-3">
-                        <label htmlFor="assigned_to">Assign Members</label>
-                        <Select
-                      value={selectedMulti}
-                      id="assigned_to"
-
-                      isMulti={true}
-                      onChange={() => {
-                        handleMulti();
-                      }}
-                      options={optionGroup}
-                      classNamePrefix="select2-selection"
-                    />
-                      </div>
-                    </Col>
-
-
-                    <Col lg={12}>
-                      <div className="mb-3">
-                        <label htmlFor="effective_from">Effective From</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          id="effective_from"
-                        />
-                      </div>
-                    </Col>
-
-
-                    <Col lg={12}>
-                      <div className="text-right">
-                        <button type="submit" className="btn btn-primary">
-                          Submit
-                        </button>
-                      </div>
-                    </Col>
-                  </Row>
-
-                </form>
-              </ModalBody>
-            </Modal> */}
           </CardBody>
         </Card>
 
@@ -447,7 +352,7 @@ const Webpage = () => {
           <Col className="col-12">
             <Card>
               <CardBody>
-                <CardTitle>Website Lists </CardTitle>
+                <CardTitle>Websites List </CardTitle>
                 <MDBDataTable responsive bordered data={data} />
               </CardBody>
             </Card>
@@ -470,13 +375,13 @@ const Webpage = () => {
                   setconfirm_both(false)
                   setsuccess_dlg(true)
                   setdynamic_title("Deleted")
-                  setdynamic_description("Your file has been deleted.")
+                  setdynamic_description("Your webpage has been deleted.")
                 }}
                 onCancel={() => {
                   setconfirm_both(false)
                   setsuccess_dlg(true)
                   setdynamic_title("Cancelled")
-                  setdynamic_description("Your imaginary file is safe :)")
+                  setdynamic_description("Your webpage is safe :)")
                 }}
               >
                 You won't be able to revert this!

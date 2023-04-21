@@ -200,40 +200,6 @@ const ContentScheduler = () => {
             width: "150px"
           }}>
 
-
-            {/* <div className="button-items">
-
-              <Button
-                id="Popoverdismiss"
-                className="btn btn-primary"
-                onClick={() => {
-                  setpopoverdismiss(!popoverdismiss)
-                }}
-                style={{
-                  cursor: "pointer",
-                  marginRight: "10px"
-                }}
-              >
-                View More
-              </Button>{" "}
-              <UncontrolledPopover
-                trigger="focus"
-                target="Popoverdismiss"
-                placement="left"
-              >
-                <PopoverBody>
-                  <p className="card-title-desc" style={{
-                    width: "200px", boxShadow: '1px 2px 9px #3b5de7', padding: "10px"
-                  }}>
-                    <p> <h6>Assigned By:  <b>Milan</b></h6></p>
-                    <p> <h6>Written By:  <b>Ashish</b></h6></p>
-                    <p> <h6>Assigned On:  <b>2023/04/25</b> </h6></p>
-
-                  </p>
-                </PopoverBody>
-              </UncontrolledPopover>
-            </div> */}
-
             <div
               className="btn btn-primary"
               style={{
@@ -288,141 +254,6 @@ const ContentScheduler = () => {
                 Add Content Scheduler
               </Link>
             </div>
-            {/* <AddSchedular  is_open={modal}/> */}
-            {/* <Modal
-                  size="lg"
-                  isOpen={modal}
-                  toggle={() => {
-                    setmodal(!modal)
-                  }}
-                >
-                  <ModalHeader
-                    toggle={() => {
-                      setmodal(!modal)
-                    }}
-                    className="h4 mt-0 mb-4"
-                  >
-                    Add Content Scheduler
-                    </ModalHeader>
-                  <ModalBody>
-                    <form>
-                      <Row>
-                        <Col lg={6}>
-                        <div className="mb-3">
-                            <label htmlFor="topic_title">Topic Title</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="topic_title"
-                              placeholder="Enter Topic Title"
-                            />
-                          </div>
-                        </Col>
-
-                        
-                        <Col lg={6}>
-                          <div className="mb-3">
-                            <label htmlFor="doc_link">Doc Link</label>
-                            <input
-                              type="url"
-                              className="form-control"
-                              id="doc_link"
-                              placeholder="Enter Doc Link"
-                            />
-                          </div>
-                        </Col>
-
-
-                      
-                        <Col lg={12}>
-                          <div className="mb-3">
-                            <label htmlFor="referece_links">Referece Links</label>
-                            <input
-                              type="url"
-                              className="form-control"
-                              id="referece_links"
-                              placeholder="Enter Referece Links"
-                            />
-                          </div>
-                        </Col>
-                      </Row>
-
-                      <Row>
-
-                      <Col lg={6}>
-                          <div className="mb-3">
-                            <label htmlFor="expected_words">Expected Words</label>
-                            <input
-                              type="number"
-                              className="form-control"
-                              id="expected_words"
-                              placeholder="Enter Expected Words"
-                            />
-                          </div>
-                        </Col>
-
-                        <Col lg={6}>
-                          <div className="mb-3">
-                            <label htmlFor="actual_words">Actual Words</label>
-                            <input
-                              type="number"
-                              className="form-control"
-                              id="actual_words"
-                              placeholder="Enter Actual Words"
-                            />
-                          </div>
-                        </Col>
-
-                        <Col lg={6}>
-                          <div className="mb-3">
-                            <label htmlFor="written_by">Written By</label>
-                            <Select
-                      id="written_by"
-                      isMulti={false}
-                      options={optionGroupMembers}
-                      classNamePrefix="select2-selection"
-                    />
-                          </div>
-                        </Col>
-
-
-                      <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="user_type">Content Type</label>
-                        <Select
-                      id="user_type"
-                      isMulti={false}
-                      options={optionGroupType}
-                      classNamePrefix="select2-selection"
-                    />
-                      </div>
-                    </Col>
-
-                      <Col lg={12}>
-                      <div className="mb-3">
-                        <label htmlFor="user_status">Status</label>
-                        <Select
-                      id="user_status"
-                      isMulti={false}
-                      options={optionGroupStaus}
-                      classNamePrefix="select2-selection"
-                    />
-                      </div>
-                    </Col>
-
-
-                        <Col lg={6}>
-                          <div className="text-right">
-                            <button type="submit" className="btn btn-primary">
-                              Submit
-                              </button>
-                          </div>
-                        </Col>
-                      </Row>
-                      
-                    </form>
-                  </ModalBody>
-                </Modal> */}
           </CardBody>
         </Card>
 
@@ -451,13 +282,13 @@ const ContentScheduler = () => {
                 setconfirm_both(false)
                 setsuccess_dlg(true)
                 setdynamic_title("Deleted")
-                setdynamic_description("Your file has been deleted.")
+                setdynamic_description("Your content schedular has been deleted.")
               }}
               onCancel={() => {
                 setconfirm_both(false)
                 setsuccess_dlg(true)
                 setdynamic_title("Cancelled")
-                setdynamic_description("Your imaginary file is safe :)")
+                setdynamic_description("Your content schedular is safe :)")
               }}
             >
               You won't be able to revert this!
