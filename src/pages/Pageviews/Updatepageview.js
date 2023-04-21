@@ -84,8 +84,6 @@ const Updatepageview = () => {
             </CardBody>
           </Card>
 
-          <Performance />
-
             <Col lg="12">
               <Card>
                 <CardBody>
@@ -162,6 +160,8 @@ const Updatepageview = () => {
                 </CardBody>
               </Card>
             </Col>
+
+            <Performance />
           </Row>
       </div>
     </>

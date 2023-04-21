@@ -78,7 +78,6 @@ const Updatebacklink = () => {
               <label htmlFor="published_on">Published On :  27-Mar-2023</label>
             </CardBody>
           </Card>
-          <Performance />
 
           <Col lg="12">
             <Card>
@@ -159,6 +158,9 @@ const Updatebacklink = () => {
               </CardBody>
             </Card>
           </Col>
+
+          <Performance />
+          
         </Row>
       </div>
     </>

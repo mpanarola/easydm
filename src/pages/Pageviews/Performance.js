@@ -13,7 +13,7 @@ class Performance extends Component {
         <React.Fragment>
                 <Card>
                     <CardBody>
-                        <CardTitle className="h2 mb-4 font-size-18">Past 12 months performance</CardTitle>
+                        <CardTitle className="h2 mb-4 font-size-18">Past 12 Months Performance</CardTitle>
                         <Row>
                             <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
                                 <Card>
