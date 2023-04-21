@@ -64,15 +64,19 @@ const Updatemember = () => {
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Members" breadcrumbItem="Update Member" />
 
+    
           <Row>
+          <Card>
+            <CardBody>
+              <h4 className="me-4"> ID:  #1</h4>
+              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+            </CardBody>
+          </Card>
+
             <Col lg="12">
               <Card>
                 <CardBody>
-
-                <h4 className="me-4"> ID:  #1</h4>
-                <label htmlFor="published_on">Published On :  27-Mar-2023</label>
-
-                  <CardTitle className="mb-4 mt-4">Update Member</CardTitle>
+                  <CardTitle className="mb-4 font-size-18">Update Member</CardTitle>
                  
                   <form >
                       <Row>

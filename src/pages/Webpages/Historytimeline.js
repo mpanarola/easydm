@@ -13,7 +13,7 @@ class HistoryTimeline extends Component {
       <React.Fragment>
         <Card>
           <CardBody>
-            <CardTitle className="h4 mb-5">Activity</CardTitle>
+            <CardTitle className="h4 mb-5 font-size-18">Activity</CardTitle>
             <ul className="list-unstyled activity-wid">
               
             <li className="activity-list">

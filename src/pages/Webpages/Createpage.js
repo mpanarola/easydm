@@ -75,7 +75,7 @@ const Createpage = () => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Create Website</CardTitle>
+                  <CardTitle className="mb-4 font-size-18">Create Website</CardTitle>
                   <form >
                   <Row>
                     <Col lg={12}>

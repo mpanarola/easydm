@@ -77,16 +77,19 @@ const Updatepageview = () => {
 
           <Row>
 
+          <Card>
+            <CardBody>
+              <h4 className="me-4"> ID:  #1</h4>
+              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+            </CardBody>
+          </Card>
+
           <Performance />
 
             <Col lg="12">
               <Card>
                 <CardBody>
-                  
-                  <h4 className="me-4"> ID:  #1</h4>
-                  <label htmlFor="published_on">Published On :  27-Mar-2023</label>
-
-                  <CardTitle className="mb-4 mt-4">Update Page View</CardTitle>
+                  <CardTitle className="mb-4 font-size-18">Update Page View</CardTitle>
                   <form >
                   <Row>
                   <Col lg={6}>

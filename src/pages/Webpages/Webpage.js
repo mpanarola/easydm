@@ -359,9 +359,6 @@ const Webpage = () => {
             </Card>
           </Col>
 
-
-
-
           {/* Delete popup */}
           <Col xl="3" lg="4" sm="6" className="mb-2">
 

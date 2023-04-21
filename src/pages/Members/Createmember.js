@@ -69,7 +69,7 @@ const Createmember = () => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Create Member</CardTitle>
+                  <CardTitle className="mb-4 font-size-18">Create Member</CardTitle>
                  
                   <form >
                       <Row>

@@ -23,20 +23,20 @@ const Updatebacklink = () => {
 
   const history = useHistory();
 
-    // Webpages
-    const optionGroupWebPage = [
-      {
-        label: "Web Pages",
-        options: [
-          { label: "Home", value: "Home" },
-          { label: "About", value: "About" },
-          { label: "Contact", value: "Contact" },
-          { label: "Blogs", value: "Blogs" },
-          { label: "Events", value: "Events" },
-        ],
-      },
-  
-    ];
+  // Webpages
+  const optionGroupWebPage = [
+    {
+      label: "Web Pages",
+      options: [
+        { label: "Home", value: "Home" },
+        { label: "About", value: "About" },
+        { label: "Contact", value: "Contact" },
+        { label: "Blogs", value: "Blogs" },
+        { label: "Events", value: "Events" },
+      ],
+    },
+
+  ];
 
 
   const optionGroupCategory = [
@@ -50,7 +50,7 @@ const Updatebacklink = () => {
         { label: "Blogs", value: "Blogs" }
       ],
     },
-   
+
   ];
 
 
@@ -67,34 +67,36 @@ const Updatebacklink = () => {
   return (
     <>
       <div className="page-content">
-        
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Backlinks" breadcrumbItem="Update Backlink" />
 
-          <Row>
+        {/* Render Breadcrumbs */}
+        <Breadcrumbs title="Backlinks" breadcrumbItem="Update Backlink" />
 
+        <Row>
+          <Card>
+            <CardBody>
+              <h4 className="me-4"> ID:  #1</h4>
+              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+            </CardBody>
+          </Card>
           <Performance />
 
-            <Col lg="12">
-              <Card>
-                <CardBody>
+          <Col lg="12">
+            <Card>
+              <CardBody>
 
-                <h4 className="me-4"> ID:  #1</h4>
-                <label htmlFor="published_on">Published On :  27-Mar-2023</label>
-
-                  <CardTitle className="mb-4 mt-4">Update Backlink</CardTitle>
-                  <form >
+                <CardTitle className="mb-4 font-size-18">Update Backlink</CardTitle>
+                <form >
                   <Row>
-                  <Col lg={6}>
+                    <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
                         <Select
-                      id="webpage"
-                      options={optionGroupWebPage}
-                      classNamePrefix="select2-selection"
-                      // onChange={e => setwebpage(e.target.value)}
-                      // value = {webpage}
-                    />
+                          id="webpage"
+                          options={optionGroupWebPage}
+                          classNamePrefix="select2-selection"
+                        // onChange={e => setwebpage(e.target.value)}
+                        // value = {webpage}
+                        />
                       </div>
                     </Col>
 
@@ -102,12 +104,12 @@ const Updatebacklink = () => {
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
                         <Select
-                      id="category"
-                      options={optionGroupCategory}
-                      classNamePrefix="select2-selection"
-                      // onChange={e => setcategory(e.target.value)}
-                      // value = {category}
-                    />
+                          id="category"
+                          options={optionGroupCategory}
+                          classNamePrefix="select2-selection"
+                        // onChange={e => setcategory(e.target.value)}
+                        // value = {category}
+                        />
                       </div>
                     </Col>
 
@@ -118,8 +120,8 @@ const Updatebacklink = () => {
                           type="date"
                           className="form-control"
                           id="month_year"
-                          // onChange={e => setmonthyear(e.target.value)}
-                          // value={monthyear}
+                        // onChange={e => setmonthyear(e.target.value)}
+                        // value={monthyear}
                         />
                       </div>
                     </Col>
@@ -131,8 +133,8 @@ const Updatebacklink = () => {
                           type="number"
                           className="form-control"
                           id="total_backlinks"
-                          // onChange={e => settotal_backlinks(e.target.value)}
-                          // value={total_backlinks}
+                        // onChange={e => settotal_backlinks(e.target.value)}
+                        // value={total_backlinks}
                         />
                       </div>
                     </Col>
@@ -140,8 +142,8 @@ const Updatebacklink = () => {
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => updateBacklink()}>
-                          Update Backlinks
+                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => updateBacklink()}>
+                          Update Backlink
                         </button>
 
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
@@ -154,10 +156,10 @@ const Updatebacklink = () => {
                   </Row>
 
                 </form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     </>
   )

@@ -73,7 +73,7 @@ const Createpageview = () => {
             <Col lg="12">
               <Card>
                 <CardBody>
-                  <CardTitle className="mb-4">Create Page View</CardTitle>
+                  <CardTitle className="mb-4 font-size-18">Create Page View</CardTitle>
                   <form >
                   <Row>
                   <Col lg={6}>

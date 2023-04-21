@@ -1,118 +1,254 @@
 import React, { Component } from "react"
-import ReactApexChart from "react-apexcharts"
-import { Button, Card, CardBody, CardTitle, Input } from "reactstrap"
+import { Card, CardBody, CardTitle, Col, Row } from "reactstrap"
 
 class Performance extends Component {
-
-
     constructor(props) {
         super(props)
         this.state = {}
     }
 
-
-
     render() {
-        const series = [20]
-        const options = {
-            plotOptions: {
-                radialBar: {
-                    offsetY: -12,
-                    hollow: {
-                        margin: 5, size: '60%', background: 'rgba(59, 93, 231, .25)',
-                    }
-                    ,
-                    dataLabels: {
-                        name: {
-                            show: false,
-                        }
-                        ,
-                        value: {
-                            show: true, fontSize: '12px', offsetY: 5,
-                        }
-                        ,
-                        style: {
-                            colors: ['#fff']
-                        }
-                    }
-                }
-                ,
-            }
-            ,
-            colors: ['#3b5de7'],
-        }
-
 
         return (
             <React.Fragment>
                 <Card>
                     <CardBody>
-                        <div className="float-end">
-                            <div className="input-group input-group">
-                                <Input type="select" className="form-select form-select-sm">
-                                    <option value="1" selected>Dec</option>
-                                    <option value="2">Nov</option>
-                                    <option value="3">Oct</option>
-                                    <option value="4">Sept</option>
-                                    <option value="5">Aug</option>
-                                    <option value="6">Jul</option>
-                                    <option value="7">Jun</option>
-                                    <option value="8">May</option>
-                                    <option value="9">Apr</option>
-                                    <option value="10">Mar</option>
-                                    <option value="11">Feb</option>
-                                    <option value="12">Jan</option>
+                        <CardTitle className="h2 mb-4 font-size-18">Past 12 months performance</CardTitle>
+                        <Row>
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card >
+                                    <CardBody>
+                                        <Row >
+                                            <Col xs={8} >
+                                                <div>
+                                                <h4>April - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>1,368</h4>
+                                                </div>
+                                            </Col>
 
-                                </Input>
-                                <label className="input-group-text">Month</label>
-                            </div>
-                        </div>
-                        <CardTitle className="h4 mb-4">Past 12 months performance</CardTitle>
+                                        </Row>
 
-                        <div className="align-items-start d-flex">
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.8% <i
+                                            className="mdi mdi-arrow-up"></i> </span> </p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+                            
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>May - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
 
-                        {/* <div className="text-center">
-                                <ReactApexChart
-                                    options={options}
-                                    series={series}
-                                    type="radialBar"
-                                    height="150"
-                                />
-                            </div> */}
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
 
-                            <div className="flex-1">
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Jun - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
 
-                                <p className="mb-2">Total Links</p>
-                                <h4>2,500</h4>
-                                <p className="mb-0"><span className="badge badge-soft-success me-2"> 0.6% <i
-                                    className="mdi mdi-arrow-up"></i> </span> From previous period</p>
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
 
-                            </div>
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Jul - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
 
-                        </div>
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
 
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Aug - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
 
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
 
-                        {/* <div className="mt-3 social-source">
-                  <div className="d-flex align-items-center social-source-list">
-                      <div className="avatar-xs me-4">
-                          <span className="avatar-title rounded-circle">
-                        
-                          </span>
-                      </div>
-                      <div className="flex-1">
-                          <p className="mb-1">Home page</p>
-                          <h5 className="mb-0">2,352</h5>
-                      </div>
-                      <div className="ms-auto">
-                          2.06 % <i className="mdi mdi-arrow-up text-success ms-1"></i>
-                      </div>
-                  </div>
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Sept - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
 
-              </div> */}
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Oct - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Nov - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Dec - 22</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Jan - 23</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Fab - 23</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                            <Col md={3} style={{ border: "1px solid", padding: "10px", boxShadow: "5px 7px #888888"}}>
+                                <Card>
+                                    <CardBody>
+                                        <Row>
+                                            <Col xs={8}>
+                                                <div>
+                                                <h4>Mar - 23</h4>
+                                                    <p className="text-muted fw-medium mt-1 mb-2">Total Back Links</p>
+                                                    <h4>32,695</h4>
+                                                </div>
+                                            </Col>
+                                        </Row>
+
+                                        <p className="mb-0"><span className="badge badge-soft-success me-2 font-size-15"> 0.6% <i
+                                            className="mdi mdi-arrow-up"></i> </span></p>
+                                    </CardBody>
+                                </Card>
+                            </Col>
+
+                        </Row>
 
                     </CardBody>
                 </Card>
+
             </React.Fragment>
         )
     }

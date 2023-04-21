@@ -123,18 +123,19 @@ const UpdateSchedular = () => {
 
                 <Row>
 
-                    <Col lg="12">
+                    <Card>
+                        <CardBody>
+                            <h4 className="me-4"> ID:  #1</h4>
+                            <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+                        </CardBody>
+                    </Card>
 
+                    <Col lg="12">
                         <Card>
                             <CardBody>
-                                <h4 className="me-4"> ID:  #1</h4>
-                                <label htmlFor="published_on">Published On :  27-Mar-2023</label>
-
-
-                                <CardTitle className="mb-4 mt-4">Update Content Scheduler</CardTitle>
+                                <CardTitle className="mb-4 font-size-18">Update Content Scheduler</CardTitle>
                                 <form>
                                     <Row>
-
                                         <Col lg={6}>
                                             <div className="mb-3">
                                                 <label htmlFor="web_page">Web Page</label>

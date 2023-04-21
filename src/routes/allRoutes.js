@@ -37,6 +37,10 @@ import UpdateSchedular from "../pages/ContentSchedulers/UpdateScheduler"
 
 import Backlink from "../pages/Backlinks/Backlink"
 import Daybook from "../pages/Daybook/Daybook"
+import Createdaybook from "../pages/Daybook/Createdaybook"
+import Updatedaybook from "../pages/Daybook/Updatedaybook"
+
+
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
@@ -69,6 +73,8 @@ const userRoutes = [
   { path: "/update_page_view", component: Updatepageview },
 
   { path: "/daybooks", component: Daybook },
+  { path: "/create_daybook", component:Createdaybook },
+  { path: "/update_daybook", component: Updatedaybook },
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
