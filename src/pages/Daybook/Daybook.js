@@ -87,7 +87,9 @@ const Daybook = () => {
         ),
         // webpage_url: "",
         category: "Blogs",
-        hours: "8",
+        hours: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
+        ),
         details: (
           <p>Worked on home page</p>
         ),
@@ -121,7 +123,9 @@ const Daybook = () => {
           <a href="https://www.about.com" target="_blank">About</a>
         ),
         category: "Industry",
-        hours: "10",
+        hours: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10</span>
+        ),
         details: (
           <p>Worked on about page</p>
         ),
@@ -155,7 +159,9 @@ const Daybook = () => {
           <a href="https://www.contact.com" target="_blank">Contact</a>
         ),
         category: "Career",
-        hours: "2",
+        hours: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>2</span>
+        ),
         details: (
           <p>Worked on contact page</p>
         ),
@@ -189,7 +195,9 @@ const Daybook = () => {
           <a href="https://www.blogs.com" target="_blank">Blogs</a>
         ),
         category: "Blogs",
-        hours: "3",
+        hours: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>3</span>
+        ),
         details: (
           <p>Worked on blog page</p>
         ),
@@ -223,7 +231,9 @@ const Daybook = () => {
           <a href="https://www.events.com" target="_blank">Events</a>
         ),
         category: "Services",
-        hours: "8",
+        hours: (
+          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
+        ),
         details: (
           <p>Worked on series page</p>
         ),
