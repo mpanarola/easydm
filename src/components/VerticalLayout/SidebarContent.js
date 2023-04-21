@@ -125,7 +125,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/backlinks" className=" waves-effect">
                 <i className="mdi mdi-link-variant-plus"></i>
-                <span>{props.t("Backlinks")}</span>
+                <span>{props.t("Back Links")}</span>
               </Link>
             </li>
 
@@ -139,7 +139,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/daybooks" className=" waves-effect">
                 <i className="mdi mdi-calendar-today"></i>
-                <span>{props.t("Daybook")}</span>
+                <span>{props.t("Day Books")}</span>
               </Link>
             </li>
 

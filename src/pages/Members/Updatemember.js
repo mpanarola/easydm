@@ -69,7 +69,7 @@ const Updatemember = () => {
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+              <label htmlFor="published_on">Created On :  27-Mar-2023</label>
             </CardBody>
           </Card>
 
