@@ -262,7 +262,7 @@ const Backlink = () => {
     <React.Fragment>
       <div className="page-content">
 
-        <Breadcrumbs title="Pages" breadcrumbItem="Backlinks" />
+        <Breadcrumbs title="Pages" breadcrumbItem="Back Links" />
 
         {success_dlg ? (
           <SweetAlert
@@ -287,7 +287,7 @@ const Backlink = () => {
                 to="#"
                 className="btn btn-primary"
               >
-                Add Backlink
+                Add Back Link
               </Link>
             </div>
           </CardBody>
@@ -297,7 +297,7 @@ const Backlink = () => {
           <Col className="col-12">
             <Card>
               <CardBody>
-                <CardTitle>Backlinks List</CardTitle>
+                <CardTitle>Back Links List</CardTitle>
                 <MDBDataTable responsive bordered data={data} />
               </CardBody>
             </Card>
@@ -320,13 +320,13 @@ const Backlink = () => {
                   setconfirm_both(false)
                   setsuccess_dlg(true)
                   setdynamic_title("Deleted")
-                  setdynamic_description("Your backlink has been deleted.")
+                  setdynamic_description("Your back link has been deleted.")
                 }}
                 onCancel={() => {
                   setconfirm_both(false)
                   setsuccess_dlg(true)
                   setdynamic_title("Cancelled")
-                  setdynamic_description("Your backlink is safe :)")
+                  setdynamic_description("Your back link is safe :)")
                 }}
               >
                 You won't be able to revert this!

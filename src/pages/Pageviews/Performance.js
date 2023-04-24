@@ -255,7 +255,7 @@ class Performance extends Component {
                                         <Row >
                                             <Col xs={12} >
                                                 <div>
-                                                <h6>April - 22</h6>
+                                                <h6>Apr - 22</h6>
                                                     <p className="text-muted fw-medium mt-1 mb-2">Total Views</p>
                                                     <h6>1,368</h6>
                                                 </div>

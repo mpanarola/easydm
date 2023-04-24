@@ -146,7 +146,7 @@ const Createdaybook = () => {
                                 onChange={e => setwebpage(e.url)}
                                 // value = {webpage}
                                 />
-                                  { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> }
+                                  {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
                                 </div>
                                 
                               </Col>
