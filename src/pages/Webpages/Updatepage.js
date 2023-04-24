@@ -87,7 +87,21 @@ console.log('webpage ', webpage)
                   <CardTitle className="mb-4 font-size-18">Update Website</CardTitle>
                   <form >
                   <Row>
-                    <Col lg={12}>
+
+                  <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="category">Category</label>
+                        <Select
+                      id="category"
+                      options={optionGroupCategory}
+                      classNamePrefix="select2-selection"
+                      // onChange={e => setcategory(e.target.value)}
+                      // value = {category}
+                    />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="name">Web Page</label>
                         <input
@@ -116,14 +130,14 @@ console.log('webpage ', webpage)
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="category">Category</label>
-                        <Select
-                      id="category"
-                      options={optionGroupCategory}
-                      classNamePrefix="select2-selection"
-                      // onChange={e => setcategory(e.target.value)}
-                      // value = {category}
-                    />
+                        <label htmlFor="published_on">Published On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="published_on"
+                          // onChange={e => seteffective_from(e.target.value)}
+                          // value={effective_from}
+                        />
                       </div>
                     </Col>
 

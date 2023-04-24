@@ -7,7 +7,7 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -26,11 +26,11 @@ const Createpageview = () => {
       {
         label: "Web Pages",
         options: [
-          { label: "Home", value: "Home" },
-          { label: "About", value: "About" },
-          { label: "Contact", value: "Contact" },
-          { label: "Blogs", value: "Blogs" },
-          { label: "Events", value: "Events" },
+          { label: "Home", value: "Home" , url: "https://www.home.com/"},
+          { label: "About", value: "About", url: "https://www.about.com/" },
+          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
+          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
+          { label: "Events", value: "Events", url: "https://www.events.com/" },
         ],
       },
   
@@ -79,16 +79,29 @@ const Createpageview = () => {
                   <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
+                        { webpage!== null && <Link to={webpage} style={{ float: "right"}} >View Page</Link> }
                         <Select
                       id="webpage"
                       options={optionGroupWebPage}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setwebpage(e.target.value)}
+                      onChange={e => setwebpage(e.url)}
                       // value = {webpage}
                     />
+                  
                       </div>
                     </Col>
 
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="published_on">Published On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="published_on"
+                          // onChange={e => setassigned_on(e.target.value)}
+                        />
+                      </div>
+                    </Col>
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
@@ -106,7 +119,7 @@ const Createpageview = () => {
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
                         <input
-                          type="date"
+                          type="month"
                           className="form-control"
                           id="month_year"
                           // onChange={e => setmonthyear(e.target.value)}

@@ -67,13 +67,13 @@ const Createbacklink = () => {
       <div className="page-content">
         
           {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Backlinks" breadcrumbItem="Create Backlink" />
+          <Breadcrumbs title="Back Links" breadcrumbItem="Create Back Link" />
 
           <Row>
             <Col lg="12">
               <Card>
-                <CardBody>
-                  <CardTitle className="mb-4">Create Backlink</CardTitle>
+                <CardBody >
+                  <CardTitle className="mb-4">Create Back Link</CardTitle>
                   <form >
                   <Row>
                   <Col lg={6}>
@@ -86,6 +86,19 @@ const Createbacklink = () => {
                       // onChange={e => setwebpage(e.target.value)}
                       // value = {webpage}
                     />
+                      </div>
+                    </Col>
+
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="published_on">Published On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="published_on"
+                          // onChange={e => setassigned_on(e.target.value)}
+                        />
                       </div>
                     </Col>
 
@@ -106,7 +119,7 @@ const Createbacklink = () => {
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
                         <input
-                          type="date"
+                          type="month"
                           className="form-control"
                           id="month_year"
                           // onChange={e => setmonthyear(e.target.value)}

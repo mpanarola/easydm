@@ -11,7 +11,7 @@ import {
     Button,
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import Historytimeline from "./Historytimeline"
 
@@ -19,7 +19,7 @@ import Historytimeline from "./Historytimeline"
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 const UpdateSchedular = () => {
-    const [web_page, setweb_page] = useState(null);
+    const [webpage, setwebpage] = useState(null);
     const [topic_title, settopic_title] = useState(null);
     const [topic_type, settopic_type] = useState(null);
     const [doc_link, setdoc_link] = useState(null);
@@ -40,11 +40,11 @@ const UpdateSchedular = () => {
         {
             label: "Web Pages",
             options: [
-                { label: "Home", value: "Home" },
-                { label: "About", value: "About" },
-                { label: "Contact", value: "Contact" },
-                { label: "Blogs", value: "Blogs" },
-                { label: "Events", value: "Events" },
+                { label: "Home", value: "Home" , url: "https://www.home.com/"},
+          { label: "About", value: "About", url: "https://www.about.com/" },
+          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
+          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
+          { label: "Events", value: "Events", url: "https://www.events.com/" },
             ],
         },
 
@@ -126,7 +126,7 @@ const UpdateSchedular = () => {
                     <Card>
                         <CardBody>
                             <h4 className="me-4"> ID:  #1</h4>
-                            <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+                            <label htmlFor="created_on">Created On :  27-Mar-2023</label>
                         </CardBody>
                     </Card>
 
@@ -135,42 +135,32 @@ const UpdateSchedular = () => {
                             <CardBody>
                                 <CardTitle className="mb-4 font-size-18">Update Content Scheduler</CardTitle>
                                 <form>
+
                                     <Row>
+
+                                        <Col lg={6}>
+                                            <div className="mb-3">
+                                                <label htmlFor="user_type">Content Type</label>
+                                                <Select
+                                                    id="user_type"
+                                                    isMulti={false}
+                                                    options={optionGroupType}
+                                                    classNamePrefix="select2-selection"
+                                                // onChange={e => settopic_type(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
+
                                         <Col lg={6}>
                                             <div className="mb-3">
                                                 <label htmlFor="web_page">Web Page</label>
+                                                { webpage!== null && <Link target="_blank" to={webpage} style={{ float: "right"}} >View Page</Link> }
                                                 <Select
                                                     id="web_page"
                                                     isMulti={false}
                                                     options={optionGroupWebPage}
                                                     classNamePrefix="select2-selection"
-                                                //   onChange={e => setweb_page(e.target.value)}
-                                                />
-                                            </div>
-                                        </Col>
-
-                                        <Col lg={6}>
-                                            <div className="mb-3">
-                                                <label htmlFor="topic_title">Topic Title</label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    id="topic_title"
-                                                    placeholder="Enter Topic Title"
-                                                // onChange={e => settopic_title(e.target.value)}
-                                                />
-                                            </div>
-                                        </Col>
-
-                                        <Col lg={6}>
-                                            <div className="mb-3">
-                                                <label htmlFor="doc_link">Doc Link</label>
-                                                <input
-                                                    type="url"
-                                                    className="form-control"
-                                                    id="doc_link"
-                                                    placeholder="Enter Doc Link"
-                                                // onChange={e => setdoc_link(e.target.value)}
+                                                    onChange={e => setwebpage(e.url)}
                                                 />
                                             </div>
                                         </Col>
@@ -180,8 +170,8 @@ const UpdateSchedular = () => {
                                             <div className="inner-repeater mb-4">
                                                 <div className="inner form-group mb-0 row">
                                                     {/* <Label className="col-form-label col-lg-2">
-                            Referece Links
-                            </Label>   */}
+          Referece Links
+          </Label>   */}
                                                     <label htmlFor="doc_link"> Referece Links</label>
                                                     <div
                                                         className="inner col-lg-12 ml-md-auto"
@@ -198,7 +188,7 @@ const UpdateSchedular = () => {
                                                                         type="url"
                                                                         className="inner form-control"
                                                                         defaultValue={field.name}
-                                                                        placeholder="Enter Referece Links"
+                                                                        placeholder="Enter Referece Link"
                                                                     />
                                                                 </Col>
 
@@ -236,9 +226,36 @@ const UpdateSchedular = () => {
                                             </div>
                                         </Col>
 
+                                        <Col lg={6}>
+                                            <div className="mb-3">
+                                                <label htmlFor="topic_title">Topic Title</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id="topic_title"
+                                                    placeholder="Enter Topic Title"
+                                                // onChange={e => settopic_title(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
+
                                     </Row>
 
                                     <Row>
+
+                                        <Col lg={6}>
+                                            <div className="mb-3">
+                                                <label htmlFor="doc_link">Doc Link</label>
+                                                <input
+                                                    type="url"
+                                                    className="form-control"
+                                                    id="doc_link"
+                                                    placeholder="Enter Doc Link"
+                                                // onChange={e => setdoc_link(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
+
 
                                         <Col lg={6}>
                                             <div className="mb-3">
@@ -268,6 +285,43 @@ const UpdateSchedular = () => {
 
                                         <Col lg={6}>
                                             <div className="mb-3">
+                                                <label htmlFor="assigned_on">Assigned On</label>
+                                                <input
+                                                    type="date"
+                                                    className="form-control"
+                                                    id="assigned_on"
+                                                // onChange={e => setassigned_on(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
+
+                                        <Col lg={6}>
+                                            <div className="mb-3">
+                                                <label htmlFor="assigned_by">Assigned By</label>
+                                                <Select
+                                                    id="assigned_by"
+                                                    isMulti={false}
+                                                    options={optionGroupMembers}
+                                                    classNamePrefix="select2-selection"
+                                                // onChange={e => setwritten_by(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
+
+                                        <Col lg={6}>
+                                            <div className="mb-3">
+                                                <label htmlFor="submitted_on">Submiited On</label>
+                                                <input
+                                                    type="date"
+                                                    className="form-control"
+                                                    id="submitted_on"
+                                                // onChange={e => setassigned_on(e.target.value)}
+                                                />
+                                            </div>
+                                        </Col>
+
+                                        <Col lg={6}>
+                                            <div className="mb-3">
                                                 <label htmlFor="written_by">Written By</label>
                                                 <Select
                                                     id="written_by"
@@ -279,25 +333,11 @@ const UpdateSchedular = () => {
                                             </div>
                                         </Col>
 
-
                                         <Col lg={6}>
                                             <div className="mb-3">
-                                                <label htmlFor="user_type">Content Type</label>
+                                                <label htmlFor="content_status">Content Status</label>
                                                 <Select
-                                                    id="user_type"
-                                                    isMulti={false}
-                                                    options={optionGroupType}
-                                                    classNamePrefix="select2-selection"
-                                                // onChange={e => settopic_type(e.target.value)}
-                                                />
-                                            </div>
-                                        </Col>
-
-                                        <Col lg={12}>
-                                            <div className="mb-3">
-                                                <label htmlFor="user_status">Status</label>
-                                                <Select
-                                                    id="user_status"
+                                                    id="content_status"
                                                     isMulti={false}
                                                     options={optionGroupStaus}
                                                     classNamePrefix="select2-selection"

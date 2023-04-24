@@ -71,17 +71,17 @@ const Webpage = () => {
         width: 150,
       },
       {
+        label: "Category",
+        field: "category",
+        sort: "asc",
+        width: 270,
+      },
+      {
         label: "Web Page",
         field: "webpage",
         sort: "asc",
         width: 150,
       },
-      // {
-      //   label: "Web Page URL",
-      //   field: "webpage_url",
-      //   sort: "asc",
-      //   width: 270,
-      // },
       {
         label: "Assigned To",
         field: "assigned_to",
@@ -110,6 +110,7 @@ const Webpage = () => {
     rows: [
       {
         id: "1",
+        category: "Services",
         webpage: (
           <a href="https://www.home.com/" rel="noopener" target="_blank">Home</a>
         ),
@@ -151,6 +152,7 @@ const Webpage = () => {
       },
       {
         id: "2",
+        category: "Industry",
         webpage: (
           <a href="https://www.about.com" target="_blank">About</a>
         ),
@@ -191,6 +193,7 @@ const Webpage = () => {
       },
       {
         id: "3",
+        category: "Technologies",
         webpage: (
           <a href="https://www.contact.com" target="_blank">Contact</a>
         ),
@@ -231,6 +234,7 @@ const Webpage = () => {
       },
       {
         id: "4",
+        category: "Career",
         webpage: (
           <a href="https://www.blogs.com" target="_blank">Blogs</a>
         ),
@@ -271,6 +275,7 @@ const Webpage = () => {
       },
       {
         id: "5",
+        category: "Blogs",
         webpage: (
           <a href="https://www.events.com" target="_blank">Events</a>
         ),

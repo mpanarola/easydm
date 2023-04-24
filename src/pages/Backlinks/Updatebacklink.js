@@ -10,6 +10,8 @@ import Select from "react-select";
 import { useHistory } from 'react-router-dom';
 
 import Performance from "./Performance"
+import HistoryTimeline from "./Historytimeline"
+
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -69,13 +71,13 @@ const Updatebacklink = () => {
       <div className="page-content">
 
         {/* Render Breadcrumbs */}
-        <Breadcrumbs title="Backlinks" breadcrumbItem="Update Backlink" />
+        <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
 
         <Row>
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+              <label htmlFor="created_on">Created On :  27-Mar-2023</label>
             </CardBody>
           </Card>
 
@@ -83,7 +85,7 @@ const Updatebacklink = () => {
             <Card>
               <CardBody>
 
-                <CardTitle className="mb-4 font-size-18">Update Backlink</CardTitle>
+                <CardTitle className="mb-4 font-size-18">Update Back Link</CardTitle>
                 <form >
                   <Row>
                     <Col lg={6}>
@@ -95,6 +97,18 @@ const Updatebacklink = () => {
                           classNamePrefix="select2-selection"
                         // onChange={e => setwebpage(e.target.value)}
                         // value = {webpage}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="published_on">Published On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="published_on"
+                          // onChange={e => setassigned_on(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -116,7 +130,7 @@ const Updatebacklink = () => {
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
                         <input
-                          type="date"
+                          type="month"
                           className="form-control"
                           id="month_year"
                         // onChange={e => setmonthyear(e.target.value)}
@@ -127,7 +141,7 @@ const Updatebacklink = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="total_backlinks">Number of Backlinks</label>
+                        <label htmlFor="total_backlinks">Number of Back Links</label>
                         <input
                           type="number"
                           className="form-control"
@@ -142,7 +156,7 @@ const Updatebacklink = () => {
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => updateBacklink()}>
-                          Update Backlink
+                          Update Back Link
                         </button>
 
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
@@ -160,7 +174,7 @@ const Updatebacklink = () => {
           </Col>
 
           <Performance />
-          
+          <HistoryTimeline />
         </Row>
       </div>
     </>

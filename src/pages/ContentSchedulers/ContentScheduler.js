@@ -100,6 +100,12 @@ const ContentScheduler = () => {
         width: 50,
       },
       {
+        label: "Content Type",
+        field: "content_type",
+        sort: "asc",
+        width: 50,
+      },
+      {
         label: "Web Page",
         field: "web_page",
         sort: "asc",
@@ -111,12 +117,7 @@ const ContentScheduler = () => {
         sort: "asc",
         width: 200,
       },
-      {
-        label: "Content Type",
-        field: "content_type",
-        sort: "asc",
-        width: 50,
-      },
+
       // {
       //   label: "Doc Link",
       //   field: "doc_link",
@@ -142,10 +143,24 @@ const ContentScheduler = () => {
         width: 50,
       },
       {
+        label: "Assigned On",
+        field: "assigned_on",
+        sort: "asc",
+        width: 100,
+      },
+
+      {
         label: "Assigned By",
         field: "assigned_by",
         sort: "asc",
         width: 50,
+      },
+
+      {
+        label: "Submiited On",
+        field: "submiited_on",
+        sort: "asc",
+        width: 100,
       },
       {
         label: "Written By",
@@ -160,18 +175,6 @@ const ContentScheduler = () => {
         width: 100,
       },
       {
-        label: "Assigned On",
-        field: "assigned_on",
-        sort: "asc",
-        width: 100,
-      },
-      {
-        label: "Submiited On",
-        field: "submiited_on",
-        sort: "asc",
-        width: 100,
-      },
-      {
         label: "Action",
         field: "action",
         width: 50,
@@ -181,9 +184,10 @@ const ContentScheduler = () => {
     rows: [
       {
         id: "1",
+        content_type: "Blog",
         web_page: "Home",
         topic_title: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> Digital Marketing </a>),
-        content_type: "Blog",
+       
         // doc_link: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a>),
         // referece_links: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a> ),
         expected_words: (
@@ -192,13 +196,14 @@ const ContentScheduler = () => {
         actual_words: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>50</span>
         ),
+        assigned_on: "27-Mar-2023",
         assigned_by: "Milan",
+        submiited_on: "27-Mar-2023",
         written_by: "Ashish",
         content_status: (
         <span class="bg-warning badge badge-secondary font-size-13">In Progress</span>
         ),
-        assigned_on: "27-Mar-2023",
-        submiited_on: "27-Mar-2023",
+
         action: (
           <div className="d-flex" style={{
             width: "150px"

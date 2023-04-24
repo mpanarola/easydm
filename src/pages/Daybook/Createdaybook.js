@@ -10,7 +10,7 @@ import {
   Button
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -19,7 +19,7 @@ const Createdaybook = () => {
   const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: "" }]
 
   const [inputFields, setinputFields] = useState(inpRow)
-
+  const [webpage, setwebpage] = useState(null);
 
   const history = useHistory();
 
@@ -28,11 +28,11 @@ const Createdaybook = () => {
     {
       label: "Web Pages",
       options: [
-        { label: "Home", value: "Home" },
-        { label: "About", value: "About" },
-        { label: "Contact", value: "Contact" },
-        { label: "Blogs", value: "Blogs" },
-        { label: "Events", value: "Events" },
+        { label: "Home", value: "Home" , url: "https://www.home.com/"},
+          { label: "About", value: "About", url: "https://www.about.com/" },
+          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
+          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
+          { label: "Events", value: "Events", url: "https://www.events.com/" },
       ],
     },
 
@@ -62,7 +62,10 @@ const Createdaybook = () => {
 
   // Function for Remove Input Fields
   function handleRemoveFields(idx) {
+    // alert(idx);
+    if(idx !== 0){
     document.getElementById("nested" + idx).style.display = "none"
+  }
   }
 
 
@@ -81,61 +84,77 @@ const Createdaybook = () => {
       <div className="page-content">
 
         {/* Render Breadcrumbs */}
-        <Breadcrumbs title="Day Books" breadcrumbItem="Create Day Book" />
+        <Breadcrumbs title="Day Books" breadcrumbItem="Add Day Book" />
 
         <Row>
           <Col lg="12">
             <Card>
               <CardBody>
-                <CardTitle className="mb-4 font-size-18">Create Day Book</CardTitle>
+                <CardTitle className="mb-4 font-size-18">Add Day Book</CardTitle>
                 <form >
                   <Row>
                     <div className="inner-repeater mb-5">
                       <div className="inner form-group mb-0 row">
-                        <Label className="col-form-label col-lg-2">
+                        {/* <Label className="col-form-label col-lg-2">
                           Add Day Book
-                        </Label>
+                        </Label> */}
                         <div
-                          className="inner col-lg-10 ml-md-auto"
+                          className="inner col-lg-12 ml-md-auto"
                           id="repeater"
                         >
                           {inputFields.map((field, key) => (
                             <div
                               key={key}
                               id={"nested" + key}
-                              className="mb-3 row align-items-center"
+                              className="mb-1 row align-items-center"
                             >
                               {/* webpage: "", category: "", hours: "", details: "" */}
-                              <Col md="6">
-                              <div className="mt-4 mb-4 mt-md-0">
-                                <Select
-                                  id="webpage"
-                                  options={optionGroupWebPage}
-                                  classNamePrefix="select2-selection"
-                                  defaultValue={field.webpage}
-                                  placeholder={<div>Select Web Page</div>}
-                                // onChange={e => setwebpage(e.target.value)}
-                                // value = {webpage}
-                                />
+
+                              <Col md="2">
+                                <div className="mb-4 mt-md-0">
+                                <input
+                                      type="date"
+                                      className="inner form-control"
+                                      defaultValue={field.date}
+                                    />
                                 </div>
                               </Col>
-                              <Col md="6">
-                                <div className="mt-4 mb-4 mt-md-0">
+
+                              <Col md="2">
+                                <div className="mb-4 mt-md-0">
                                   <Select
                                     id="category"
                                     options={optionGroupCategory}
                                     classNamePrefix="select2-selection"
-                                    placeholder={<div>Select Category</div>}
+                                    placeholder={<div>Category</div>}
                                     // onChange={e => setcategory(e.target.value)}
                                     defaultValue={field.category}
                                   />
                                 </div>
                               </Col>
+                              
+                              <Col md="2">
+                            
+                              <div className="mb-4 mt-md-0">
+                            
+                                <Select
+                                  id="webpage"
+                                  options={optionGroupWebPage}
+                                  classNamePrefix="select2-selection"
+                                  defaultValue={field.webpage}
+                                  placeholder={<div>Web Page</div>}
+                                onChange={e => setwebpage(e.url)}
+                                // value = {webpage}
+                                />
+                                  { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> }
+                                </div>
+                                
+                              </Col>
 
-                              <Col md="12">
-                                <div className="mt-4 mb-4 mt-md-0">
+                              <Col md="3">
+                                <div className="mb-4 mt-md-0">
                                 <textarea
-                                    
+                                     rows="1" cols="5"
                                       className="inner form-control"
                                       defaultValue={field.details}
                                       placeholder="Enter Details"
@@ -143,8 +162,8 @@ const Createdaybook = () => {
                                 </div>
                               </Col>
 
-                              <Col md="5">
-                                <div className="mt-4  mt-md-0">
+                              <Col md="2">
+                                <div className="mb-4  mt-md-0">
                                 <input
                                       type="text"
                                       className="inner form-control"
@@ -155,19 +174,11 @@ const Createdaybook = () => {
                                 </div>
                               </Col>
 
-                              <Col md="5">
-                                <div className="mt-4  mt-md-0">
-                                <input
-                                      type="date"
-                                      className="inner form-control"
-                                      defaultValue={field.date}
-                                    />
-                                </div>
-                              </Col>
-
-
-                              <Col md="2">
-                                <div className="mt-2 mt-md-0 d-grid">
+                              {
+                                key !== 0 &&
+                             
+                              <Col md="1">
+                                <div className="mb-4 mt-2 mt-md-0 d-grid">
                                   <Button
                                     color="primary"
                                     className="inner"
@@ -180,12 +191,13 @@ const Createdaybook = () => {
                                   </Button>
                                 </div>
                               </Col>
+                               }
                             </div>
                           ))}
                         </div>
                       </div>
-                      <Row className="justify-content-end">
-                        <Col lg="10" md="2">
+                      <Row className="justify-content-end m" style={{ marginTop: "-10px " }}>
+                        <Col lg="12" md="2">
                           <Button
                             color="success"
                             className="inner"
@@ -193,7 +205,7 @@ const Createdaybook = () => {
                               handleAddFields()
                             }}
                           >
-                            Add
+                            Add More
                           </Button>
                         </Col>
                       </Row>
@@ -203,7 +215,7 @@ const Createdaybook = () => {
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createDaybook()}>
-                          Create Day Book
+                          Save Day Book
                         </button>
 
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>

@@ -11,14 +11,14 @@ import {
   Button,
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const AddSchedular = () => {
-  const [web_page, setweb_page] = useState(null);
 
+  const [webpage, setwebpage] = useState(null);
   const [topic_title, settopic_title] = useState(null);
   const [topic_type, settopic_type] = useState(null);
   const [doc_link, setdoc_link] = useState(null);
@@ -32,6 +32,7 @@ const AddSchedular = () => {
   const [assigned_by, setassigned_by] = useState(null);
   const [written_by, setwritten_by] = useState(null);
   const [assigned_on, setassigned_on] = useState(null);
+  
 
 
   const history = useHistory();
@@ -41,11 +42,11 @@ const AddSchedular = () => {
     {
       label: "Web Pages",
       options: [
-        { label: "Home", value: "Home" },
-        { label: "About", value: "About" },
-        { label: "Contact", value: "Contact" },
-        { label: "Blogs", value: "Blogs" },
-        { label: "Events", value: "Events" },
+        { label: "Home", value: "Home" , url: "https://www.home.com/"},
+          { label: "About", value: "About", url: "https://www.about.com/" },
+          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
+          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
+          { label: "Events", value: "Events", url: "https://www.events.com/" },
       ],
     },
 
@@ -132,39 +133,27 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
+                        <label htmlFor="user_type">Content Type</label>
+                        <Select
+                          id="user_type"
+                          isMulti={false}
+                          options={optionGroupType}
+                          classNamePrefix="select2-selection"
+                        // onChange={e => settopic_type(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
                         <label htmlFor="web_page">Web Page</label>
+                        { webpage!== null && <Link to={webpage} style={{ float: "right"}} >View Page</Link> }
                         <Select
                           id="web_page"
                           isMulti={false}
                           options={optionGroupWebPage}
                           classNamePrefix="select2-selection"
-                          // onChange={e => setweb_page(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="topic_title">Topic Title</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="topic_title"
-                          placeholder="Enter Topic Title"
-                          // onChange={e => settopic_title(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="doc_link">Doc Link</label>
-                        <input
-                          type="url"
-                          className="form-control"
-                          id="doc_link"
-                          placeholder="Enter Doc Link"
-                          // onChange={e => setdoc_link(e.target.value)}
+                        onChange={e => setwebpage(e.url)}
                         />
                       </div>
                     </Col>
@@ -174,8 +163,8 @@ const AddSchedular = () => {
                       <div className="inner-repeater mb-4">
                         <div className="inner form-group mb-0 row">
                           {/* <Label className="col-form-label col-lg-2">
-                                                    Referece Links
-                                                    </Label>   */}
+                              Referece Links
+                              </Label>   */}
                           <label htmlFor="doc_link"> Referece Links</label>
                           <div
                             className="inner col-lg-12 ml-md-auto"
@@ -192,7 +181,7 @@ const AddSchedular = () => {
                                     type="url"
                                     className="inner form-control"
                                     defaultValue={field.name}
-                                    placeholder="Enter Referece Links"
+                                    placeholder="Enter Referece Link"
                                   />
                                 </Col>
 
@@ -229,9 +218,37 @@ const AddSchedular = () => {
                         </Row>
                       </div>
                     </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="topic_title">Topic Title</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="topic_title"
+                          placeholder="Enter Topic Title"
+                        // onChange={e => settopic_title(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
                   </Row>
 
                   <Row>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="doc_link">Doc Link</label>
+                        <input
+                          type="url"
+                          className="form-control"
+                          id="doc_link"
+                          placeholder="Enter Doc Link"
+                        // onChange={e => setdoc_link(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
 
                     <Col lg={6}>
                       <div className="mb-3">
@@ -241,7 +258,7 @@ const AddSchedular = () => {
                           className="form-control"
                           id="expected_words"
                           placeholder="Enter Expected Words"
-                          // onChange={e => setexpected_words(e.target.value)}
+                        // onChange={e => setexpected_words(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -254,7 +271,44 @@ const AddSchedular = () => {
                           className="form-control"
                           id="actual_words"
                           placeholder="Enter Actual Words"
-                          // onChange={e => setactual_words(e.target.value)}
+                        // onChange={e => setactual_words(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="assigned_on">Assigned On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="assigned_on"
+                        // onChange={e => setassigned_on(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="assigned_by">Assigned By</label>
+                        <Select
+                          id="assigned_by"
+                          isMulti={false}
+                          options={optionGroupMembers}
+                          classNamePrefix="select2-selection"
+                        // onChange={e => setwritten_by(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="submitted_on">Submiited On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="submitted_on"
+                        // onChange={e => setassigned_on(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -267,38 +321,10 @@ const AddSchedular = () => {
                           isMulti={false}
                           options={optionGroupMembers}
                           classNamePrefix="select2-selection"
-                          // onChange={e => setwritten_by(e.target.value)}
+                        // onChange={e => setwritten_by(e.target.value)}
                         />
                       </div>
                     </Col>
-
-
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="user_type">Content Type</label>
-                        <Select
-                          id="user_type"
-                          isMulti={false}
-                          options={optionGroupType}
-                          classNamePrefix="select2-selection"
-                          // onChange={e => settopic_type(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
-
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="assigned_on">Assigned On</label>
-                        <input
-                          type="date"
-                          className="form-control"
-                          id="assigned_on"
-                          // onChange={e => setassigned_on(e.target.value)}
-                        />
-                      </div>
-                    </Col>
-
 
                     <Col lg={6}>
                       <div className="mb-3">
@@ -308,7 +334,7 @@ const AddSchedular = () => {
                           isMulti={false}
                           options={optionGroupStaus}
                           classNamePrefix="select2-selection"
-                          // onChange={e => setcontent_status(e.target.value)}
+                        // onChange={e => setcontent_status(e.target.value)}
                         />
                       </div>
                     </Col>

@@ -7,7 +7,7 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import Performance from "./Performance"
 
@@ -31,11 +31,11 @@ const Updatepageview = () => {
       {
         label: "Web Pages",
         options: [
-          { label: "Home", value: "Home" },
-          { label: "About", value: "About" },
-          { label: "Contact", value: "Contact" },
-          { label: "Blogs", value: "Blogs" },
-          { label: "Events", value: "Events" },
+          { label: "Home", value: "Home" , url: "https://www.home.com/"},
+          { label: "About", value: "About", url: "https://www.about.com/" },
+          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
+          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
+          { label: "Events", value: "Events", url: "https://www.events.com/" },
         ],
       },
   
@@ -46,11 +46,11 @@ const Updatepageview = () => {
     {
       label: "Category",
       options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
+        { label: "Services", value: "Services",  },
+        { label: "Industry", value: "Industry"},
+        { label: "Technologies", value: "Technologies"},
+        { label: "Career", value: "Career"},
+        { label: "Blogs", value: "Blogs"}
       ],
     },
    
@@ -80,7 +80,7 @@ const Updatepageview = () => {
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+              <label htmlFor="published_on">Created On :  27-Mar-2023</label>
             </CardBody>
           </Card>
 
@@ -91,18 +91,37 @@ const Updatepageview = () => {
                   <form >
                   <Row>
                   <Col lg={6}>
+
                       <div className="mb-3">
+
                         <label htmlFor="webpage">Web Page</label>
+                        { webpage!== null && <Link to={webpage} style={{ float: "right"}} >View Page</Link> }
+                      
                         <Select
                       id="webpage"
                       options={optionGroupWebPage}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setwebpage(e.target.value)}
+                      onChange={(e) => setwebpage(e.url) }
+                      // onChange={e => alert(e.target.options)}
                       // value = {webpage}
                     />
+                                       
                       </div>
                     </Col>
 
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="published_on">Published On</label>
+                        <input
+                          type="date"
+                          className="form-control"
+                          id="published_on"
+                          // onChange={e => setassigned_on(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+                    
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
@@ -120,7 +139,7 @@ const Updatepageview = () => {
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
                         <input
-                          type="date"
+                          type="month"
                           className="form-control"
                           id="month_year"
                           // onChange={e => setmonthyear(e.target.value)}

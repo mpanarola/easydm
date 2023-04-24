@@ -73,9 +73,23 @@ const Createmember = () => {
                  
                   <form >
                       <Row>
-                        <Col lg={12}>
+                       
+                        <Col lg={6}>
                         <div className="mb-3">
-                            <label htmlFor="profile_pic">Profile Pic</label>
+                            <label htmlFor="member_name">Name</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="member_name"
+                              placeholder="Enter Name"
+                              // onChange={e => setname(e.target.value)}
+                            />
+                          </div>
+                        </Col>
+
+                        <Col lg={6}>
+                        <div className="mb-3">
+                            <label htmlFor="profile_pic">Photo</label>
                             <input
                               type="file"
                               className="form-control"
@@ -84,24 +98,10 @@ const Createmember = () => {
                             />
                           </div>
                         </Col>
-
-                        <Col lg={6}>
-                        <div className="mb-3">
-                            <label htmlFor="member_name">Member Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="member_name"
-                              placeholder="Enter Member Name"
-                              // onChange={e => setname(e.target.value)}
-                            />
-                          </div>
-                        </Col>
-
                         
                         <Col lg={6}>
                           <div className="mb-3">
-                            <label htmlFor="member_email">Member Email</label>
+                            <label htmlFor="member_email">Email</label>
                             <input
                               type="email"
                               className="form-control"
@@ -111,8 +111,7 @@ const Createmember = () => {
                             />
                           </div>
                         </Col>
-                      </Row>
-                      <Row>
+                     
 
                       <Col lg={6}>
                       <div className="mb-3">
