@@ -69,7 +69,7 @@ const Backlink = () => {
         width: 200,
       },
       {
-        label: "No. of Backlinks",
+        label: "No. Of Back Links",
         field: "total_backlinks",
         sort: "asc",
         width: 170,

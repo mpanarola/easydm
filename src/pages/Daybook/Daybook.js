@@ -42,16 +42,22 @@ const Daybook = () => {
         width: 150,
       },
       {
-        label: "Web Page",
-        field: "webpage",
+        label: "Photo",
+        field: "photo",
         sort: "asc",
         width: 150,
       },
       {
-        label: "Category",
-        field: "category",
+        label: "Name",
+        field: "name",
         sort: "asc",
         width: 270,
+      },
+      {
+        label: "Date",
+        field: "date",
+        sort: "asc",
+        width: 200,
       },
       {
         label: "Hours",
@@ -60,18 +66,13 @@ const Daybook = () => {
         width: 270,
       },
 
-      {
-        label: "Details",
-        field: "details",
-        sort: "asc",
-        width: 200,
-      },
-      {
-        label: "Date",
-        field: "date",
-        sort: "asc",
-        width: 200,
-      },
+      // {
+      //   label: "Details",
+      //   field: "details",
+      //   sort: "asc",
+      //   width: 200,
+      // },
+      
       {
         label: "Action",
         field: "action",

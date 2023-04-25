@@ -51,30 +51,31 @@ const Backlink = () => {
         width: 150,
       },
       {
+        label: "Published On",
+        field: "date",
+        sort: "asc",
+        width: 200,
+      },
+      {
         label: "Category",
         field: "category",
         sort: "asc",
         width: 270,
       },
-      {
-        label: "Page Views",
-        field: "total_pageviews",
-        sort: "asc",
-        width: 270,
-      },
+
       {
         label: "Month-Year",
         field: "month_year",
         sort: "asc",
         width: 200,
       },
-
       {
-        label: "Published On",
-        field: "date",
+        label: "No. Of Page Views",
+        field: "total_pageviews",
         sort: "asc",
-        width: 200,
+        width: 270,
       },
+
       {
         label: "Action",
         field: "action",
@@ -88,13 +89,14 @@ const Backlink = () => {
         webpage: (
           <a href="https://www.home.com/" rel="noopener" target="_blank">Home</a>
         ),
+        date: "27-Mar-2023",
         // webpage_url: "",
         category: "Blogs",
         month_year: "Mar-23",
         total_pageviews: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>350 +</span>
         ),
-        date: "27-Mar-2023",
+        
         action: (
           <div className="d-flex">
             <div
@@ -123,12 +125,13 @@ const Backlink = () => {
         webpage: (
           <a href="https://www.about.com" target="_blank">About</a>
         ),
+        date: "27-Mar-2023",
         category: "Industry",
         month_year: "Mar-23",
         total_pageviews: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>1450 +</span>
         ),
-        date: "27-Mar-2023",
+      
         action: (
           <div className="d-flex">
             <div
@@ -157,12 +160,13 @@ const Backlink = () => {
         webpage: (
           <a href="https://www.contact.com" target="_blank">Contact</a>
         ),
+        date: "27-Mar-2023",
         category: "Career",
         month_year: "Mar-23",
         total_pageviews: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>650 +</span>
         ),
-        date: "27-Mar-2023",
+        
         action: (
           <div className="d-flex">
             <div
@@ -191,12 +195,13 @@ const Backlink = () => {
         webpage: (
           <a href="https://www.blogs.com" target="_blank">Blogs</a>
         ),
+        date: "27-Mar-2023",
         category: "Blogs",
         month_year: "Mar-23",
         total_pageviews: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>200 +</span>
         ),
-        date: "27-Mar-2023",
+        
         action: (
           <div className="d-flex">
             <div
@@ -225,12 +230,13 @@ const Backlink = () => {
         webpage: (
           <a href="https://www.events.com" target="_blank">Events</a>
         ),
+        date: "27-Mar-2023",
         category: "Services",
         month_year: "Mar-23",
         total_pageviews: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>500 +</span>
         ),
-        date: "27-Mar-2023",
+        
         action: (
           <div className="d-flex">
             <div
