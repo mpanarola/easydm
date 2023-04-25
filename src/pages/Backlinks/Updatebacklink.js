@@ -88,7 +88,7 @@ const Updatebacklink = () => {
                 <CardTitle className="mb-4 font-size-18">Update Back Link</CardTitle>
                 <form >
                   <Row>
-                    <Col lg={6}>
+                    <Col lg={6} >
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
                         <Select
@@ -97,6 +97,7 @@ const Updatebacklink = () => {
                           classNamePrefix="select2-selection"
                         // onChange={e => setwebpage(e.target.value)}
                         // value = {webpage}
+                        
                         />
                       </div>
                     </Col>
@@ -108,6 +109,7 @@ const Updatebacklink = () => {
                           type="date"
                           className="form-control"
                           id="published_on"
+                          
                           // onChange={e => setassigned_on(e.target.value)}
                         />
                       </div>
@@ -122,17 +124,21 @@ const Updatebacklink = () => {
                           classNamePrefix="select2-selection"
                         // onChange={e => setcategory(e.target.value)}
                         // value = {category}
+                        disabled
                         />
                       </div>
                     </Col>
 
-                    <Col lg={6}>
+<Row className="mt-4">
+
+<Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
                         <input
                           type="month"
                           className="form-control"
                           id="month_year"
+                          
                         // onChange={e => setmonthyear(e.target.value)}
                         // value={monthyear}
                         />
@@ -152,6 +158,7 @@ const Updatebacklink = () => {
                       </div>
                     </Col>
 
+</Row>
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">

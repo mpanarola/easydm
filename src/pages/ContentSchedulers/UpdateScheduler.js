@@ -154,7 +154,7 @@ const UpdateSchedular = () => {
                                         <Col lg={6}>
                                             <div className="mb-3">
                                                 <label htmlFor="web_page">Web Page</label>
-                                                { webpage!== null && <Link target="_blank" to={webpage} style={{ float: "right"}} >View Page</Link> }
+                                                { webpage!== null && <a target="_blank" href={webpage} style={{ float: "right"}} >View Page</a> }
                                                 <Select
                                                     id="web_page"
                                                     isMulti={false}

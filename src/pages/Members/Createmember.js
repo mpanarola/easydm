@@ -19,7 +19,18 @@ const Createmember = () => {
   const [email, setemail] = useState(null);
   const [type, settype] = useState(null);
   const [status, setstatus] = useState(null);
-//   const [selectedMulti, setselectedMulti] = useState(null);
+  const [password, setspassword] = useState(null);
+const [passwordType, setPasswordType] = useState("password");
+
+const togglePassword =()=>{
+  if(passwordType==="password")
+  {
+   setPasswordType("text")
+   return;
+  }
+  setPasswordType("password")
+}
+
 
 // console.log('webpage ', webpage)
   const history = useHistory();
@@ -111,7 +122,26 @@ const Createmember = () => {
                             />
                           </div>
                         </Col>
-                     
+
+                        <Col lg={6}>
+                          <div className="mb-3">
+                            <label htmlFor="password">Password</label>
+                            <div className="d-flex">
+                            <input
+                              type={passwordType}
+                              className="form-control"
+                              id="member_password"
+                              placeholder="Enter Member Password"
+                              onChange={e => setspassword(e.target.value)}
+                            />
+                            <button type="button" className="btn btn-outline-primary mr-2" onClick={togglePassword}>
+                     { passwordType==="password"? <i className="mdi mdi-eye-off"></i> :<i className="mdi mdi-eye"></i> }
+                     </button>
+                     </div>
+                          </div>
+                          
+                        </Col>
+
 
                       <Col lg={6}>
                       <div className="mb-3">

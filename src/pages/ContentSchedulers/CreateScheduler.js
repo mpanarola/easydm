@@ -158,7 +158,7 @@ const AddSchedular = () => {
                       </div>
                     </Col>
 
-                    <Col lg={6}>
+                    <Col lg={12} className="mb-4 mt-4">
 
                       <div className="inner-repeater mb-4">
                         <div className="inner form-group mb-0 row">
@@ -176,7 +176,7 @@ const AddSchedular = () => {
                                 id={"nested" + key}
                                 className="mb-3 row align-items-center"
                               >
-                                <Col md="10">
+                                <Col md="11">
                                   <input
                                     type="url"
                                     className="inner form-control"
@@ -185,7 +185,7 @@ const AddSchedular = () => {
                                   />
                                 </Col>
 
-                                <Col md="2">
+                                <Col md="1">
                                   <div className="mt-2 mt-md-0 d-grid">
                                     <Button
                                       color="primary"
@@ -219,7 +219,12 @@ const AddSchedular = () => {
                       </div>
                     </Col>
 
-                    <Col lg={6}>
+
+
+                  </Row>
+
+                  <Row>
+                  <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="topic_title">Topic Title</label>
                         <input
@@ -231,10 +236,6 @@ const AddSchedular = () => {
                         />
                       </div>
                     </Col>
-
-                  </Row>
-
-                  <Row>
 
                     <Col lg={6}>
                       <div className="mb-3">
@@ -340,20 +341,24 @@ const AddSchedular = () => {
                     </Col>
 
 
-                    <Col lg={6}>
+                
+                  </Row>
 
-                      <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createScheduler()}>
-                          Create Content Scheduler
-                        </button>
+                  <Row>
+                  <Col lg={6}>
 
-                        <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
-                          Back
-                        </button>
+<div className="text-right col-lg-10 d-flex">
+  <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createScheduler()}>
+    Create Content Scheduler
+  </button>
 
-                      </div>
+  <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
+    Back
+  </button>
 
-                    </Col>
+</div>
+
+</Col>
                   </Row>
 
                 </form>

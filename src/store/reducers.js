@@ -21,6 +21,19 @@ import contacts from "./contacts/reducer"
 //tasks
 import tasks from "./tasks/reducer"
 
+import websites from "./websites/reducer"
+
+// import members from "./members/reducer"
+
+// import contents_schedulars from "./contents_schedulars/reducer"
+
+// // import back_links from "./back_links/reducer"
+
+// import page_views from "./page_views/reducer"
+
+// import day_books from "./day_books/reducer"
+
+
 const rootReducer = combineReducers({
   // public
   Layout,
@@ -32,6 +45,14 @@ const rootReducer = combineReducers({
   chat,
   tasks,
   contacts,
+  websites,
+  // members,
+  // contents_schedulars,
+  // back_links,
+  // page_views,
+  // day_books,
+
+
 })
 
 export default rootReducer

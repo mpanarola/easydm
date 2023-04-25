@@ -1,4 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import PropTypes from "prop-types"
+import Moment from 'moment';
+import { connect } from "react-redux"
 import {
   Row,
   Col,
@@ -11,15 +14,27 @@ import { useHistory } from 'react-router-dom';
 import Historytimeline from "./Historytimeline"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
+import { updateWebsite } from "../../store/websites/actions"
+import { websites } from "../../common/data";
 
-const Updatepage = () => {
 
-  const [webpage, setwebpage] = useState(null);
-  const [webpage_url, setwebpage_url] = useState(null);
-  const [category, setcategory] = useState(null);
-  const [assigned_to, setassigned_to] = useState(null);
-  const [effective_from, seteffective_from] = useState(null);
-  const [selectedMulti, setselectedMulti] = useState(null);
+const Updatepage = (props) => {
+
+  const data =   props.location && props.location.state;
+
+let published_on_format = Moment(data.data.published_on).format('YYYY-MM-DD')
+let effective_from_format = Moment(data.data.effective_from).format('YYYY-MM-DD')
+
+
+const [webpage, setwebpage] = useState(data.data.webpage);
+const [webpage_url, setwebpage_url] = useState(data.data.webpage_url);
+const [category, setcategory] = useState(data.data.category);
+const [assigned_to, setassigned_to] = useState("Milan");
+const [effective_from, seteffective_from] = useState(effective_from_format);
+const [published_on, setpublished_on] = useState(published_on_format);
+
+const [selectedMulti, setselectedMulti] = useState(null);
+
 
 console.log('webpage ', webpage)
   const history = useHistory();
@@ -55,7 +70,18 @@ console.log('webpage ', webpage)
   ];
 
   const updateMember = (e) => {
-    history.push('/webpages')
+    const { onAddNewEvent, onUpdateWebsite } = props
+
+    const updateWebsite = {
+      webpage: webpage,
+      webpage_url: webpage_url,
+      category: category,
+      assigned_to: assigned_to,
+      effective_from: effective_from,
+    }
+    // update event
+  const save_update_website =   onUpdateWebsite(updateWebsite)
+   
   };
 
 
@@ -77,7 +103,7 @@ console.log('webpage ', webpage)
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="published_on">Published On :  27-Mar-2023</label>
+              <label htmlFor="published_on">Published On :  {published_on_format ? published_on_format : '-'}</label>
             </CardBody>
           </Card>
 
@@ -95,8 +121,9 @@ console.log('webpage ', webpage)
                       id="category"
                       options={optionGroupCategory}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setcategory(e.target.value)}
+                      onChange={e => setcategory(e.value)}
                       // value = {category}
+                      defaultValue={{ label: category, value: category }}
                     />
                       </div>
                     </Col>
@@ -110,7 +137,7 @@ console.log('webpage ', webpage)
                           id="webpage"
                           placeholder="Enter Web Page"
                           onChange={e => setwebpage(e.target.value)}
-                          // value={webpage}
+                          defaultValue = {webpage}
                         />
                       </div>
                     </Col>
@@ -122,8 +149,8 @@ console.log('webpage ', webpage)
                           className="form-control"
                           id="webpage_url"
                           placeholder="Enter Web Page URL"
-                          // onChange={e => setwebpage_url(e.target.value)}
-                          // value={webpage_url}
+                          onChange={e => setwebpage_url(e.target.value)}
+                          defaultValue = {webpage_url}
                         />
                       </div>
                     </Col>
@@ -135,22 +162,23 @@ console.log('webpage ', webpage)
                           type="date"
                           className="form-control"
                           id="published_on"
-                          // onChange={e => seteffective_from(e.target.value)}
-                          // value={effective_from}
+                          onChange={e => setpublished_on(e.target.value)}
+                          defaultValue = {published_on}
                         />
                       </div>
                     </Col>
-
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="assigned_to">Assigned To</label>
                         <Select
-                      value={selectedMulti}
+                      // value={}
+                      defaultValue={{ label: assigned_to, value: assigned_to }}
                       id="assigned_to"
 
                       isMulti={true}
-                      onChange={() => {
-                        handleMulti();
+                      onChange={(e) => {
+                        // handleMulti();
+                        setassigned_to(e.value)
                       }}
                       options={optionGroup}
                       classNamePrefix="select2-selection"
@@ -166,8 +194,9 @@ console.log('webpage ', webpage)
                           type="date"
                           className="form-control"
                           id="effective_from"
-                          // onChange={e => seteffective_from(e.target.value)}
+                          onChange={e => seteffective_from(e.target.value)}
                           // value={effective_from}
+                          defaultValue = {effective_from}
                         />
                       </div>
                     </Col>
@@ -175,7 +204,7 @@ console.log('webpage ', webpage)
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => updateMember()}>
+                        <button type="button" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => updateMember()}>
                           Update Website
                         </button>
 
@@ -197,4 +226,17 @@ console.log('webpage ', webpage)
   )
 }
 
-export default Updatepage
+
+
+Updatepage.propTypes = {
+  onUpdateWebsite: PropTypes.func,
+}
+const mapStateToProps = ({ website }) => ({
+})
+const mapDispatchToProps = dispatch => ({
+  onUpdateWebsite: website => dispatch(updateWebsite(website)),
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Updatepage)
+
+
+// export default Updatepage

@@ -1,6 +1,7 @@
 import axios from "axios"
 import { post, del, get, put } from "./api_helper"
 import * as url from "./url_helper"
+import { websites } from "../common/data"
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
@@ -117,8 +118,62 @@ export const getProjectsDetails = id =>
 // get tasks
 export const getTasks = () => get(url.GET_TASKS)
 
+// get websites
+export const getWebsites = () =>   get(url.GET_WEBSITES)
+
+export const getWebsitesDetails = id =>
+  get(`${url.GET_WEBSITE_DETAIL}/${id}`, { params: { id } })
+
+  // add Events
+export const addNewWebsite = website => post(url.ADD_NEW_WEBSITE, website)
+
+// update Event
+export const updateWebsite = website => put(url.UPDATE_WEBSITE, website)
+
+// delete Event
+export const deleteWebsite = website =>
+  del(url.DELETE_WEBSITE, { headers: { website } })
+
+// get websites
+export const GET_MEMBERS = () => get(url.GET_MEMBERS)
+
+export const getMembersDetails = id =>
+  get(`${url.GET_MEMBER_DETAIL}/${id}`, { params: { id } })
+  
+
+
+
+// get websites
+export const GET_CONTENT_SCHEDULERS = () => get(url.GET_CONTENT_SCHEDULERS)
+export const getContentSchedulerDetails = id =>
+  get(`${url.GET_CONTENT_SCHEDULER_DETAIL}/${id}`, { params: { id } })
+
+
+// get websites
+export const GET_BACK_LINKS = () => get(url.GET_BACK_LINKS)
+// export const GET_BACK_LINK_DETAIL = () => get(url.GET_BACK_LINK_DETAIL)
+export const getBacklinksDetails = id =>
+  get(`${url.GET_BACK_LINK_DETAIL}/${id}`, { params: { id } })
+
+
+// get websites
+export const GET_PAGE_VIEWS = () => get(url.GET_PAGE_VIEWS)
+
+export const getPageviewsDetails = id =>
+  get(`${url.GET_PAGE_VIEW_DETAIL}/${id}`, { params: { id } })
+
+
+// get websites
+export const GET_DAY_BOOKS = () => get(url.GET_DAY_BOOKS)
+// export const GET_DAY_BOOK_DETAIL = () => get(url.GET_DAY_BOOK_DETAIL)
+export const getDaybooksDetails = id =>
+  get(`${url.GET_DAY_BOOK_DETAIL}/${id}`, { params: { id } })
+
+
 // get contacts
 export const getUsers = () => get(url.GET_USERS)
+
+
 
 export const getUserProfile = () => get(url.GET_USER_PROFILE)
 

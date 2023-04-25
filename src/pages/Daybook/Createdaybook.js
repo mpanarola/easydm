@@ -151,17 +151,6 @@ const Createdaybook = () => {
                                 
                               </Col>
 
-                              <Col md="3">
-                                <div className="mb-4 mt-md-0">
-                                <textarea
-                                     rows="1" cols="5"
-                                      className="inner form-control"
-                                      defaultValue={field.details}
-                                      placeholder="Enter Details"
-                                    />
-                                </div>
-                              </Col>
-
                               <Col md="2">
                                 <div className="mb-4  mt-md-0">
                                 <input
@@ -173,6 +162,19 @@ const Createdaybook = () => {
                                     />
                                 </div>
                               </Col>
+
+                              <Col md="3">
+                                <div className="mb-4 mt-md-0">
+                                <textarea
+                                     rows="4" cols="5"
+                                      className="inner form-control"
+                                      defaultValue={field.details}
+                                      placeholder="Enter Details"
+                                    />
+                                </div>
+                              </Col>
+
+
 
                               {
                                 key !== 0 &&

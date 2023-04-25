@@ -23,6 +23,10 @@ export const UPDATE_EVENT = "/update/event"
 export const DELETE_EVENT = "/delete/event"
 export const GET_CATEGORIES = "/categories"
 
+
+
+
+
 //CHATS
 export const GET_CHATS = "/chats"
 export const GET_GROUPS = "/groups"
@@ -56,6 +60,34 @@ export const GET_PROJECT_DETAIL = "/project"
 
 //TASKS
 export const GET_TASKS = "/tasks"
+
+
+export const GET_WEBSITES = "/websites"
+export const GET_WEBSITE_DETAIL = "/website"
+
+export const ADD_NEW_WEBSITE = "/add/website"
+export const UPDATE_WEBSITE = "/update/website"
+export const DELETE_WEBSITE = "/delete/website"
+
+
+
+
+export const GET_MEMBERS = "/members"
+export const GET_MEMBER_DETAIL = "/member"
+
+export const GET_CONTENT_SCHEDULERS = "/contents_schedulars"
+export const GET_CONTENT_SCHEDULER_DETAIL = "/contents_schedular"
+
+export const GET_BACK_LINKS = "/back_links"
+export const GET_BACK_LINK_DETAIL = "/back_link"
+
+export const GET_PAGE_VIEWS = "/page_views"
+export const GET_PAGE_VIEW_DETAIL = "/page_view"
+
+export const GET_DAY_BOOKS = "/day_books"
+export const GET_DAY_BOOK_DETAIL = "/day_book"
+
+
 
 //CONTACTS
 export const GET_USERS = "/users"

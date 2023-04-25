@@ -185,7 +185,7 @@ const ContentScheduler = () => {
       {
         id: "1",
         content_type: "Blog",
-        web_page: "Home",
+        web_page: (<a href="https://www.home.com" target="_blank"> Home </a>),
         topic_title: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> Digital Marketing </a>),
        
         // doc_link: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a>),

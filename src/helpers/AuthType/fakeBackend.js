@@ -7,7 +7,9 @@ import {
   calenderDefaultCategories,
   events,
   tasks,
+  websites,
 } from "../../common/data"
+// import websites from "../../store/websites/reducer"
 
 let users = [
   {
@@ -277,6 +279,66 @@ mock.onPost(url.POST_FAKE_REGISTER).reply(config => {
       })
     })
   })
+
+
+  mock.onGet(url.GET_WEBSITES).reply(() => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (websites) {
+          // Passing fake JSON data as response
+          resolve([200, websites])
+        } else {
+          reject([400, "Cannot get tasks"])
+        }
+      })
+    })
+  })
+
+
+
+
+
+  mock.onPost(url.ADD_NEW_WEBSITE).reply(website => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (website && website.data) {
+          // Passing fake JSON data as response
+          resolve([200, website.data])
+        } else {
+          reject([400, "Cannot add website"])
+        }
+      })
+    })
+  })
+
+  mock.onPut(url.UPDATE_WEBSITE).reply(website => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (website && website.data) {
+          // Passing fake JSON data as response
+          resolve([200, website.data])
+        } else {
+          reject([400, "Cannot update website"])
+        }
+      })
+    })
+  })
+
+  mock.onDelete(url.DELETE_WEBSITE).reply(config => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (config && config.headers) {
+          // Passing fake JSON data as response
+          resolve([200, config.headers.website])
+        } else {
+          reject([400, "Cannot delete website"])
+        }
+      })
+    })
+  })
+
+
+
 
   mock.onGet(url.GET_EVENTS).reply(() => {
     return new Promise((resolve, reject) => {

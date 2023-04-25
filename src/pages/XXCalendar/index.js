@@ -372,6 +372,10 @@ const Calender = props => {
     </React.Fragment>
   )
 }
+
+
+
+
 Calender.propTypes = {
   events: PropTypes.array,
   categories: PropTypes.array,

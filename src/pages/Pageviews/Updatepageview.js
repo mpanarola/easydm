@@ -10,6 +10,8 @@ import Select from "react-select";
 import { useHistory, Link } from 'react-router-dom';
 
 import Performance from "./Performance"
+import HistoryTimeline from "./Historytimeline"
+
 
 
 //Import Breadcrumb
@@ -135,7 +137,8 @@ const Updatepageview = () => {
                       </div>
                     </Col>
 
-                    <Col lg={6}>
+                   <Row className="mt-4">
+                   <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
                         <input
@@ -160,6 +163,7 @@ const Updatepageview = () => {
                         />
                       </div>
                     </Col>
+                   </Row>
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
@@ -181,6 +185,8 @@ const Updatepageview = () => {
             </Col>
 
             <Performance />
+            <HistoryTimeline />
+
           </Row>
       </div>
     </>

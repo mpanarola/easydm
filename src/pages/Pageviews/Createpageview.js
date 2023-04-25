@@ -115,6 +115,7 @@ const Createpageview = () => {
                       </div>
                     </Col>
 
+                  <Row className="mt-4">
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="month_year">Month-Year</label>
@@ -140,7 +141,7 @@ const Createpageview = () => {
                         />
                       </div>
                     </Col>
-
+                    </Row>
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
