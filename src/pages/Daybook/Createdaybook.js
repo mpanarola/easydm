@@ -14,12 +14,21 @@ import { useHistory, Link } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
+import Moment from 'moment';
 const Createdaybook = () => {
-  const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: "" }]
+  let today = new Date(); //Current Date
+  let today_date = Moment(today).format('YYYY-MM-DD');
 
+  const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: today_date }]
   const [inputFields, setinputFields] = useState(inpRow)
+
   const [webpage, setwebpage] = useState(null);
+  const [date, setdate] = useState(today_date);
+  const [category, setcategory] = useState(null);
+  const [hours, setHours] = useState(null);
+  const [details, setdetails] = useState(null);
+
+  const [totalHours, settotalHours] = useState(0);
 
   const history = useHistory();
 
@@ -56,7 +65,7 @@ const Createdaybook = () => {
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { webpage: "", category: "", hours: "", details: "", date: "" }
+    const item1 = { webpage: "", category: "", hours: "", details: "", date: today_date }
     setinputFields([...inputFields, item1])
   }
 
@@ -116,6 +125,7 @@ const Createdaybook = () => {
                                       type="date"
                                       className="inner form-control"
                                       defaultValue={field.date}
+                                      onChange={e => setdate(e.target.value)}
                                     />
                                 </div>
                               </Col>
@@ -127,7 +137,7 @@ const Createdaybook = () => {
                                     options={optionGroupCategory}
                                     classNamePrefix="select2-selection"
                                     placeholder={<div>Category</div>}
-                                    // onChange={e => setcategory(e.target.value)}
+                                    onChange={e => setcategory(e.value)}
                                     defaultValue={field.category}
                                   />
                                 </div>
@@ -143,7 +153,7 @@ const Createdaybook = () => {
                                   classNamePrefix="select2-selection"
                                   defaultValue={field.webpage}
                                   placeholder={<div>Web Page</div>}
-                                onChange={e => setwebpage(e.url)}
+                                  onChange={e => setwebpage(e.value)}
                                 // value = {webpage}
                                 />
                                   {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
@@ -159,6 +169,7 @@ const Createdaybook = () => {
                                       defaultValue={field.hours}
                                       placeholder="Enter Hours"
                                       maxLength="3"
+                                      onChange={e => settotalHours(e.target.value)}
                                     />
                                 </div>
                               </Col>
@@ -170,6 +181,7 @@ const Createdaybook = () => {
                                       className="inner form-control"
                                       defaultValue={field.details}
                                       placeholder="Enter Details"
+                                      onChange={e => setdetails(e.target.value)}
                                     />
                                 </div>
                               </Col>
@@ -182,7 +194,7 @@ const Createdaybook = () => {
                               <Col md="1">
                                 <div className="mb-4 mt-2 mt-md-0 d-grid">
                                   <Button
-                                    color="primary"
+                                    color="danger"
                                     className="inner"
                                     onClick={() => {
                                       handleRemoveFields(key)
@@ -215,14 +227,22 @@ const Createdaybook = () => {
 
 
                     <Col lg={12}>
-                      <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createDaybook()}>
+                      <div className="text-right d-flex col-md-12">
+                      <div className="col-md-6">
+                        <button type="button" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createDaybook()}>
                           Save Day Book
                         </button>
 
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>
+                        </div>
+
+                        <div className="col-md-4">
+                        <button type="button" style={{ marginLeft: "50px"}} className="btn btn-info">
+                          Total Hours:  {totalHours}
+                        </button>
+                          </div>
 
                       </div>
                     </Col>

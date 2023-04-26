@@ -46,19 +46,19 @@ const userRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path : '/dashboard2' , component : Dashboard2},
 
+
+
+
+
   { path: "/webpages", component: Webpages },
-  { path: "/members", component: Members },
-  { path: "/content_schedulers", component: ContentSchedulers },
-
-
   { path: "/update_website", component: Updatepage },
   { path: "/create_website", component: Createpage },
 
-
+  { path: "/members", component: Members },
   { path: "/create_member", component: Createmember },
   { path: "/update_member", component: Updatemember },
 
-
+  { path: "/content_schedulers", component: ContentSchedulers },
   { path: "/create_scheduler", component: AddSchedular },
   { path: "/update_schedular", component: UpdateSchedular },
 

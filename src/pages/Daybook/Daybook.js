@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { MDBDataTable } from "mdbreact"
 import {
-  Row, Col, Card, CardBody, CardTitle
+  Row, Col, Card, CardBody, CardTitle, Button
 } from "reactstrap"
 import { Link } from "react-router-dom"
 
@@ -83,18 +83,19 @@ const Daybook = () => {
     rows: [
       {
         id: "1",
-        webpage: (
-          <a href="https://www.home.com/" rel="noopener" target="_blank">Home</a>
+        photo: (
+          <div className="d-flex align-items-start">
+          <div className="me-3 align-self-center">
+            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+          </div>
+        </div>
         ),
         // webpage_url: "",
-        category: "Blogs",
+        name: "Ashish",
+        date: "27-Mar-2023",
         hours: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
         ),
-        details: (
-          <p>Worked on home page</p>
-        ),
-        date: "27-Mar-2023",
         action: (
           <div className="d-flex">
             <div
@@ -120,17 +121,18 @@ const Daybook = () => {
       },
       {
         id: "2",
-        webpage: (
-          <a href="https://www.about.com" target="_blank">About</a>
+        photo: (
+          <div className="d-flex align-items-start">
+          <div className="me-3 align-self-center">
+          <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+          </div>
+        </div>
         ),
-        category: "Industry",
+        name: "Nilesh",
+        date: "27-Mar-2023",
         hours: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10</span>
         ),
-        details: (
-          <p>Worked on about page</p>
-        ),
-        date: "27-Mar-2023",
         action: (
           <div className="d-flex">
             <div
@@ -156,17 +158,18 @@ const Daybook = () => {
       },
       {
         id: "3",
-        webpage: (
-          <a href="https://www.contact.com" target="_blank">Contact</a>
+        photo: (
+          <div className="d-flex align-items-start">
+          <div className="me-3 align-self-center">
+          <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
+          </div>
+        </div>
         ),
-        category: "Career",
+        name: "Milan",
+        date: "27-Mar-2023",
         hours: (
           <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>2</span>
         ),
-        details: (
-          <p>Worked on contact page</p>
-        ),
-        date: "27-Mar-2023",
         action: (
           <div className="d-flex">
             <div
@@ -189,79 +192,7 @@ const Daybook = () => {
 
           </div>
         )
-      },
-      {
-        id: "4",
-        webpage: (
-          <a href="https://www.blogs.com" target="_blank">Blogs</a>
-        ),
-        category: "Blogs",
-        hours: (
-          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>3</span>
-        ),
-        details: (
-          <p>Worked on blog page</p>
-        ),
-        date: "27-Mar-2023",
-        action: (
-          <div className="d-flex">
-            <div
-              className="btn btn-primary"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => { history.push('/update_daybook') }}
-            >
-              View
-            </div>
-
-            <div
-              className="btn btn-danger"
-              onClick={() => deleteDaybook()}
-            >
-              Delete
-            </div>
-
-          </div>
-        )
-      },
-      {
-        id: "5",
-        webpage: (
-          <a href="https://www.events.com" target="_blank">Events</a>
-        ),
-        category: "Services",
-        hours: (
-          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
-        ),
-        details: (
-          <p>Worked on series page</p>
-        ),
-        date: "27-Mar-2023",
-        action: (
-          <div className="d-flex">
-            <div
-              className="btn btn-primary"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => { history.push('/update_daybook') }}
-            >
-              View
-            </div>
-
-            <div
-              className="btn btn-danger"
-              onClick={() => deleteDaybook()}
-            >
-              Delete
-            </div>
-
-          </div>
-        )
-      },
+      }
 
     ],
   }
@@ -285,9 +216,24 @@ const Daybook = () => {
         ) : null}
 
         <Card >
-          <CardBody>
+          <CardBody > 
             {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
-            <div className="float-end">
+
+            <div className="col-md-8 float-start">
+            <div> <div class="card-title">Date Filter</div> </div>
+            <div className="float-start  d-flex ">
+              
+              <input type="date" name="start_date" className="form-control"  />
+              {/* <span>Start</span> */}
+              <input type="date" name="end_date" className="form-control mx-2"/>
+              <button type="button" className="btn btn-secondary" >
+                         Search
+                        </button>
+            </div>
+            </div>
+
+            <div className="col-md-4 float-end mt-4">
+            <div className="float-end ">
               <Link
                 onClick={() => {
                   history.push("/create_daybook")
@@ -297,6 +243,7 @@ const Daybook = () => {
               >
                 Add Day Book
               </Link>
+            </div>
             </div>
           </CardBody>
         </Card>

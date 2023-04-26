@@ -25,7 +25,7 @@ const Performance = () => {
                     enabled: true
                 }
             },
-            colors: ['#45cb85', '#3b5de7'],
+            colors: ['#3b5de7', '#3b5de7'],
             dataLabels: {
                 enabled: false,
             },

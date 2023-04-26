@@ -18,7 +18,7 @@ const Updatemember = () => {
   const [name, setname] = useState(null);
   const [email, setemail] = useState(null);
   const [type, settype] = useState(null);
-  const [status, setstatus] = useState(null);
+  const [status, setstatus] = useState('Active');
 //   const [selectedMulti, setselectedMulti] = useState(null);
 
 const [password, setspassword] = useState(null);
@@ -56,8 +56,8 @@ const togglePassword =()=>{
     {
       label: "Type",
       options: [
-        { label: "Active", value: "1" },
-        { label: "InActive", value: "0" },
+        { label: "Active", value: "Active" },
+        { label: "InActive", value: "InActive" },
       ],
     },
    
@@ -178,6 +178,8 @@ const togglePassword =()=>{
                       classNamePrefix="select2-selection"
                       // onChange={e => setstatus(e.target.value)}
                       // value = {status}
+                      defaultValue={{ label: status, value: status }}
+
                     />
                       </div>
                     </Col>

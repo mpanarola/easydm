@@ -40,11 +40,11 @@ const UpdateSchedular = () => {
         {
             label: "Web Pages",
             options: [
-                { label: "Home", value: "Home" , url: "https://www.home.com/"},
-          { label: "About", value: "About", url: "https://www.about.com/" },
-          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
-          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
-          { label: "Events", value: "Events", url: "https://www.events.com/" },
+                { label: "Home", value: "Home", url: "https://www.home.com/" },
+                { label: "About", value: "About", url: "https://www.about.com/" },
+                { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
+                { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
+                { label: "Events", value: "Events", url: "https://www.events.com/" },
             ],
         },
 
@@ -154,7 +154,7 @@ const UpdateSchedular = () => {
                                         <Col lg={6}>
                                             <div className="mb-3">
                                                 <label htmlFor="web_page">Web Page</label>
-                                                { webpage!== null && <a target="_blank" href={webpage} style={{ float: "right"}} >View Page</a> }
+                                                {webpage !== null && <a target="_blank" href={webpage} style={{ float: "right" }} >View Page</a>}
                                                 <Select
                                                     id="web_page"
                                                     isMulti={false}
@@ -165,13 +165,17 @@ const UpdateSchedular = () => {
                                             </div>
                                         </Col>
 
-                                        <Col lg={6}>
+                                    </Row>
+
+                                    <Row>
+
+                                        <Col lg={12}>
 
                                             <div className="inner-repeater mb-4">
                                                 <div className="inner form-group mb-0 row">
                                                     {/* <Label className="col-form-label col-lg-2">
-          Referece Links
-          </Label>   */}
+Referece Links
+</Label>   */}
                                                     <label htmlFor="doc_link"> Referece Links</label>
                                                     <div
                                                         className="inner col-lg-12 ml-md-auto"
@@ -183,7 +187,7 @@ const UpdateSchedular = () => {
                                                                 id={"nested" + key}
                                                                 className="mb-3 row align-items-center"
                                                             >
-                                                                <Col md="10">
+                                                                <Col md="11">
                                                                     <input
                                                                         type="url"
                                                                         className="inner form-control"
@@ -191,11 +195,11 @@ const UpdateSchedular = () => {
                                                                         placeholder="Enter Referece Link"
                                                                     />
                                                                 </Col>
-
-                                                                <Col md="2">
+                                                            { key !== 0 &&
+                                                                <Col md="1">
                                                                     <div className="mt-2 mt-md-0 d-grid">
                                                                         <Button
-                                                                            color="primary"
+                                                                            color="danger"
                                                                             className="inner"
                                                                             onClick={() => {
                                                                                 handleRemoveFields(key)
@@ -206,6 +210,7 @@ const UpdateSchedular = () => {
                                                                         </Button>
                                                                     </div>
                                                                 </Col>
+                                                                }
                                                             </div>
                                                         ))}
                                                     </div>
@@ -226,7 +231,13 @@ const UpdateSchedular = () => {
                                             </div>
                                         </Col>
 
-                                        <Col lg={6}>
+
+
+                                    </Row>
+
+                                    <Row>
+                                                            
+                                    <Col lg={6}>
                                             <div className="mb-3">
                                                 <label htmlFor="topic_title">Topic Title</label>
                                                 <input
@@ -238,10 +249,6 @@ const UpdateSchedular = () => {
                                                 />
                                             </div>
                                         </Col>
-
-                                    </Row>
-
-                                    <Row>
 
                                         <Col lg={6}>
                                             <div className="mb-3">
@@ -346,23 +353,24 @@ const UpdateSchedular = () => {
                                             </div>
                                         </Col>
 
-
-                                        <Col lg={6}>
-
-                                            <div className="text-right col-lg-10 d-flex">
-                                                <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => updateScheduler()}>
-                                                    Update Content Scheduler
-                                                </button>
-
-                                                <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
-                                                    Back
-                                                </button>
-
-                                            </div>
-
-                                        </Col>
                                     </Row>
+                                    
+                                    <Row>
+                                    <Col lg={6}>
 
+<div className="text-right col-lg-10 d-flex">
+    <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => updateScheduler()}>
+        Update Content Scheduler
+    </button>
+
+    <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
+        Back
+    </button>
+
+</div>
+
+</Col>
+                                    </Row>
                                 </form>
 
                             </CardBody>

@@ -96,6 +96,12 @@ const Webpage = props => {
       width: 150,
     },
     {
+      label: "Published On",
+      field: "date",
+      sort: "asc",
+      width: 200,
+    },
+    {
       label: "Assigned To",
       field: "assigned_to",
       sort: "asc",
@@ -107,12 +113,7 @@ const Webpage = props => {
       sort: "asc",
       width: 270,
     },
-    {
-      label: "Published On",
-      field: "date",
-      sort: "asc",
-      width: 200,
-    },
+
     {
       label: "Action",
       field: "action",
@@ -340,19 +341,20 @@ const Webpage = props => {
       webpage: (
         <a href={row.webpage_url} rel="noopener" target="_blank">{row.webpage}</a>
       ),
+      date: row.date,
       // webpage_url: "",
       assigned_to: (
-        <div className="d-flex align-items-start">
+        <div className="d-flex align-items-start ">
           <div className="me-3 align-self-center">
             <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
           </div>
-          <div className="me-3 align-self-center">
+          {/* <div className="me-3 align-self-center">
             <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-          </div>
+          </div> */}
         </div>
       ),
       effective_from: row.effective_from,
-      date: row.date,
+      
       action: (
         <div className="d-flex">
           <div

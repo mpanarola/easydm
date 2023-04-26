@@ -185,10 +185,11 @@ const AddSchedular = () => {
                                   />
                                 </Col>
 
+                              { key != 0 &&
                                 <Col md="1">
                                   <div className="mt-2 mt-md-0 d-grid">
                                     <Button
-                                      color="primary"
+                                      color="danger"
                                       className="inner"
                                       onClick={() => {
                                         handleRemoveFields(key)
@@ -199,6 +200,7 @@ const AddSchedular = () => {
                                     </Button>
                                   </div>
                                 </Col>
+                                }
                               </div>
                             ))}
                           </div>

@@ -21,10 +21,11 @@ import { websites } from "../../common/data";
 const Updatepage = (props) => {
 
   const data =   props.location && props.location.state;
-
-let published_on_format = Moment(data.data.published_on).format('YYYY-MM-DD')
+console.log('data ', data)
+let published_on_format = Moment(data.data.date).format('YYYY-MM-DD')
 let effective_from_format = Moment(data.data.effective_from).format('YYYY-MM-DD')
 
+let head_published_on = Moment(data.data.date).format('DD-MMMM-YYYY');
 
 const [webpage, setwebpage] = useState(data.data.webpage);
 const [webpage_url, setwebpage_url] = useState(data.data.webpage_url);
@@ -103,7 +104,7 @@ console.log('webpage ', webpage)
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="published_on">Published On :  {published_on_format ? published_on_format : '-'}</label>
+              <label htmlFor="published_on">Published On :  {head_published_on ? head_published_on : '-'}</label>
             </CardBody>
           </Card>
 
@@ -141,6 +142,7 @@ console.log('webpage ', webpage)
                         />
                       </div>
                     </Col>
+
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="webpage_url">Web Page URL</label>
@@ -167,7 +169,12 @@ console.log('webpage ', webpage)
                         />
                       </div>
                     </Col>
-                    <Col lg={6}>
+
+                  </Row>
+
+                  <Row className="mt-4">
+
+                  <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="assigned_to">Assigned To</label>
                         <Select
@@ -200,7 +207,6 @@ console.log('webpage ', webpage)
                         />
                       </div>
                     </Col>
-
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">

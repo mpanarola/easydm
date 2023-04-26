@@ -11,7 +11,7 @@ import { useHistory, Link } from 'react-router-dom';
 
 import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
-
+import Moment from 'moment';
 
 
 //Import Breadcrumb
@@ -19,10 +19,18 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const Updatepageview = () => {
 
-  const [webpage, setwebpage] = useState(null);
-  const [monthyear, setmonthyear] = useState(null);
-  const [category, setcategory] = useState(null);
-  const [total_page_views, settotal_page_views] = useState(null);
+  var today = new Date(); //Current Date
+  let today_date = Moment(today).format('YYYY-MM-DD');
+
+  let head_published_on = Moment(today).format('DD-MMMM-YYYY');
+
+
+  const [webpage, setwebpage] = useState('Home');
+  const [monthyear, setmonthyear] = useState('2023-03');
+  const [category, setcategory] = useState('Services');
+  const [total_page_views, settotal_page_views] = useState('10');
+  const [date, setdate] = useState(today_date);
+
 
   const history = useHistory();
 
@@ -33,11 +41,11 @@ const Updatepageview = () => {
       {
         label: "Web Pages",
         options: [
-          { label: "Home", value: "Home" , url: "https://www.home.com/"},
-          { label: "About", value: "About", url: "https://www.about.com/" },
-          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
-          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
-          { label: "Events", value: "Events", url: "https://www.events.com/" },
+          { label: "Home", value: "Home" , url: "https://www.home.com/" },
+          { label: "About", value: "About", url: "https://www.about.com/", isdisabled: true },
+          { label: "Contact", value: "Contact", url: "https://www.contact.com/",isdisabled: true },
+          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/",isdisabled: true  },
+          { label: "Events", value: "Events", url: "https://www.events.com/", isdisabled: true },
         ],
       },
   
@@ -49,10 +57,10 @@ const Updatepageview = () => {
       label: "Category",
       options: [
         { label: "Services", value: "Services",  },
-        { label: "Industry", value: "Industry"},
-        { label: "Technologies", value: "Technologies"},
-        { label: "Career", value: "Career"},
-        { label: "Blogs", value: "Blogs"}
+        { label: "Industry", value: "Industry", isdisabled: true},
+        { label: "Technologies", value: "Technologies", isdisabled: true},
+        { label: "Career", value: "Career", isdisabled: true},
+        { label: "Blogs", value: "Blogs", isdisabled: true}
       ],
     },
    
@@ -82,7 +90,7 @@ const Updatepageview = () => {
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="published_on">Created On :  27-Mar-2023</label>
+              <label htmlFor="published_on">Created On :  {head_published_on}</label>
             </CardBody>
           </Card>
 
@@ -105,6 +113,9 @@ const Updatepageview = () => {
                       classNamePrefix="select2-selection"
                       onChange={(e) => setwebpage(e.url) }
                       // onChange={e => alert(e.target.options)}
+                      defaultValue={{ label: webpage, value: webpage }}
+                      isOptionDisabled={(option) => option.isdisabled}
+
                       // value = {webpage}
                     />
                                        
@@ -120,6 +131,9 @@ const Updatepageview = () => {
                           className="form-control"
                           id="published_on"
                           // onChange={e => setassigned_on(e.target.value)}
+                          defaultValue={date}
+                          max={date}
+                          min={date}
                         />
                       </div>
                     </Col>
@@ -132,7 +146,8 @@ const Updatepageview = () => {
                       options={optionGroupCategory}
                       classNamePrefix="select2-selection"
                       // onChange={e => setcategory(e.target.value)}
-                      // value = {category}
+                      defaultValue={{ label: 'Services', value: 'Services' }}
+                      isOptionDisabled={(option) => option.isdisabled}
                     />
                       </div>
                     </Col>
@@ -147,6 +162,10 @@ const Updatepageview = () => {
                           id="month_year"
                           // onChange={e => setmonthyear(e.target.value)}
                           // value={monthyear}
+                          defaultValue = {monthyear}
+                          max={monthyear}
+
+                          
                         />
                       </div>
                     </Col>
@@ -159,7 +178,8 @@ const Updatepageview = () => {
                           className="form-control"
                           id="total_pageviews"
                           // onChange={e => settotal_page_views(e.target.value)}
-                          // value={total_page_views}
+                          defaultValue = {total_page_views}
+
                         />
                       </div>
                     </Col>

@@ -11,17 +11,24 @@ import { useHistory } from 'react-router-dom';
 
 import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
-
+import Moment from 'moment';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 const Updatebacklink = () => {
 
-  const [webpage, setwebpage] = useState(null);
-  const [monthyear, setmonthyear] = useState(null);
-  const [category, setcategory] = useState(null);
-  const [total_backlinks, settotal_backlinks] = useState(null);
+  var today = new Date(); //Current Date
+  let today_date = Moment(today).format('YYYY-MM-DD');
+
+  let head_published_on = Moment(today).format('DD-MMMM-YYYY');
+
+  const [webpage, setwebpage] = useState('Home');
+  const [monthyear, setmonthyear] = useState('2023-03');
+  const [category, setcategory] = useState('Services');
+  const [total_backlinks, settotal_backlinks] = useState('20');
+  const [date, setdate] = useState(today_date);
+
 
   const history = useHistory();
 
@@ -31,10 +38,10 @@ const Updatebacklink = () => {
       label: "Web Pages",
       options: [
         { label: "Home", value: "Home" },
-        { label: "About", value: "About" },
-        { label: "Contact", value: "Contact" },
-        { label: "Blogs", value: "Blogs" },
-        { label: "Events", value: "Events" },
+        { label: "About", value: "About" ,isdisabled: true  },
+        { label: "Contact", value: "Contact" ,isdisabled: true  },
+        { label: "Blogs", value: "Blogs" ,isdisabled: true  },
+        { label: "Events", value: "Events" ,isdisabled: true  },
       ],
     },
 
@@ -46,10 +53,10 @@ const Updatebacklink = () => {
       label: "Category",
       options: [
         { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
+        { label: "Industry", value: "Industry" ,isdisabled: true  },
+        { label: "Technologies", value: "Technologies" ,isdisabled: true  },
+        { label: "Career", value: "Career" ,isdisabled: true  },
+        { label: "Blogs", value: "Blogs" ,isdisabled: true  }
       ],
     },
 
@@ -77,7 +84,7 @@ const Updatebacklink = () => {
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  #1</h4>
-              <label htmlFor="created_on">Created On :  27-Mar-2023</label>
+              <label htmlFor="created_on">Created On :  {head_published_on}</label>
             </CardBody>
           </Card>
 
@@ -96,7 +103,9 @@ const Updatebacklink = () => {
                           options={optionGroupWebPage}
                           classNamePrefix="select2-selection"
                         // onChange={e => setwebpage(e.target.value)}
-                        // value = {webpage}
+                        defaultValue={{ label: webpage, value: webpage }}
+                        isOptionDisabled={(option) => option.isdisabled}
+
                         
                         />
                       </div>
@@ -109,7 +118,10 @@ const Updatebacklink = () => {
                           type="date"
                           className="form-control"
                           id="published_on"
-                          
+                          defaultValue = {today_date}
+                          max={today_date}
+                          min={today_date}
+
                           // onChange={e => setassigned_on(e.target.value)}
                         />
                       </div>
@@ -123,8 +135,9 @@ const Updatebacklink = () => {
                           options={optionGroupCategory}
                           classNamePrefix="select2-selection"
                         // onChange={e => setcategory(e.target.value)}
-                        // value = {category}
-                        disabled
+                        defaultValue={{ label: category, value: category }}
+                        isOptionDisabled={(option) => option.isdisabled}
+
                         />
                       </div>
                     </Col>
@@ -138,7 +151,10 @@ const Updatebacklink = () => {
                           type="month"
                           className="form-control"
                           id="month_year"
-                          
+                          defaultValue = {monthyear}
+                          // min={monthyear}
+                          max={monthyear}
+
                         // onChange={e => setmonthyear(e.target.value)}
                         // value={monthyear}
                         />
@@ -153,7 +169,8 @@ const Updatebacklink = () => {
                           className="form-control"
                           id="total_backlinks"
                         // onChange={e => settotal_backlinks(e.target.value)}
-                        // value={total_backlinks}
+                        defaultValue = {total_backlinks}
+
                         />
                       </div>
                     </Col>
