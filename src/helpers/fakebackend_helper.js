@@ -177,6 +177,12 @@ export const getUsers = () => get(url.GET_USERS)
 
 export const getUserProfile = () => get(url.GET_USER_PROFILE)
 
+
+/** MMP API Method */
+
+const userLogin = data => post(url.USER_LOGIN, data)
+
+
 export {
   getLoggedInUser,
   isUserAuthenticated,
@@ -188,4 +194,7 @@ export {
   postJwtLogin,
   postJwtForgetPwd,
   postJwtProfile,
+
+
+  userLogin,
 }

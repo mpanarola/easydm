@@ -2,7 +2,7 @@
 export const POST_FAKE_REGISTER = "/post-fake-register"
 
 //LOGIN
-export const POST_FAKE_LOGIN = "/post-fake-login"
+export const POST_FAKE_LOGIN = "/login"
 export const POST_FAKE_JWT_LOGIN = "/post-jwt-login"
 export const POST_FAKE_PASSWORD_FORGET = "/fake-forget-pwd"
 export const POST_FAKE_JWT_PASSWORD_FORGET = "/jwt-forget-pwd"
@@ -92,3 +92,8 @@ export const GET_DAY_BOOK_DETAIL = "/day_book"
 //CONTACTS
 export const GET_USERS = "/users"
 export const GET_USER_PROFILE = "/user"
+
+
+
+/** -------------------MY API URL----------------- */
+export const USER_LOGIN = "/login"

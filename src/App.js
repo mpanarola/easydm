@@ -19,10 +19,10 @@ import NonAuthLayout from "./components/NonAuthLayout"
 import "./assets/scss/theme.scss"
 
 
-import fakeBackend from "./helpers/AuthType/fakeBackend"
+// import fakeBackend from "./helpers/AuthType/fakeBackend"
 
 // Activating fake backend
-fakeBackend()
+// fakeBackend()
 
 const App = props => {
   function getLayout() {

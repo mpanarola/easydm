@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { useEffect } from "react"
+import { useAlert } from "react-alert";
 
 import { Row, Col, Alert, Container } from "reactstrap"
 
 // Redux
-import { connect } from "react-redux"
-import { withRouter, Link } from "react-router-dom"
+import { connect, useDispatch } from "react-redux"
+import { withRouter, Link, useHistory } from "react-router-dom"
 
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation"
@@ -15,8 +16,13 @@ import { loginUser, apiError, socialLogin } from "../../store/actions"
 
 // import images
 import logo from "../../assets/images/logo-sm-dark.png"
+import { userLogin } from '../../helpers/fakebackend_helper'
 
 const Login = (props) => {
+  const alert = useAlert();
+const dispatch = useDispatch();
+const history = useHistory();
+  
   useEffect(() => {
     document.body.className = "authentication-bg";
     // remove classname when component will unmount
@@ -27,7 +33,25 @@ const Login = (props) => {
 
   // handleValidSubmit
   const handleValidSubmit = (event, values) => {
-    props.loginUser(values, props.history)
+    // props.loginUser(values, props.history)
+    
+    userLogin({
+      email: values.email,
+      password: values.password,
+    }).then(resp=>{
+      // console.log('resp =>>', resp);
+      alert.success('Login Successfully');
+      dispatch(loginUser(resp?.data))
+      localStorage.setItem("authUser", JSON.stringify(resp?.data?.token))
+      localStorage.setItem("userName", 'Milan Paladiya')
+      localStorage.setItem("userPic", 'http://localhost:3000/static/media/avatar-2.feb0f89d.jpg')
+      history.push("/dashboard")  
+    }).catch(err=>{
+      alert.error('Invalid Credentials');
+      dispatch(loginUser(err.response))
+      // console.log('resp err=>>', err.response);
+    })
+    
   }
 
   return (
@@ -110,10 +134,10 @@ const Login = (props) => {
                         </button>
                       </div>
 
-                      <div className="mt-4 text-center">
+                      {/* <div className="mt-4 text-center">
                         <Link to="/forgot-password" className="text-muted"><i
                           className="mdi mdi-lock me-1"></i> Forgot your password?</Link>
-                      </div>
+                      </div> */}
                     </AvForm>
 
                   </div>
@@ -135,14 +159,13 @@ const Login = (props) => {
   )
 }
 
-const mapStateToProps = state => {
-  const { error } = state.Login
-  return { error }
-}
 
-export default withRouter(
-  connect(mapStateToProps, { loginUser, apiError, socialLogin })(Login)
-)
+
+// export default withRouter(
+//   connect(mapStateToProps, { loginUser, apiError, socialLogin })(Login)
+// )
+
+export default withRouter(Login)
 
 Login.propTypes = {
   error: PropTypes.any,

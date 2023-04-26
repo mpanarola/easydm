@@ -6,17 +6,20 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap"
-
+import { useAlert } from "react-alert";
 //i18n
 import { withTranslation } from "react-i18next"
 // Redux
 import { connect } from "react-redux"
-import { withRouter, Link } from "react-router-dom"
+import { withRouter, Link, useHistory } from "react-router-dom"
+
 
 // users
 import user4 from "../../../assets/images/users/avatar-2.jpg"
 
 const ProfileMenu = props => {
+  const alert = useAlert();
+  const history = useHistory();
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false)
 
@@ -32,10 +35,22 @@ const ProfileMenu = props => {
         process.env.REACT_APP_DEFAULTAUTH === "jwt"
       ) {
         const obj = JSON.parse(localStorage.getItem("authUser"))
-        setusername(obj.username)
+        // setusername(obj.username)
       }
     }
   }, [props.success])
+
+
+
+  const logOut = (e) => {
+    // alert('')
+    alert.success('Logout Successfully');
+    history.push({
+      pathname: '/logout'
+    }) 
+
+  };
+
 
   return (
     <React.Fragment>
@@ -77,7 +92,8 @@ const ProfileMenu = props => {
             {props.t("Lock screen")}
           </DropdownItem> */}
           {/* <div className="dropdown-divider" /> */}
-          <Link to="/logout" className="dropdown-item text-danger">
+          
+          <Link to="#"   onClick={() => logOut()} className="dropdown-item text-danger">
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>{" "}
             <span>{props.t("Logout")}</span>
           </Link>

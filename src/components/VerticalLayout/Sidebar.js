@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import React from "react"
-import { connect } from "react-redux"
+import { connect, useSelector } from "react-redux"
 import { withRouter, Link } from "react-router-dom"
 
 //i18n
@@ -10,17 +10,21 @@ import SidebarContent from "./SidebarContent"
 import avatar2 from "../../assets/images/users/avatar-2.jpg"
 
 const Sidebar = props => {
+
+  const {userDetail} = useSelector((state)=>state?.Login)
+  console.log('useDetails =>', userDetail);
+
   return (
     <React.Fragment>
       <div className="vertical-menu">
         <div className="h-100">
           <div className="user-wid text-center py-4">
             <div className="user-img">
-              <img src={avatar2} alt="" className="avatar-md mx-auto rounded-circle" />
+              <img src={localStorage.getItem('userPic')} alt="" className="avatar-md mx-auto rounded-circle" />
             </div>
 
               <div className="mt-3">
-                <Link to="#" className="text-dark fw-medium font-size-16">Milan Paladiya</Link>
+                <Link to="#" className="text-dark fw-medium font-size-16">{localStorage.getItem('userName')}</Link>
                 {/* <p className="text-body mt-1 mb-0 font-size-13">UI/UX Designer</p> */}
               </div>
             </div>

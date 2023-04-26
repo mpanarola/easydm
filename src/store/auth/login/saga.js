@@ -10,39 +10,17 @@ import {
   postFakeLogin,
   postJwtLogin,
   postSocialLogin,
+  userLogin,
 } from "../../../helpers/fakebackend_helper"
 
 const fireBaseBackend = getFirebaseBackend()
 
-function* loginUser({ payload: { user, history } }) {
-  
+function* loginUser({ payload: { user } }) {
+  // console.log('mmp 1==>', user);
   try {
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = yield call(
-        fireBaseBackend.loginUser,
-        user.email,
-        user.password
-      )
-      yield put(loginSuccess(response))
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      const response = yield call(postJwtLogin, {
-        email: user.email,
-        password: user.password,
-      })
-      localStorage.setItem("authUser", JSON.stringify(response))
-      yield put(loginSuccess(response))
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-      
-      const response = yield call(postFakeLogin, {
-        email: user.email,
-        password: user.password,
-      })
-      
-      localStorage.setItem("authUser", JSON.stringify(response))
-      yield put(loginSuccess(response))
-    }
-    history.push("/dashboard")
+        yield put(loginSuccess(user))
   } catch (error) {
+    // console.log('errrrrrrr =>', error)
     yield put(apiError(error))
   }
 }

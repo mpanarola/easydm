@@ -9,6 +9,7 @@ import {
 const initialState = {
   error: "",
   loading: false,
+  userDetail: null,
 }
 
 const login = (state = initialState, action) => {
@@ -20,9 +21,11 @@ const login = (state = initialState, action) => {
       }
       break
     case LOGIN_SUCCESS:
+      // console.log('asdhajshash=>', action)
       state = {
         ...state,
         loading: false,
+        userDetail : action?.payload
       }
       break
     case LOGOUT_USER:

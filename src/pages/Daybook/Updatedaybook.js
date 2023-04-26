@@ -26,7 +26,7 @@ const Updatedaybook = () => {
   const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: today_date }]
 
   const [inputFields, setinputFields] = useState(inpRow)
-  const [date, setdate] = useState(null);
+  const [date, setdate] = useState(today_date);
   const [webpage, setwebpage] = useState(null);
 
   const [category, setcategory] = useState(null);
@@ -258,12 +258,7 @@ const Updatedaybook = () => {
                         </button>
                         </div>
 
-                      
-
-                       
-
-
-
+                    
                       </div>
                       
                     </Col>
