@@ -11,12 +11,9 @@ import { withRouter, Link, useHistory } from "react-router-dom"
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
-// actions
-import { loginUser, apiError, socialLogin } from "../../store/actions"
-
-// import images
 import logo from "../../assets/images/logo-sm-dark.png"
-import { userLogin } from '../../helpers/fakebackend_helper'
+import { loginUser, apiError, socialLogin } from "../../store/actions"
+import { userLogin } from '../../helpers/backend_helper'
 
 const Login = (props) => {
   const alert = useAlert();
@@ -40,12 +37,22 @@ const history = useHistory();
       password: values.password,
     }).then(resp=>{
       // console.log('resp =>>', resp);
+      // console.log('token ', resp?.data[0].token)
+      if(resp.status == true){
       alert.success('Login Successfully');
       dispatch(loginUser(resp?.data))
-      localStorage.setItem("authUser", JSON.stringify(resp?.data?.token))
-      localStorage.setItem("userName", 'Milan Paladiya')
-      localStorage.setItem("userPic", 'http://localhost:3000/static/media/avatar-2.feb0f89d.jpg')
-      history.push("/dashboard")  
+
+      let auth_data = { name: 'Milan', email: 'Milan',  avatar: 'http://localhost:3000/static/media/avatar-2.feb0f89d.jpg', token: resp?.data[0].token, userRole: 'Admin'}
+      localStorage.setItem("authUser", JSON.stringify(auth_data))
+      history.push("/dashboard") 
+      // localStorage.setItem("userName", 'Milan Paladiya')
+      // localStorage.setItem("userPic", 'http://localhost:3000/static/media/avatar-2.feb0f89d.jpg')
+     
+      // console.log('token ', resp?.data)
+    }else{
+      alert.error('Invalid Credentials');
+    }
+    
     }).catch(err=>{
       alert.error('Invalid Credentials');
       dispatch(loginUser(err.response))
@@ -89,6 +96,7 @@ const history = useHistory();
                       ) : null}
 
                       <div className="mb-3">
+                        
                         <AvField
                           name="email"
                           label="Email"

@@ -24,7 +24,7 @@ import {
   getGroups,
   getMessages,
   addMessage,
-} from "../../helpers/fakebackend_helper"
+} from "../../helpers/backend_helper"
 
 function* onGetChats() {
   try {

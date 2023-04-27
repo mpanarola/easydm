@@ -97,3 +97,10 @@ export const GET_USER_PROFILE = "/user"
 
 /** -------------------MY API URL----------------- */
 export const USER_LOGIN = "/login"
+export const ADD_MEMBER = "/registration"
+export const UPDATE_MEMBER = "/update_member"
+export const DELETE_MEMBER = "/delete_member"
+
+
+// export const GET_MEMBERS = "/registration"
+

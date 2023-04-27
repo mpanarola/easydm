@@ -1,11 +1,12 @@
 import { takeEvery, fork, put, all, call } from "redux-saga/effects"
 
 //Account Redux states
-import { REGISTER_USER } from "./actionTypes"
-import { registerUserSuccessful, registerUserFailed } from "./actions"
+import { UPDATE_MEMBERS } from "./actionTypes"
+import { updateMemberSuccessful, updateMemberFailed, deleteMemberSuccessful, deleteMemberFailed } from "./actions"
 
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper"
+import { DELETE_MEMBER } from "../../../helpers/url_helper"
 // import {
 //   postFakeRegister,
 //   postJwtRegister,
@@ -15,14 +16,12 @@ import { getFirebaseBackend } from "../../../helpers/firebase_helper"
 const fireBaseBackend = getFirebaseBackend()
 
 // Is user register successfull then direct plot user in redux.
-function* registerUser({ payload: { user } }) {
-
-
+function* updateMember({ payload: { user } }) {
   try {
-    yield put(registerUserSuccessful(user))
+    yield put(updateMemberSuccessful(user))
 } catch (error) {
 // console.log('errrrrrrr =>', error)
-yield put(registerUserFailed(error))
+yield put(updateMemberFailed(error))
 }
 
   // try {
@@ -46,12 +45,32 @@ yield put(registerUserFailed(error))
   // }
 }
 
-export function* watchUserRegister() {
-  yield takeEvery(REGISTER_USER, registerUser)
+export function* watchMemberUpdate() {
+  yield takeEvery(UPDATE_MEMBERS, updateMember)
 }
 
-function* accountSaga() {
-  yield all([fork(watchUserRegister)])
+
+
+function*  deleteMember({ payload: { user } }) {
+  try {
+    yield put(deleteMemberSuccessful(user))
+} catch (error) {
+// console.log('errrrrrrr =>', error)
+yield put(deleteMemberFailed(error))
+}
 }
 
-export default accountSaga
+export function* watchMemberDelete() {
+  yield takeEvery(DELETE_MEMBER, deleteMember)
+}
+
+
+
+
+function* memberSaga() {
+  yield all([fork(watchMemberUpdate)])
+  yield all([fork(watchMemberDelete)])
+
+}
+
+export default memberSaga

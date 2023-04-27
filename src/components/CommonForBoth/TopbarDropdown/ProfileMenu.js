@@ -24,6 +24,7 @@ const ProfileMenu = props => {
   const [menu, setMenu] = useState(false)
 
   const [username, setusername] = useState("Milan")
+  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
@@ -66,10 +67,10 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-            src={user4}
-            alt="Header Avatar"
+            src={get_auth_user.avatar}
+            alt={get_auth_user.name}
           />{" "}
-          <span className="d-none d-xl-inline-block ms-1">{username}</span>{" "}
+          <span className="d-none d-xl-inline-block ms-1">{get_auth_user.name}</span>{" "}
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block"></i>{" "}
         </DropdownToggle>
        <DropdownMenu className="dropdown-menu-end">

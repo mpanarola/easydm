@@ -32,7 +32,7 @@ import {
   getProducts,
   getShops,
   getProductDetail,
-} from "../../helpers/fakebackend_helper"
+} from "../../helpers/backend_helper"
 
 function* fetchProducts() {
   try {

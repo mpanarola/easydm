@@ -19,6 +19,9 @@ export * from "./tasks/actions"
 // // websites
 export * from "./websites/actions"
 
+export * from "./members/actions"
+
+
 // // websites
 // export * from "./members/actions"
 

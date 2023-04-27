@@ -11,11 +11,16 @@ import chatSaga from "./chat/saga"
 import tasksSaga from "./tasks/saga"
 import contactsSaga from "./contacts/saga"
 import websitesSaga from "./websites/saga"
+// import memberSaga from "./members/saga"
+import memberSaga from "./auth/members/saga"
+
+
 
 export default function* rootSaga() {
   yield all([
     //public
     AccountSaga(),
+    memberSaga(),
     fork(AuthSaga),
     ProfileSaga(),
     ForgetSaga(),

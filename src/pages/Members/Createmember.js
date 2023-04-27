@@ -7,18 +7,30 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useAlert } from "react-alert";
+import { connect, useDispatch } from "react-redux"
+import { useHistory, withRouter } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
+import { registerUser } from "../../store/actions"
+import { addMember } from '../../helpers/backend_helper'
+
+import { AvForm, AvField } from "availity-reactstrap-validation"
+
 const Createmember = () => {
 
-  const [profile_pic, setprofile_pic] = useState(null);
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [avatar, setprofile_pic] = useState(null);
+  const [avatarURL, setAvtarURL] = useState(null);
   const [name, setname] = useState(null);
   const [email, setemail] = useState(null);
-  const [type, settype] = useState(null);
-  const [status, setstatus] = useState(null);
+  const [type, settype] = useState('DM Executive');
+  const [status, setstatus] = useState('Active');
   const [password, setspassword] = useState(null);
 const [passwordType, setPasswordType] = useState("password");
 
@@ -30,10 +42,6 @@ const togglePassword =()=>{
   }
   setPasswordType("password")
 }
-
-
-// console.log('webpage ', webpage)
-  const history = useHistory();
 
 
 
@@ -55,8 +63,8 @@ const togglePassword =()=>{
     {
       label: "Type",
       options: [
-        { label: "Active", value: "1" },
-        { label: "InActive", value: "0" },
+        { label: "Active", value: true },
+        { label: "InActive", value: false },
       ],
     },
    
@@ -64,9 +72,47 @@ const togglePassword =()=>{
 
 
 
-  const createMember = (e) => {
-    history.push('/members')
-  };
+  const handleFileChange = (file) => {
+    setprofile_pic(file);
+    const reader  = new FileReader();
+    reader.onloadend = function () {
+      setAvtarURL(reader.result)
+    }
+    reader.readAsDataURL(file);
+  }
+
+
+    // handleValidSubmit
+    const createMember = (event, values) => {
+
+      const formData = new FormData();
+      
+      formData.append("avatar", avatar);
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("userType", type);
+      formData.append("status", status);
+
+      addMember(formData).then(resp=>{
+        // console.log('resp =>>', resp);
+        // console.log('token ', resp?.data[0].token)
+        if(resp.status == true){
+        alert.success('Member Created Successfully');
+        dispatch(registerUser(resp?.data))
+        history.push('/members')
+
+      }else{
+        alert.error('Please Try Again...');
+      }
+      
+      }).catch(err=>{
+        alert.error(err);
+        dispatch(registerUser(err.response))
+        // console.log('resp err=>>', err.response);
+      })
+      
+    }
 
 
   return (
@@ -82,59 +128,85 @@ const togglePassword =()=>{
                 <CardBody>
                   <CardTitle className="mb-4 font-size-18">Create Member</CardTitle>
                  
-                  <form >
+                  <AvForm  onValidSubmit={(e, v) => {
+                        createMember(e, v)
+                      }}>
                       <Row>
                        
                         <Col lg={6}>
                         <div className="mb-3">
-                            <label htmlFor="member_name">Name</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="member_name"
-                              placeholder="Enter Name"
-                              // onChange={e => setname(e.target.value)}
-                            />
+
+                        <AvField
+                          name="member_name"
+                          label="Name"
+                          onChange={e => setname(e.target.value)}
+                          className="form-control"
+                          placeholder="Enter Name"
+                          type="text"
+                          required
+                        />
                           </div>
+
+                          
+
                         </Col>
 
                         <Col lg={6}>
                         <div className="mb-3">
-                            <label htmlFor="profile_pic">Photo</label>
-                            <input
+                            {/* <label htmlFor="profile_pic"></label> */}
+                            <AvField
                               type="file"
+                              label="Photo"
                               className="form-control"
                               id="profile_pic"
-                              onChange={e => setprofile_pic(e.target.value)}
+                              name="avatar"
+                              
+                              onChange={e => handleFileChange(e.target.files[0])}
                             />
+                            
                           </div>
                         </Col>
                         
                         <Col lg={6}>
                           <div className="mb-3">
-                            <label htmlFor="member_email">Email</label>
-                            <input
+                            <label htmlFor="member_email"></label>
+                            <AvField
                               type="email"
+                              Email="Name"
+                              label="Email"
                               className="form-control"
                               id="member_email"
+                              name="member_email"
                               placeholder="Enter Member Email"
-                              // onChange={e => setemail(e.target.value)}
+                              required
+                              onChange={e => setemail(e.target.value)}
                             />
                           </div>
                         </Col>
 
                         <Col lg={6}>
-                          <div className="mb-3">
-                            <label htmlFor="password">Password</label>
+                          <div className="mb-3 mt-3">
+                          <label htmlFor="Password">Password</label>
                             <div className="d-flex">
-                            <input
+
+                          <div className="col-md-11">
+                          <AvField
                               type={passwordType}
+                              // label="Password"
                               className="form-control"
                               id="member_password"
-                              placeholder="Enter Member Password"
+                              name="member_password"
+                              placeholder="Enter Password"
+                              required
                               onChange={e => setspassword(e.target.value)}
                             />
-                            <button type="button" className="btn btn-outline-primary mr-2" onClick={togglePassword}>
+
+                          </div>
+                            
+                           
+                            <button type="button" className="btn btn-outline-primary" 
+                            style={{marginLeft: "10px"}}
+                            onClick={togglePassword}>
                      { passwordType==="password"? <i className="mdi mdi-eye-off"></i> :<i className="mdi mdi-eye"></i> }
                      </button>
                      </div>
@@ -151,7 +223,8 @@ const togglePassword =()=>{
                       isMulti={false}
                       options={optionGroupType}
                       classNamePrefix="select2-selection"
-                      // onChange={e => settype(e.target.value)}
+                      onChange={e => settype(e.value)}
+                      defaultValue={{ label: type }}
                     />
                       </div>
                     </Col>
@@ -164,14 +237,15 @@ const togglePassword =()=>{
                       isMulti={false}
                       options={optionGroupStaus}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setstatus(e.target.value)}
+                      onChange={e => setstatus(e.value)}
+                      defaultValue={{ label: status }}
                     />
                       </div>
                     </Col>
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => createMember()}>
+                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} >
                           Create Member
                         </button>
 
@@ -184,7 +258,7 @@ const togglePassword =()=>{
 
                       </Row>
                       
-                    </form>
+                      </AvForm>
 
                  
                 </CardBody>
@@ -196,4 +270,5 @@ const togglePassword =()=>{
   )
 }
 
-export default Createmember
+// export default Createmember
+export default withRouter(Createmember)

@@ -7,22 +7,51 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-const Updatemember = () => {
+import { useAlert } from "react-alert";
+import { connect, useDispatch } from "react-redux"
+import { AvForm, AvField } from "availity-reactstrap-validation"
 
-  const [profile_pic, setprofile_pic] = useState(null);
-  const [name, setname] = useState(null);
-  const [email, setemail] = useState(null);
-  const [type, settype] = useState(null);
-  const [status, setstatus] = useState('Active');
+import { updateMember as UpdateMember } from "../../store/actions"
+import { memberUpdate } from '../../helpers/backend_helper'
+
+const Updatemember = (props) => {
+
+  const member_data =   props.location && props.location.state;
+
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [avatar, setprofile_pic] = useState(member_data.data.avatar);
+  const [avatarURL, setAvtarURL] = useState(null);
+
+  const [name, setname] = useState(member_data.data.name);
+  const [email, setemail] = useState(member_data.data.email);
+  const [type, settype] = useState(member_data.data.userType);
+  const status_check = member_data.data.isActive ? '1' : '0';
+  const [status, setstatus] = useState('1');
+  const [id, setid] = useState(member_data.data._id);
+
 //   const [selectedMulti, setselectedMulti] = useState(null);
 
 const [password, setspassword] = useState(null);
 const [passwordType, setPasswordType] = useState("password");
+
+
+const handleFileChange = (file) => {
+  setprofile_pic(file);
+  const reader  = new FileReader();
+  reader.onloadend = function () {
+    setAvtarURL(reader.result)
+  }
+  reader.readAsDataURL(file);
+}
+
 
 const togglePassword =()=>{
   if(passwordType==="password")
@@ -32,11 +61,6 @@ const togglePassword =()=>{
   }
   setPasswordType("password")
 }
-
-// console.log('webpage ', webpage)
-  const history = useHistory();
-
-
 
   // User Type
   const optionGroupType = [
@@ -56,18 +80,43 @@ const togglePassword =()=>{
     {
       label: "Type",
       options: [
-        { label: "Active", value: "Active" },
-        { label: "InActive", value: "InActive" },
+        { label: "Active", value: '1' },
+        { label: "InActive", value: '0' },
       ],
     },
    
   ];
 
 
-    const updateMember = (e) => {
-    history.push("/members")
-   };
 
+  const updateMember = (event, values) => {
+    const formData = new FormData();
+    
+    formData.append("avatar", avatar);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("userType", type);
+    formData.append("status", status);
+    // formData.append("id", id);
+
+    memberUpdate(formData, id).then(resp=>{
+      if(resp.status == true){
+      alert.success('Member Updated Successfully');
+      dispatch(UpdateMember(resp?.data))
+      history.push('/members')
+
+    }else{
+      alert.error('Please Try Again...');
+    }
+    
+    }).catch(err=>{
+      alert.error(err);
+      dispatch(UpdateMember(err.response))
+      // console.log('resp err=>>', err.response);
+    })
+    
+  }
 
   return (
     <>
@@ -80,8 +129,15 @@ const togglePassword =()=>{
           <Row>
           <Card>
             <CardBody>
+              <div className="col-md-12 d-flex">
+                <div className="col-md-11">
               <h4 className="me-4"> ID:  #1</h4>
               <label htmlFor="published_on">Created On :  27-Mar-2023</label>
+              </div>
+              <div className="col-md-1" style={{float: "right"}}>
+              <img src={`${'http://localhost:8080/avatar'}/${avatar}`} alt={name}  width="90px"/>
+              </div>
+              </div>
             </CardBody>
           </Card>
 
@@ -90,64 +146,90 @@ const togglePassword =()=>{
                 <CardBody>
                   <CardTitle className="mb-4 font-size-18">Update Member</CardTitle>
                  
-                  <form >
+                  {/* <form encType="multipart/form-data" method="post"> */}
+                  <AvForm  onValidSubmit={(e, v) => {
+                        updateMember(e, v)
+                      }}>
                       <Row>
                         
-
                         <Col lg={6}>
                         <div className="mb-3">
-                            <label htmlFor="member_name">Member Name</label>
-                            <input
+                            {/* <label htmlFor="member_name">Member Name</label> */}
+                            <AvField
                               type="text"
+                              label="Name"
+                              name="name"
                               className="form-control"
                               id="member_name"
                               placeholder="Enter Name"
-                              // onChange={e => setname(e.target.value)}
+                              onChange={e => setname(e.target.value)}
+                              required
+                              defaultValue={name}
                               // value = {name}
                             />
                           </div>
                         </Col>
 
                         <Col lg={6}>
-                        <div className="mb-3">
-                            <label htmlFor="profile_pic">Photo</label>
-                            <input
+                        <div className="mb-3 ">
+                            {/* <label htmlFor="profile_pic">Photo</label> */}
+                           
+
+                            
+                            <AvField
                               type="file"
+                              label="Update Photo"
+                              name="photo"
                               className="form-control"
                               id="profile_pic"
-                              // onChange={e => setprofile_pic(e.target.value)}
+                              onChange={e => handleFileChange(e.target.files[0])}
                             />
-                          </div>
+                           
+                        
+                         </div>
                         </Col>
 
                         <Col lg={6}>
                           <div className="mb-3">
-                            <label htmlFor="member_email">Email</label>
+                            {/* <label htmlFor="member_email">Email</label> */}
                          
-                            <input
+                            <AvField
                               type="email"
+                              label="Email"
                               className="form-control"
                               id="member_email"
+                              name="email"
                               placeholder="Enter Email"
-                              // onChange={e => setemail(e.target.value)}
-                              // value = {email}
+                              onChange={e => setemail(e.target.value)}
+                              required
                             />
 
               </div>
                         </Col>
                      
                         <Col lg={6}>
-                          <div className="mb-3">
-                            <label htmlFor="password">Password</label>
+                          <div className="mb-3 ">
+                          <label htmlFor="Password">Password</label>
                             <div className="d-flex">
-                            <input
+
+                          <div className="col-md-11">
+                          <AvField
                               type={passwordType}
+                              // label="Password"
                               className="form-control"
                               id="member_password"
-                              placeholder="Enter Member Password"
+                              name="member_password"
+                              placeholder="Enter Password"
+                              required
                               onChange={e => setspassword(e.target.value)}
                             />
-                            <button type="button" className="btn btn-outline-primary mr-2" onClick={togglePassword}>
+
+                          </div>
+                            
+                           
+                            <button type="button" className="btn btn-outline-primary" 
+                            style={{marginLeft: "10px"}}
+                            onClick={togglePassword}>
                      { passwordType==="password"? <i className="mdi mdi-eye-off"></i> :<i className="mdi mdi-eye"></i> }
                      </button>
                      </div>
@@ -162,8 +244,9 @@ const togglePassword =()=>{
                       isMulti={false}
                       options={optionGroupType}
                       classNamePrefix="select2-selection"
-                      // onChange={e => settype(e.target.value)}
-                      // value = {type}
+                      onChange={e => settype(e.value)}
+                      defaultValue={{ label: type }}
+
                     />
                       </div>
                     </Col>
@@ -176,9 +259,8 @@ const togglePassword =()=>{
                       isMulti={false}
                       options={optionGroupStaus}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setstatus(e.target.value)}
-                      // value = {status}
-                      defaultValue={{ label: status, value: status }}
+                      onChange={e => setstatus(e.value)}
+                      defaultValue={{ value: status}}
 
                     />
                       </div>
@@ -186,7 +268,7 @@ const togglePassword =()=>{
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="button" className="btn btn-primary" style={{marginRight: "30px"}}  onClick={() => updateMember()}>
+                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} >
                           Update Member
                         </button>
 
@@ -199,7 +281,7 @@ const togglePassword =()=>{
 
                       </Row>
                       
-                    </form>
+                   </AvForm>
 
                  
                 </CardBody>
@@ -211,4 +293,5 @@ const togglePassword =()=>{
   )
 }
 
-export default Updatemember
+// export default Updatemember
+export default withRouter(Updatemember)
