@@ -18,10 +18,15 @@ import { AvForm, AvField } from "availity-reactstrap-validation"
 
 import { updateMember as UpdateMember } from "../../store/actions"
 import { memberUpdate } from '../../helpers/backend_helper'
+import { optionGroupStaus, optionGroupType } from './Constants'
+
 
 const Updatemember = (props) => {
 
   const member_data =   props.location && props.location.state;
+
+  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
+
 
   const alert = useAlert();
   const dispatch = useDispatch();
@@ -36,7 +41,8 @@ const Updatemember = (props) => {
   const status_check = member_data.data.isActive ? '1' : '0';
   const [status, setstatus] = useState('1');
   const [id, setid] = useState(member_data.data._id);
-
+  // console.log('id ' , member_data.data._id)
+// console.log('status_check ', status_check)
 //   const [selectedMulti, setselectedMulti] = useState(null);
 
 const [password, setspassword] = useState(null);
@@ -62,42 +68,15 @@ const togglePassword =()=>{
   setPasswordType("password")
 }
 
-  // User Type
-  const optionGroupType = [
-    {
-      label: "Type",
-      options: [
-        { label: "DM Executive", value: "DM Executive" },
-        { label: "Graphic Designer", value: "Graphic Designer" },
-        { label: "Content Writer", value: "Content Writer" },
-      ],
-    },
-   
-  ];
-
-  // User Status
-  const optionGroupStaus = [
-    {
-      label: "Type",
-      options: [
-        { label: "Active", value: '1' },
-        { label: "InActive", value: '0' },
-      ],
-    },
-   
-  ];
-
-
-
   const updateMember = (event, values) => {
     const formData = new FormData();
     
     formData.append("avatar", avatar);
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
+   formData.append("name", name);
+   formData.append("email", email)
+   password && formData.append("password", password);
     formData.append("userType", type);
-    formData.append("status", status);
+    formData.append("isActive", status);
     // formData.append("id", id);
 
     memberUpdate(formData, id).then(resp=>{
@@ -125,7 +104,6 @@ const togglePassword =()=>{
           {/* Render Breadcrumbs */}
           <Breadcrumbs title="Members" breadcrumbItem="Update Member" />
 
-    
           <Row>
           <Card>
             <CardBody>
@@ -173,9 +151,7 @@ const togglePassword =()=>{
                         <Col lg={6}>
                         <div className="mb-3 ">
                             {/* <label htmlFor="profile_pic">Photo</label> */}
-                           
-
-                            
+                          
                             <AvField
                               type="file"
                               label="Update Photo"
@@ -184,7 +160,6 @@ const togglePassword =()=>{
                               id="profile_pic"
                               onChange={e => handleFileChange(e.target.files[0])}
                             />
-                           
                         
                          </div>
                         </Col>
@@ -201,12 +176,15 @@ const togglePassword =()=>{
                               name="email"
                               placeholder="Enter Email"
                               onChange={e => setemail(e.target.value)}
+                              defaultValue={email}
+                              readOnly
                               required
                             />
 
               </div>
                         </Col>
                      
+                        { id === get_auth_user._id || get_auth_user.userRole == 1  &&
                         <Col lg={6}>
                           <div className="mb-3 ">
                           <label htmlFor="Password">Password</label>
@@ -220,7 +198,7 @@ const togglePassword =()=>{
                               id="member_password"
                               name="member_password"
                               placeholder="Enter Password"
-                              required
+                              // required
                               onChange={e => setspassword(e.target.value)}
                             />
 
@@ -236,6 +214,8 @@ const togglePassword =()=>{
                           </div>
                           
                         </Col>
+                      }
+                      
                       <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="user_type">Type</label>
@@ -260,7 +240,7 @@ const togglePassword =()=>{
                       options={optionGroupStaus}
                       classNamePrefix="select2-selection"
                       onChange={e => setstatus(e.value)}
-                      defaultValue={{ value: status}}
+                      defaultValue={{ label: status_check ? "Active" : "InActive", value: status_check ? true : false}}
 
                     />
                       </div>

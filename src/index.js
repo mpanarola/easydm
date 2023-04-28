@@ -12,7 +12,7 @@ import store from "./store"
 
 const options = {
   timeout: 5000,
-  position: positions.TOP_CENTER
+  position: positions.TOP_RIGHT
 };
 
 

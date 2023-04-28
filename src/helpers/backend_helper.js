@@ -118,21 +118,7 @@ export const getProjectsDetails = id =>
 // get tasks
 export const getTasks = () => get(url.GET_TASKS)
 
-// get websites
-export const getWebsites = () =>   get(url.GET_WEBSITES)
 
-export const getWebsitesDetails = id =>
-  get(`${url.GET_WEBSITE_DETAIL}/${id}`, { params: { id } })
-
-  // add Events
-export const addNewWebsite = website => post(url.ADD_NEW_WEBSITE, website)
-
-// update Event
-export const updateWebsite = website => put(url.UPDATE_WEBSITE, website)
-
-// delete Event
-export const deleteWebsite = website =>
-  del(url.DELETE_WEBSITE, { headers: { website } })
 
 // get websites
 
@@ -184,15 +170,26 @@ const userLogin = data => post(url.USER_LOGIN, data)
 // const addMember = data => post(url.ADD_MEMBER, data)
 
 const getAllMembers = data => post(url.GET_MEMBERS, data)
-
-
-// export const getAllMembers = () => post(url.GET_MEMBERS)
-
 const addMember = data => post(url.ADD_MEMBER, data, {headers: {'Content-Type': 'multipart/form-data'}})
-// const memberUpdate = data => put(`${url.UPDATE_MEMBER}/${'6449f732268ec292ea774b49'}`, data)
-
 const memberUpdate = (data, id) => put(`${url.UPDATE_MEMBER}/${id}`, data, {headers: {'Content-Type': 'multipart/form-data'}})
-const memberDelete = data => post( `${url.DELETE_MEMBER}/${data.id}`, data  )
+export const memberDelete = id =>
+  del(`${url.DELETE_MEMBER}/${id}`, { headers: { id } })
+
+  
+
+// const getAllWebsites = data => post(url.GET_WEBSITES, data)
+// const addWebsite = data => post(url.ADD_MEMBER, data, {headers: {'Content-Type': 'multipart/form-data'}})
+// const webisteUpdate = (data, id) => put(`${url.UPDATE_MEMBER}/${id}`, data, {headers: {'Content-Type': 'multipart/form-data'}})
+
+
+
+export const getWebsites = website =>   post(url.GET_WEBSITES, website)
+export const addNewWebsite = website => post(url.ADD_NEW_WEBSITE, website)
+export const updateWebsite = website => put(url.UPDATE_WEBSITE, website)
+export const deleteWebsite = id =>
+  del(`${url.DELETE_WEBSITE}/${id}`, { headers: { id } })
+  
+
 
 
 export {
@@ -212,7 +209,7 @@ export {
   getAllMembers,
   addMember,
   memberUpdate,
-  memberDelete,
+  // memberDelete,
 
 
 }

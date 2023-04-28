@@ -1,9 +1,7 @@
 // import React, { useState } from "react"
-
-
 import React, { useEffect, useMemo, useState } from "react"
-import PropTypes from "prop-types"
-
+// import PropTypes from "prop-types"
+import Moment from 'moment';
 import { MDBDataTable } from "mdbreact"
 import {
   Row, Col, Card, CardBody, CardTitle
@@ -17,15 +15,14 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
 import { connect } from "react-redux"
 import { useHistory } from 'react-router-dom';
-import { getWebsites, deleteWebsite } from "../../store/websites/actions"
-// import { websitesData } from "../../common/data/websites"
+import { getWebsites, deleteWebsite } from '../../helpers/backend_helper'
+
+import {optionGroupCategory, optionGroup, payload, columns} from './Constants'
+import { useAlert } from "react-alert";
 
 const Webpage = props => {
   const history = useHistory();
-
-  const { websites, onGetWebsites } = props
-
-  const [selectedMulti, setselectedMulti] = useState(null);
+  const alert = useAlert();
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
@@ -33,389 +30,114 @@ const Webpage = props => {
   const [confirm_alert, setconfirm_alert] = useState(false)
 
 
+  const [websites_list, setWebsites_list] = useState([])
+  const [record_id, set_id] = useState()
 
-
-  const deleteWebpage = (e) => {
-    // alert('')
- 
-    const { onDeleteWebsite } = props
-    // const deleted = onDeleteWebsite(e)
-    confirm_both && console.log(onDeleteWebsite(e))
-   
+  const confirmDelete = (id) => {
     setconfirm_both(true)
+    set_id(id)
+  
   };
 
-  const website_data = {category: "Services", webpage: "Home", webpage_url: "www.home.com", assigned_to: "Milan", effective_from: "2023-03-27", published_on: "2023-03-27"}
 
-  
-  function handleMulti(selectedMulti) {
-    setselectedMulti(selectedMulti);
+  const deleteWebpage = () => {
+    if(record_id !== ''){
+      deleteWebsite(record_id).then(resp=>{
+      setconfirm_both(false)
+      alert.success('Your webpage has been deleted.');
+      getAllWebsites()
+    }).catch(err=>{
+      alert.error('Please try again...');
+    })
+
   }
+  };
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
 
-  ];
+  const updateWebsite = (data) => {
+    history.push({
+    pathname: '/update_website',
+    state: { data: data },
+  })
+};
 
-  const optionGroup = [
-    {
-      label: "Members",
-      options: [
-        { label: "Ashish", value: "Ashish" },
-        { label: "Nilesh", value: "Nilesh" },
-        { label: "Milan", value: "Milan" },
-      ],
-    },
 
-  ];
+  const rows = useMemo(() => 
+  websites_list && websites_list.map((row, order) => ({
+    ...row,
+        id: order+1,
+          category: row.category,
+          webpage: (
+            <a href={row.webpageUrl} rel="noopener" target="_blank">{row.webpage}</a>
+          ),
+          // webpage_url: "",
+          assigned_to: (
 
-  const columns = [
-    {
-      label: "ID",
-      field: "id",
-      sort: "asc",
-      width: 150,
-    },
-    {
-      label: "Category",
-      field: "category",
-      sort: "asc",
-      width: 270,
-    },
-    {
-      label: "Web Page",
-      field: "webpage",
-      sort: "asc",
-      width: 150,
-    },
-    {
-      label: "Published On",
-      field: "date",
-      sort: "asc",
-      width: 200,
-    },
-    {
-      label: "Assigned To",
-      field: "assigned_to",
-      sort: "asc",
-      width: 200,
-    },
-    {
-      label: "Effective From",
-      field: "effective_from",
-      sort: "asc",
-      width: 270,
-    },
+            row.assignedTo.length > 0 ?
+            row.assignedTo && row.assignedTo.map(data => (  
+              <div className="d-flex align-items-start">
+              <div className="me-3 align-self-center">
+                <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${data.avatar}`} alt={data.name} className="avatar-sm rounded-circle" title="Ashish" />
+              </div>
+            </div>
 
-    {
-      label: "Action",
-      field: "action",
-      width: 200,
-    },
-
-  ];
-
-  const rows = [
-    {
-      id: "1",
-      category: "Services",
-      webpage: (
-        <a href="https://www.home.com/" rel="noopener" target="_blank">Home</a>
-      ),
-      // webpage_url: "",
-      assigned_to: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
-          </div>
-          {/* <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-          </div> */}
-        </div>
-      ),
-      effective_from: "30-Mar-2023",
-      date: "27-Mar-2023",
-      action: (
-        <div className="d-flex">
-          <div
-            className="btn btn-primary"
-            style={{
-              cursor: "pointer",
-              marginRight: "10px"
-            }}
-            onClick={() => { history.push({
-                pathname: '/update_website',
-                state: { data: website_data },
-              }) }}
-          >
-            View
+            )) :   <div className="d-flex align-items-start">
+            <div className="me-3 align-self-center">
+              <img src={`${process.env.REACT_APP_DATABASEURL}avatar/def.png`} alt="Default Image" className="avatar-sm rounded-circle" title="Ashish" />
+            </div>
           </div>
 
-          <div
-            className="btn btn-danger"
-            onClick={() => deleteWebpage()}
-          >
-            Delete
-          </div>
-
-        </div>
-      )
-    },
-    {
-      id: "2",
-      category: "Industry",
-      webpage: (
-        <a href="https://www.about.com" target="_blank">About</a>
-      ),
-      assigned_to: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
-          </div>
-          {/* <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-          </div> */}
-        </div>
-      ),
-      effective_from: "30-Mar-2023",
-      date: "29-Mar-2023",
-      action: (
-        <div className="d-flex">
-          <div
-            className="btn btn-primary"
-            style={{
-              cursor: "pointer",
-              marginRight: "10px"
-            }}
-            onClick={() => { history.push({
-                pathname: '/update_website',
-                state: { data: website_data },
-              }) }}
-          >
-            View
-          </div>
-
-          <div
-            className="btn btn-danger"
-            onClick={() => deleteWebpage()}
-          >
-            Delete
-          </div>
-
-        </div>
-      )
-    },
-    {
-      id: "3",
-      category: "Technologies",
-      webpage: (
-        <a href="https://www.contact.com" target="_blank">Contact</a>
-      ),
-      assigned_to: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle"  title="Ashish" />
-          </div>
-          {/* <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-          </div> */}
-        </div>
-      ),
-      effective_from: "1-Apr-2023",
-      date: "28-Mar-2023",
-      action: (
-        <div className="d-flex">
-          <div
-            className="btn btn-primary"
-            style={{
-              cursor: "pointer",
-              marginRight: "10px"
-            }}
-            onClick={() => { history.push({
-                pathname: '/update_website',
-                state: { data: website_data },
-              }) }}
-          >
-            View
-          </div>
-
-          <div
-            className="btn btn-danger"
-            onClick={() => deleteWebpage()}
-          >
-            Delete
-          </div>
-
-        </div>
-      )
-    },
-    {
-      id: "4",
-      category: "Career",
-      webpage: (
-        <a href="https://www.blogs.com" target="_blank">Blogs</a>
-      ),
-      assigned_to: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
-          </div>
-          {/* <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-          </div> */}
-        </div>
-      ),
-      effective_from: "28-Mar-2023",
-      date: "27-Mar-2023",
-      action: (
-        <div className="d-flex">
-          <div
-            className="btn btn-primary"
-            style={{
-              cursor: "pointer",
-              marginRight: "10px"
-            }}
-            onClick={() => { history.push({
-                pathname: '/update_website',
-                state: { data: website_data },
-              }) }}
-          >
-            View
-          </div>
-
-          <div
-            className="btn btn-danger"
-            onClick={() => deleteWebpage()}
-          >
-            Delete
-          </div>
-
-        </div>
-      )
-    },
-    {
-      id: "5",
-      category: "Blogs",
-      webpage: (
-        <a href="https://www.events.com" target="_blank">Events</a>
-      ),
-      assigned_to: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
-          </div>
-          {/* <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-          </div> */}
-
-        </div>
-      ),
-      effective_from: "30-Mar-2023",
-      date: "27-Mar-2023",
-      action: (
-        <div className="d-flex">
-          <div
-            className="btn btn-primary"
-            style={{
-              cursor: "pointer",
-              marginRight: "10px"
-            }}
-            onClick={() => { history.push({
-                pathname: '/update_website',
-                state: { data: website_data },
-              }) }}
-          >
-            View
-          </div>
-
-          <div
-            className="btn btn-danger"
-            onClick={() => deleteWebpage()}
-          >
-            Delete
-          </div>
-
-        </div>
-      )
-    }
-
-  ];
-
-  // const rows = useMemo(() => 
-  // websites.map((row, order) => ({
-  //   ...row,
-  //       id: row.id,
-  //     category: row.category,
-  //     webpage: (
-  //       <a href={row.webpage_url} rel="noopener" target="_blank">{row.webpage}</a>
-  //     ),
-  //     date: row.date,
-  //     // webpage_url: "",
-  //     assigned_to: (
-  //       <div className="d-flex align-items-start ">
-  //         <div className="me-3 align-self-center">
-  //           <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" title="Ashish" />
-  //         </div>
-  //         {/* <div className="me-3 align-self-center">
-  //           <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" title="Nilesh" />
-  //         </div> */}
-  //       </div>
-  //     ),
-  //     effective_from: row.effective_from,
-      
-  //     action: (
-  //       <div className="d-flex">
-  //         <div
-  //           className="btn btn-primary"
-  //           style={{
-  //             cursor: "pointer",
-  //             marginRight: "10px"
-  //           }}
             
-  //           onClick={() => { 
-              
-  //             history.push({
-  //               pathname: '/update_website',
-  //               state: { data: row },
-  //             })
-              
-  //            }}
-  //         >
-  //           View
-  //         </div>
+            
+          ),
+          effective_from: Moment(row.effectiveFrom).format('DD-MMMM-YYYY'),
+          date: Moment(row.publishedOn).format('DD-MMMM-YYYY'),
+          action: (
+            <div className="d-flex">
+              <div
+                className="btn btn-primary"
+                style={{
+                  cursor: "pointer",
+                  marginRight: "10px"
+                }}
+                onClick={() => updateWebsite(row)}
+              >
+                View
+              </div>
+    
+              <div
+                className="btn btn-danger"
+                onClick={() => confirmDelete(row._id) }
+              >
+                Delete
+              </div>
+    
+            </div>
+          )
+      
+     
+  })), [websites_list])
 
-  //         <div
-  //           className="btn btn-danger"
-  //           onClick={() => deleteWebpage(row.id)}
-  //         >
-  //           Delete
-  //         </div>
-
-  //       </div>
-  //     )
-  // })), [websites])
-
-console.log('rows ', rows)
-  const getWebsites = () => {
-
-    console.log('websites ', websites)
-
+  const getAllWebsites = (event, values) => {
+    getWebsites(payload).then(resp=>{
+      setWebsites_list(resp?.data[0]?.list)
+      console.log('resp?.data ', resp?.data[0]?.list)
+      // dispatch(getMembers(resp?.data))
+    
+    }).catch(err=>{
+      alert.error('Backend server not responding, Please try again....');
+    })
+    
   }
 
 
+  useEffect(()=>{
+    setTimeout(function() {
+      getAllWebsites()
+  }, 1000);
 
-useEffect(() => {
-  onGetWebsites()
-}, [onGetWebsites])
+},[]);
+
 
 
 // const recentTasks = tasks.find(task => task.title === "Recent Tasks")
@@ -477,16 +199,17 @@ return (
               confirmBtnBsStyle="success"
               cancelBtnBsStyle="danger"
               onConfirm={() => {
+                deleteWebpage()
                 setconfirm_both(false)
-                setsuccess_dlg(true)
-                setdynamic_title("Deleted")
-                setdynamic_description("Your webpage has been deleted.")
+                // setsuccess_dlg(true)
+                // setdynamic_title("Deleted")
+                // setdynamic_description("Your webpage has been deleted.")
               }}
               onCancel={() => {
                 setconfirm_both(false)
-                setsuccess_dlg(true)
-                setdynamic_title("Cancelled")
-                setdynamic_description("Your webpage is safe :)")
+                // setsuccess_dlg(true)
+                // setdynamic_title("Cancelled")
+                // setdynamic_description("Your webpage is safe :)")
               }}
             >
               You won't be able to revert this!
@@ -500,23 +223,25 @@ return (
 )
 }
 
-Webpage.propTypes = {
-  websites: PropTypes.array,
-  onGetWebsites: PropTypes.func,
-  onDeleteWebsite: PropTypes.func,
+// Webpage.propTypes = {
+//   websites: PropTypes.array,
+//   onGetWebsites: PropTypes.func,
+//   onDeleteWebsite: PropTypes.func,
 
-}
+// }
 
-const mapStateToProps = ({ websites }) => ({
-  websites: websites.websites,
-})
+// const mapStateToProps = ({ websites }) => ({
+//   websites: websites.websites,
+// })
 
-const mapDispatchToProps = dispatch => ({
-  onGetWebsites: () => dispatch(getWebsites()),
-  onDeleteWebsite: website => dispatch(deleteWebsite(website)),
-})
+// const mapDispatchToProps = dispatch => ({
+//   onGetWebsites: () => dispatch(getWebsites()),
+//   onDeleteWebsite: website => dispatch(deleteWebsite(website)),
+// })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Webpage))
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(withRouter(Webpage))
+
+export default withRouter(Webpage)

@@ -42,7 +42,7 @@ const history = useHistory();
       alert.success('Login Successfully');
       dispatch(loginUser(resp?.data))
 
-      let auth_data = { name: 'Milan', email: 'Milan',  avatar: 'http://localhost:3000/static/media/avatar-2.feb0f89d.jpg', token: resp?.data[0].token, userRole: 'Admin'}
+      let auth_data = { name: resp?.data[0].name, email: resp?.data[0].email,  avatar: resp?.data[0].avatar, token: resp?.data[0].token, userRole: resp?.data[0].userRole, user_id: resp?.data[0]._id }
       localStorage.setItem("authUser", JSON.stringify(auth_data))
       history.push("/dashboard") 
       // localStorage.setItem("userName", 'Milan Paladiya')

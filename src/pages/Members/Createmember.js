@@ -17,6 +17,8 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { registerUser } from "../../store/actions"
 import { addMember } from '../../helpers/backend_helper'
 
+import { optionGroupStaus, optionGroupType } from './Constants'
+
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
 const Createmember = () => {
@@ -42,35 +44,6 @@ const togglePassword =()=>{
   }
   setPasswordType("password")
 }
-
-
-
-  // User Type
-  const optionGroupType = [
-    {
-      label: "Type",
-      options: [
-        { label: "DM Executive", value: "DM Executive" },
-        { label: "Graphic Designer", value: "Graphic Designer" },
-        { label: "Content Writer", value: "Content Writer" },
-      ],
-    },
-   
-  ];
-
-  // User Status
-  const optionGroupStaus = [
-    {
-      label: "Type",
-      options: [
-        { label: "Active", value: true },
-        { label: "InActive", value: false },
-      ],
-    },
-   
-  ];
-
-
 
   const handleFileChange = (file) => {
     setprofile_pic(file);

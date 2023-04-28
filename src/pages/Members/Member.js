@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react"
+import { useAlert } from "react-alert";
 import { MDBDataTable } from "mdbreact"
 import { Row, Col, Card, CardBody, CardTitle, CardSubtitle,   Modal,
   ModalHeader,
@@ -15,7 +16,7 @@ import { useDispatch } from "react-redux"
 import Moment from 'moment';
 import { deleteMember , getMembers } from "../../store/actions"
 import { memberDelete, getAllMembers } from '../../helpers/backend_helper'
-
+import { columns } from './Constants'
 
 const Member = () => {
   const [modal, setmodal] = useState(false)
@@ -29,10 +30,14 @@ const Member = () => {
   const [confirm_alert, setconfirm_alert] = useState(false)
 
   const [members_list, setcmembers_list] = useState([])
+  const [record_id, set_id] = useState()
+
 
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const alert = useAlert();
+
 
   const updateMember = (data) => {
       history.push({
@@ -43,11 +48,29 @@ const Member = () => {
   
 
   useEffect(()=>{
-    allMembers()
+    setTimeout(function() {
+      allMembers()
+  }, 1000);
+
 },[]);
 
-  const deleteMember = (e) => {
-    setconfirm_both(true)
+const confirmDelete = (id) => {
+  setconfirm_both(true)
+  set_id(id)
+
+};
+
+  const deleteMember = () => {
+    if(record_id !== ''){
+    memberDelete(record_id).then(resp=>{
+      setconfirm_both(false)
+      alert.success('Your member has been deleted.');
+      allMembers()
+    }).catch(err=>{
+      alert.error('Please try again...');
+    })
+
+  }
   };
 
 
@@ -59,65 +82,15 @@ const Member = () => {
     
     }).catch(err=>{
       dispatch(getMembers(err.response))
-      // console.log('resp err=>>', err.response);
+      alert.error('Backend server not responding, Please try again....');
     })
     
   }
 
 
-  const columns = [
-    {
-      label: "ID",
-      field: "id",
-      sort: "asc",
-      width: 150,
-    },
-    {
-      label: "Photo",
-      field: "avatar",
-      sort: "asc",
-      width: 150,
-    },
-    {
-      label: "Name",
-      field: "name",
-      sort: "asc",
-      width: 100,
-    },
-    {
-      label: "Email",
-      field: "email",
-      sort: "asc",
-      width: 270,
-    },
-    {
-      label: "Type",
-      field: "userType",
-      sort: "asc",
-      width: 200,
-    },
-    {
-      label: "Status",
-      field: "isActive",
-      sort: "asc",
-      width: 150,
-    },
-    {
-      label: "Created On",
-      field: "createdAt",
-      sort: "asc",
-      width: 100,
-    },
-    {
-      label: "Action",
-      field: "action",
-      width: 200,
-    },
-   
-  ];
 
   const rows = useMemo(() => 
-  members_list.map((row, order) => ({
+  members_list && members_list.map((row, order) => ({
     ...row,
         id: order+1,
               name: row.name,
@@ -134,7 +107,7 @@ const Member = () => {
               isActive: (
                 row.isActive ? 
                 <span className= "bg-primary badge badge-secondary font-size-13">Active</span>
-                : <span className= "bg-primary badge badge-secondary font-size-13">In Active</span>
+                :  <span className="bg-danger badge badge-secondary font-size-13">In Active</span>
               
               ),
               createdAt:  Moment(row.createdAt).format('DD-MMMM-YYYY'),
@@ -154,7 +127,7 @@ const Member = () => {
                   
                   <div
                     className="btn btn-danger"
-                    onClick={() => deleteMember(row._id)}
+                    onClick={() => confirmDelete(row._id) }
                   >
                     Delete
                   </div>
@@ -258,7 +231,8 @@ const Member = () => {
 
         <Breadcrumbs title="Pages" breadcrumbItem="Members" />
 
-        {success_dlg ? (
+
+        { success_dlg ? (
             <SweetAlert
               success
               title={dynamic_title}
@@ -269,7 +243,6 @@ const Member = () => {
               {dynamic_description}
             </SweetAlert>
           ) : null}
-
 
         <Card >
               <CardBody>
@@ -299,9 +272,6 @@ const Member = () => {
           </Col>
         </Row>
 
-
-
-                  
                   {/* Delete popup */}
           <Col xl="3" lg="4" sm="6" className="mb-2">
                 
@@ -313,16 +283,17 @@ const Member = () => {
                     confirmBtnBsStyle="success"
                     cancelBtnBsStyle="danger"
                     onConfirm={() => {
+                      deleteMember()
                       setconfirm_both(false)
-                      setsuccess_dlg(true)
-                      setdynamic_title("Deleted")
-                      setdynamic_description("Your member has been deleted.")
+                      // setsuccess_dlg(true)
+                      // setdynamic_title("Deleted")
+                      // setdynamic_description("Your member has been deleted.")
                     }}
                     onCancel={() => {
                       setconfirm_both(false)
-                      setsuccess_dlg(true)
-                      setdynamic_title("Cancelled")
-                      setdynamic_description("Your member is safe :)")
+                      // setsuccess_dlg(true)
+                      // setdynamic_title("Cancelled")
+                      // setdynamic_description("Your member is safe :)")
                     }}
                   >
                     You won't be able to revert this!

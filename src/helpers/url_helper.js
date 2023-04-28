@@ -62,12 +62,7 @@ export const GET_PROJECT_DETAIL = "/project"
 export const GET_TASKS = "/tasks"
 
 
-export const GET_WEBSITES = "/websites"
-export const GET_WEBSITE_DETAIL = "/website"
 
-export const ADD_NEW_WEBSITE = "/add/website"
-export const UPDATE_WEBSITE = "/update/website"
-export const DELETE_WEBSITE = "/delete/website"
 
 
 
@@ -100,6 +95,14 @@ export const USER_LOGIN = "/login"
 export const ADD_MEMBER = "/registration"
 export const UPDATE_MEMBER = "/update_member"
 export const DELETE_MEMBER = "/delete_member"
+
+
+export const GET_WEBSITES = "/get_websites"
+// export const GET_WEBSITE_DETAIL = "/website"
+export const ADD_NEW_WEBSITE = "create_website"
+export const UPDATE_WEBSITE = "/update_website"
+export const DELETE_WEBSITE = "/delete_website"
+export const VIEW_WEBSITE_ACTIVITY = "/activity_website"
 
 
 // export const GET_MEMBERS = "/registration"

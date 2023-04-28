@@ -15,62 +15,30 @@ import Historytimeline from "./Historytimeline"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { updateWebsite } from "../../store/websites/actions"
-import { websites } from "../../common/data";
-
+import {optionGroupCategory, optionGroup} from './Constants'
+import { AvForm, AvField } from "availity-reactstrap-validation"
 
 const Updatepage = (props) => {
 
   const data =   props.location && props.location.state;
-console.log('data ', data)
-let published_on_format = Moment(data.data.date).format('YYYY-MM-DD')
-let effective_from_format = Moment(data.data.effective_from).format('YYYY-MM-DD')
+let published_on_format = Moment(data.data.publishedOn).format('YYYY-MM-DD')
+let effective_from_format = Moment(data.data.effectiveFrom).format('YYYY-MM-DD')
 
-let head_published_on = Moment(data.data.date).format('DD-MMMM-YYYY');
+let head_published_on = Moment(data.data.publishedOn).format('DD-MMMM-YYYY');
 
 const [webpage, setwebpage] = useState(data.data.webpage);
-const [webpage_url, setwebpage_url] = useState(data.data.webpage_url);
+const [webpage_url, setwebpage_url] = useState(data.data.webpageUrl);
 const [category, setcategory] = useState(data.data.category);
-const [assigned_to, setassigned_to] = useState("Milan");
+const [assigned_to, setassigned_to] = useState(data.data.assignedTo);
 const [effective_from, seteffective_from] = useState(effective_from_format);
 const [published_on, setpublished_on] = useState(published_on_format);
-
-const [selectedMulti, setselectedMulti] = useState(null);
 
 
 console.log('webpage ', webpage)
   const history = useHistory();
 
-  function handleMulti(selectedMulti) {
-    setselectedMulti(selectedMulti);
-  }
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
-   
-  ];
-
-  const optionGroup = [
-    {
-      label: "Members",
-      options: [
-        { label: "Ashish", value: "Ashish" },
-        { label: "Nilesh", value: "Nilesh" },
-        { label: "Milan", value: "Milan" },
-      ],
-    },
-   
-  ];
-
-  const updateMember = (e) => {
+  const updateWebsite = (e) => {
     const { onAddNewEvent, onUpdateWebsite } = props
 
     const updateWebsite = {
@@ -112,7 +80,10 @@ console.log('webpage ', webpage)
               <Card>
                 <CardBody>
                   <CardTitle className="mb-4 font-size-18">Update Website</CardTitle>
-                  <form >
+                  <AvForm  onValidSubmit={(e, v) => {
+                        updateWebsite(e, v)
+                      }}>
+
                   <Row>
 
                   <Col lg={6}>
@@ -131,9 +102,11 @@ console.log('webpage ', webpage)
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="name">Web Page</label>
-                        <input
+                        {/* <label htmlFor="name">Web Page</label> */}
+                        <AvField
                           type="text"
+                          label="Web Page"
+                          name="webpage"
                           className="form-control"
                           id="webpage"
                           placeholder="Enter Web Page"
@@ -145,8 +118,10 @@ console.log('webpage ', webpage)
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="webpage_url">Web Page URL</label>
-                        <input
+                        {/* <label htmlFor="webpage_url">Web Page URL</label> */}
+                        <AvField
+                          label="Web Page URL"
+                          name="webpage_url"
                           type="url"
                           className="form-control"
                           id="webpage_url"
@@ -159,9 +134,11 @@ console.log('webpage ', webpage)
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="published_on">Published On</label>
-                        <input
+                        {/* <label htmlFor="published_on">Published On</label> */}
+                        <AvField
                           type="date"
+                          label="Published On"
+                          name="published_on"
                           className="form-control"
                           id="published_on"
                           onChange={e => setpublished_on(e.target.value)}
@@ -196,8 +173,10 @@ console.log('webpage ', webpage)
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="effective_from">Effective From</label>
-                        <input
+                        {/* <label htmlFor="effective_from">Effective From</label> */}
+                        <AvField
+                        label="Effective From"
+                        name="effective_from"
                           type="date"
                           className="form-control"
                           id="effective_from"
@@ -210,7 +189,7 @@ console.log('webpage ', webpage)
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="button" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => updateMember()}>
+                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} >
                           Update Website
                         </button>
 
@@ -220,7 +199,7 @@ console.log('webpage ', webpage)
                       </div>
                     </Col>
                   </Row>
-                </form>
+                </AvForm>
                 </CardBody>
               </Card>
             </Col>

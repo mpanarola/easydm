@@ -25,6 +25,8 @@ const ProfileMenu = props => {
 
   const [username, setusername] = useState("Milan")
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
+  const user_avatar = get_auth_user.avatar
+
 
   useEffect(() => {
     if (localStorage.getItem("authUser")) {
@@ -67,8 +69,7 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-            src={get_auth_user.avatar}
-            alt={get_auth_user.name}
+           src={`${process.env.REACT_APP_DATABASEURL}avatar/${user_avatar}`} alt={get_auth_user.name}
           />{" "}
           <span className="d-none d-xl-inline-block ms-1">{get_auth_user.name}</span>{" "}
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block"></i>{" "}

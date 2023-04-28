@@ -15,15 +15,18 @@ const Sidebar = props => {
   // console.log('useDetails =>', userDetail);
   // const get_auth_user = localStorage.getItem('authUser');
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
+  const user_avatar = get_auth_user.avatar
+
+
+  // put(`${url.UPDATE_MEMBER}/${'6449f881268ec292ea774b50'}`, data, {headers: {'Content-Type': 'multipart/form-data'}}
   
-  // console.log('get_auth_user ', get_auth_user.token)
   return (
     <React.Fragment>
       <div className="vertical-menu">
         <div className="h-100">
           <div className="user-wid text-center py-4">
             <div className="user-img">
-              <img src={get_auth_user.avatar} alt="" className="avatar-md mx-auto rounded-circle" />
+              <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${user_avatar}`} alt={get_auth_user.name} className="avatar-md mx-auto rounded-circle" />
             </div>
 
               <div className="mt-3">
