@@ -185,9 +185,13 @@ export const memberDelete = id =>
 
 export const getWebsites = website =>   post(url.GET_WEBSITES, website)
 export const addNewWebsite = website => post(url.ADD_NEW_WEBSITE, website)
-export const updateWebsite = website => put(url.UPDATE_WEBSITE, website)
+export const updateWebsite = (website, id) => put(`${url.UPDATE_WEBSITE}/${id}`, website )
 export const deleteWebsite = id =>
   del(`${url.DELETE_WEBSITE}/${id}`, { headers: { id } })
+
+
+  export const activityWebsite = (id) => get(`${url.VIEW_WEBSITE_ACTIVITY}/${id}` )
+
   
 
 

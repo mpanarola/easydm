@@ -1,14 +1,35 @@
-import React, { Component } from "react"
+import React, { useState, useEffect } from "react"
 import { Button, Card, CardBody, CardTitle } from "reactstrap"
 import { Link } from "react-router-dom"
+import {activityWebsite } from '../../helpers/backend_helper'
 
-class Historytimeline extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { }
-  }
+const Historytimeline = (props) => {
 
-  render() {
+// class Historytimeline extends Component {
+//   constructor(props) {
+//     super(props)
+//     this.state = { }
+//   }
+// const [activity_list, setactivity_list] = useState('Home');
+
+// const getallActivityWebsite = () => {
+//   activityWebsite(props.id).then(resp=>{
+//     setactivity_list(resp?.data?.list)
+  
+//   }).catch(err=>{
+//   })
+  
+// }
+
+
+// useEffect(()=>{
+
+//   setTimeout(function() {
+//     getallActivityWebsite()
+// }, 1000);
+
+// },[]);
+
     return (
       <React.Fragment>
         <Card>
@@ -120,7 +141,8 @@ class Historytimeline extends Component {
         </Card>
       </React.Fragment>
     )
-  }
+
 }
+
 
 export default Historytimeline

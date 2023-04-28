@@ -1,11 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { useAlert } from "react-alert";
 import { MDBDataTable } from "mdbreact"
-import { Row, Col, Card, CardBody, CardTitle, CardSubtitle,   Modal,
-  ModalHeader,
-  ModalBody, } from "reactstrap"
+import { Row, Col, Card, CardBody, CardTitle } from "reactstrap"
   import { Link } from "react-router-dom"
-  import Select from "react-select";
+  // import Select from "react-select";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
@@ -76,8 +74,9 @@ const confirmDelete = (id) => {
 
   const allMembers = (event, values) => {
     getAllMembers().then(resp=>{
-      setcmembers_list(resp?.data?.list)
-      console.log('resp?.data ', resp?.data?.list)
+      setcmembers_list(resp?.data[0]?.list)
+      
+      console.log('resp?.data ', resp?.data[0]?.list)
       dispatch(getMembers(resp?.data))
     
     }).catch(err=>{
@@ -98,7 +97,7 @@ const confirmDelete = (id) => {
                
                 <div className="d-flex align-items-start">
                 <div className="me-3 align-self-center">
-                <img src= {`${'http://localhost:8080/avatar'}/${row.avatar}`}  alt={row.name} className="avatar-sm rounded-circle" />
+                <img src= {`${'http://localhost:8080/avatar'}/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
                 </div>
               </div>
               ),

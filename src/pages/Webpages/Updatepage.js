@@ -10,13 +10,18 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import Historytimeline from "./Historytimeline"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-import { updateWebsite } from "../../store/websites/actions"
+
+import { updateWebsite as websiteUpdate } from '../../helpers/backend_helper'
 import {optionGroupCategory, optionGroup} from './Constants'
 import { AvForm, AvField } from "availity-reactstrap-validation"
+import { useAlert } from "react-alert";
+import {getAllMembers } from '../../helpers/backend_helper'
+
+
 
 const Updatepage = (props) => {
 
@@ -29,35 +34,87 @@ let head_published_on = Moment(data.data.publishedOn).format('DD-MMMM-YYYY');
 const [webpage, setwebpage] = useState(data.data.webpage);
 const [webpage_url, setwebpage_url] = useState(data.data.webpageUrl);
 const [category, setcategory] = useState(data.data.category);
-const [assigned_to, setassigned_to] = useState(data.data.assignedTo);
+const [assigned_to, setassigned_to] = useState([]);
+
 const [effective_from, seteffective_from] = useState(effective_from_format);
 const [published_on, setpublished_on] = useState(published_on_format);
+const [id, setwebsite_id] = useState(data.data._id);
+const [members_list, setmembers_list] = useState([])
 
 
-console.log('webpage ', webpage)
-  const history = useHistory();
+const member_payload =  {
+  "options": {
+    "select": ['name']
+  }
+}
+
+const allMembers = () => {
+  getAllMembers(member_payload).then(resp=>{
+    setmembers_list(resp?.data?.list)
+  
+  }).catch(err=>{
+  })
+  
+}
+
+useEffect(()=>{
+
+  data.data.assignedTo && data.data.assignedTo.map( user => (
+    setassigned_to( prev =>  ([...prev,user._id ]))
+  )
+  )
+
+  setTimeout(function() {
+    allMembers()
+}, 1000);
+
+},[]);
 
 
-  const updateWebsite = (e) => {
-    const { onAddNewEvent, onUpdateWebsite } = props
+const history = useHistory();
+const alert = useAlert();
 
-    const updateWebsite = {
+  const updateWebsite = (event, values) => {
+
+    const website_data = {
       webpage: webpage,
-      webpage_url: webpage_url,
+      webpageUrl: webpage_url,
       category: category,
-      assigned_to: assigned_to,
-      effective_from: effective_from,
+      assignedTo: assigned_to,
+      effectiveFrom: effective_from,
+      publishedOn: published_on
     }
-    // update event
-  const save_update_website =   onUpdateWebsite(updateWebsite)
-   
-  };
+
+    // console.log('update website ', website_id)
+    websiteUpdate(website_data, id).then(resp=>{
+    // websiteUpdate((website_data, website_id)).then(resp=>{
+
+      console.log('resp?.data ', resp?.data)
+      alert.success('Member Updated Successfully');
+      history.push('/webpages')
+
+    }).catch(err=>{
+      alert.error('Backend server not responding, Please try again....');
+    })
+    
+  }
 
 
   const goBack = (e) => {
     // history.goBack();
     history.push('/webpages');
   };
+
+
+  // const optionGroup = [
+  //   {
+  //     label: "Members",
+  //     options: 
+        
+      
+  //   }
+
+  // ];
 
 
   return (
@@ -156,15 +213,31 @@ console.log('webpage ', webpage)
                         <label htmlFor="assigned_to">Assigned To</label>
                         <Select
                       // value={}
-                      defaultValue={{ label: assigned_to, value: assigned_to }}
+                      defaultValue={
+                        data.data.assignedTo && data.data.assignedTo.map( user => (
+                          { label: user.name, value: user._id}
+                        )
+                        )
+                      }
                       id="assigned_to"
-
                       isMulti={true}
-                      onChange={(e) => {
-                        // handleMulti();
-                        setassigned_to(e.value)
+                      onChange={(e, val) => {
+
+                        console.log('event ', val.option.value)
+                        // setassigned_to(e.value);
+                        setassigned_to( prev =>  ([...prev, val.option.value ]))
+
+                        // console.log('event ', e.target)
                       }}
-                      options={optionGroup}
+                      options= {
+
+                        members_list && members_list.map( user => ( 
+      
+                          { label: user.name, value: user._id, id: user._id }
+                        )
+                        )
+
+                      }
                       classNamePrefix="select2-selection"
                     />
                       </div>
@@ -204,7 +277,7 @@ console.log('webpage ', webpage)
               </Card>
             </Col>
 
-            <Historytimeline />
+            <Historytimeline id={id} />
           </Row>
       </div>
     </>
@@ -213,15 +286,18 @@ console.log('webpage ', webpage)
 
 
 
-Updatepage.propTypes = {
-  onUpdateWebsite: PropTypes.func,
-}
-const mapStateToProps = ({ website }) => ({
-})
-const mapDispatchToProps = dispatch => ({
-  onUpdateWebsite: website => dispatch(updateWebsite(website)),
-})
-export default connect(mapStateToProps, mapDispatchToProps)(Updatepage)
+// Updatepage.propTypes = {
+//   onUpdateWebsite: PropTypes.func,
+// }
+// const mapStateToProps = ({ website }) => ({
+// })
+// const mapDispatchToProps = dispatch => ({
+//   onUpdateWebsite: website => dispatch(updateWebsite(website)),
+// })
 
+
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Updatepage)
+export default withRouter(Updatepage)
 
 // export default Updatepage

@@ -17,7 +17,7 @@ import { connect } from "react-redux"
 import { useHistory } from 'react-router-dom';
 import { getWebsites, deleteWebsite } from '../../helpers/backend_helper'
 
-import {optionGroupCategory, optionGroup, payload, columns} from './Constants'
+import { optionGroupCategory, optionGroup, payload, columns } from './Constants'
 import { useAlert } from "react-alert";
 
 const Webpage = props => {
@@ -36,191 +36,190 @@ const Webpage = props => {
   const confirmDelete = (id) => {
     setconfirm_both(true)
     set_id(id)
-  
+
   };
 
 
   const deleteWebpage = () => {
-    if(record_id !== ''){
-      deleteWebsite(record_id).then(resp=>{
-      setconfirm_both(false)
-      alert.success('Your webpage has been deleted.');
-      getAllWebsites()
-    }).catch(err=>{
-      alert.error('Please try again...');
-    })
+    if (record_id !== '') {
+      deleteWebsite(record_id).then(resp => {
+        setconfirm_both(false)
+        alert.success('Your webpage has been deleted.');
+        getAllWebsites()
+      }).catch(err => {
+        alert.error('Please try again...');
+      })
 
-  }
+    }
   };
 
 
   const updateWebsite = (data) => {
     history.push({
-    pathname: '/update_website',
-    state: { data: data },
-  })
-};
+      pathname: '/update_website',
+      state: { data: data },
+    })
+  };
 
 
-  const rows = useMemo(() => 
-  websites_list && websites_list.map((row, order) => ({
-    ...row,
-        id: order+1,
-          category: row.category,
-          webpage: (
-            <a href={row.webpageUrl} rel="noopener" target="_blank">{row.webpage}</a>
-          ),
-          // webpage_url: "",
-          assigned_to: (
-
+  const rows = useMemo(() =>
+    websites_list && websites_list.map((row, order) => ({
+      ...row,
+      id: order + 1,
+      category: row.category,
+      webpage: (
+        <a href={row.webpageUrl} rel="noopener" target="_blank">{row.webpage}</a>
+      ),
+      // webpage_url: "",
+      assigned_to: (
+        <div className="d-flex align-items-start">
+          {
             row.assignedTo.length > 0 ?
-            row.assignedTo && row.assignedTo.map(data => (  
-              <div className="d-flex align-items-start">
+              row.assignedTo && row.assignedTo.map(data => (
+                
+                <div className="me-3 align-self-center">
+                  <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${data.avatar}`} alt={ data.name} className="avatar-sm rounded-circle" title={data.name} />
+                </div>
+              )) :
               <div className="me-3 align-self-center">
-                <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${data.avatar}`} alt={data.name} className="avatar-sm rounded-circle" title="Ashish" />
+                <img src={`${process.env.REACT_APP_DATABASEURL}avatar/def.png`} alt="Default Image" className="avatar-sm rounded-circle"  />
               </div>
-            </div>
+          }
+        </div>
 
-            )) :   <div className="d-flex align-items-start">
-            <div className="me-3 align-self-center">
-              <img src={`${process.env.REACT_APP_DATABASEURL}avatar/def.png`} alt="Default Image" className="avatar-sm rounded-circle" title="Ashish" />
-            </div>
+
+      ),
+      effective_from: Moment(row.effectiveFrom).format('DD-MMMM-YYYY'),
+      date: Moment(row.publishedOn).format('DD-MMMM-YYYY'),
+      action: (
+        <div className="d-flex">
+          <div
+            className="btn btn-primary"
+            style={{
+              cursor: "pointer",
+              marginRight: "10px"
+            }}
+            onClick={() => updateWebsite(row)}
+          >
+            View
           </div>
 
-            
-            
-          ),
-          effective_from: Moment(row.effectiveFrom).format('DD-MMMM-YYYY'),
-          date: Moment(row.publishedOn).format('DD-MMMM-YYYY'),
-          action: (
-            <div className="d-flex">
-              <div
-                className="btn btn-primary"
-                style={{
-                  cursor: "pointer",
-                  marginRight: "10px"
-                }}
-                onClick={() => updateWebsite(row)}
-              >
-                View
-              </div>
-    
-              <div
-                className="btn btn-danger"
-                onClick={() => confirmDelete(row._id) }
-              >
-                Delete
-              </div>
-    
-            </div>
-          )
-      
-     
-  })), [websites_list])
+          <div
+            className="btn btn-danger"
+            onClick={() => confirmDelete(row._id)}
+          >
+            Delete
+          </div>
+
+        </div>
+      )
+
+
+    })), [websites_list])
 
   const getAllWebsites = (event, values) => {
-    getWebsites(payload).then(resp=>{
+    getWebsites(payload).then(resp => {
       setWebsites_list(resp?.data[0]?.list)
-      console.log('resp?.data ', resp?.data[0]?.list)
+      // console.log('resp?.data ', resp?.data[0]?.list)
       // dispatch(getMembers(resp?.data))
-    
-    }).catch(err=>{
+
+    }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
-    
+
   }
 
 
-  useEffect(()=>{
-    setTimeout(function() {
+  useEffect(() => {
+    setTimeout(function () {
       getAllWebsites()
-  }, 1000);
+    }, 1000);
 
-},[]);
+  }, []);
 
 
 
-// const recentTasks = tasks.find(task => task.title === "Recent Tasks")
+  // const recentTasks = tasks.find(task => task.title === "Recent Tasks")
 
-console.log('websites ', getWebsites())
-return (
-  <React.Fragment>
-    <div className="page-content">
+  // console.log('websites ', getWebsites())
+  return (
+    <React.Fragment>
+      <div className="page-content">
 
-      <Breadcrumbs title="Pages" breadcrumbItem="Websites" />
+        <Breadcrumbs title="Pages" breadcrumbItem="Websites" />
 
-      {success_dlg ? (
-        <SweetAlert
-          success
-          title={dynamic_title}
-          onConfirm={() => {
-            setsuccess_dlg(false)
-          }}
-        >
-          {dynamic_description}
-        </SweetAlert>
-      ) : null}
+        {success_dlg ? (
+          <SweetAlert
+            success
+            title={dynamic_title}
+            onConfirm={() => {
+              setsuccess_dlg(false)
+            }}
+          >
+            {dynamic_description}
+          </SweetAlert>
+        ) : null}
 
-      <Card >
-        <CardBody>
-          {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
-          <div className="float-end">
-            <Link
-              onClick={() => {
-                history.push("/create_website")
-              }}
-              to="#"
-              className="btn btn-primary"
-            >
-              Add Website
-            </Link>
-          </div>
-        </CardBody>
-      </Card>
+        <Card >
+          <CardBody>
+            {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
+            <div className="float-end">
+              <Link
+                onClick={() => {
+                  history.push("/create_website")
+                }}
+                to="#"
+                className="btn btn-primary"
+              >
+                Add Website
+              </Link>
+            </div>
+          </CardBody>
+        </Card>
 
-      <Row>
-        <Col className="col-12">
-          <Card>
-            <CardBody>
-              <CardTitle>Websites List </CardTitle>
-              <MDBDataTable responsive bordered data={{ rows, columns }} />
-            </CardBody>
-          </Card>
-        </Col>
+        <Row>
+          <Col className="col-12">
+            <Card>
+              <CardBody>
+                <CardTitle>Websites List </CardTitle>
+                <MDBDataTable responsive bordered data={{ rows, columns }} />
+              </CardBody>
+            </Card>
+          </Col>
 
-        {/* Delete popup */}
-        <Col xl="3" lg="4" sm="6" className="mb-2">
+          {/* Delete popup */}
+          <Col xl="3" lg="4" sm="6" className="mb-2">
 
-          {confirm_both ? (
-            <SweetAlert
-              title="Are you sure?"
-              warning
-              showCancel
-              confirmBtnBsStyle="success"
-              cancelBtnBsStyle="danger"
-              onConfirm={() => {
-                deleteWebpage()
-                setconfirm_both(false)
-                // setsuccess_dlg(true)
-                // setdynamic_title("Deleted")
-                // setdynamic_description("Your webpage has been deleted.")
-              }}
-              onCancel={() => {
-                setconfirm_both(false)
-                // setsuccess_dlg(true)
-                // setdynamic_title("Cancelled")
-                // setdynamic_description("Your webpage is safe :)")
-              }}
-            >
-              You won't be able to revert this!
-            </SweetAlert>
-          ) : null}
-        </Col>
-      </Row>
-    </div>
+            {confirm_both ? (
+              <SweetAlert
+                title="Are you sure?"
+                warning
+                showCancel
+                confirmBtnBsStyle="success"
+                cancelBtnBsStyle="danger"
+                onConfirm={() => {
+                  deleteWebpage()
+                  setconfirm_both(false)
+                  // setsuccess_dlg(true)
+                  // setdynamic_title("Deleted")
+                  // setdynamic_description("Your webpage has been deleted.")
+                }}
+                onCancel={() => {
+                  setconfirm_both(false)
+                  // setsuccess_dlg(true)
+                  // setdynamic_title("Cancelled")
+                  // setdynamic_description("Your webpage is safe :)")
+                }}
+              >
+                You won't be able to revert this!
+              </SweetAlert>
+            ) : null}
+          </Col>
+        </Row>
+      </div>
 
-  </React.Fragment>
-)
+    </React.Fragment>
+  )
 }
 
 // Webpage.propTypes = {

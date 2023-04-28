@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Row,
   Col,
@@ -12,51 +12,80 @@ import { useHistory } from 'react-router-dom';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
+import {optionGroupCategory} from './Constants'
+import {getAllMembers, addNewWebsite } from '../../helpers/backend_helper'
+import { AvForm, AvField } from "availity-reactstrap-validation"
+import { useAlert } from "react-alert";
+
 const Createpage = () => {
 
   const [webpage, setwebpage] = useState(null);
   const [webpage_url, setwebpage_url] = useState(null);
-  const [category, setcategory] = useState(null);
-  const [assigned_to, setassigned_to] = useState(null);
+  const [category, setcategory] = useState('Services');
+  const [assigned_to, setassigned_to] = useState([]);
   const [effective_from, seteffective_from] = useState(null);
   const [selectedMulti, setselectedMulti] = useState(null);
+  const [published_on, setpublished_on] = useState(null);
+  const [members_list, setmembers_list] = useState([])
 
 // console.log('webpage ', webpage)
   const history = useHistory();
-
+  const alert = useAlert();
   function handleMulti(selectedMulti) {
     setselectedMulti(selectedMulti);
   }
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
-   
-  ];
 
-  const optionGroup = [
-    {
-      label: "Members",
-      options: [
-        { label: "Ashish", value: "Ashish" },
-        { label: "Nilesh", value: "Nilesh" },
-        { label: "Milan", value: "Milan" },
-      ],
-    },
-   
-  ];
+  const member_payload =  {
+    "options": {
+      "select": ['name']
+    }
+  }
+  
+  const allMembers = () => {
+    getAllMembers(member_payload).then(resp=>{
+      setmembers_list(resp?.data?.list)
+    
+    }).catch(err=>{
+    })
+    
+  }
 
-  const createPage = (e) => {
-    history.push('/webpages')
-  };
+
+  useEffect(()=>{
+  
+    setTimeout(function() {
+      allMembers()
+  }, 1000);
+  
+  },[]);
+
+
+
+  const addWebsite = (event, values) => {
+
+    const website_data = {
+      webpage: webpage,
+      webpageUrl: webpage_url,
+      category: category,
+      assignedTo: assigned_to,
+      effectiveFrom: effective_from,
+      publishedOn: published_on
+    }
+
+    // console.log('update website ', website_id)
+    addNewWebsite(website_data).then(resp=>{
+    // websiteUpdate((website_data, website_id)).then(resp=>{
+
+      console.log('resp?.data ', resp?.data)
+      alert.success('Website Create Successfully');
+      history.push('/webpages')
+
+    }).catch(err=>{
+      alert.error('Backend server not responding, Please try again....');
+    })
+    
+  }
 
   const goBack = (e) => {
     // history.goBack();
@@ -76,7 +105,9 @@ const Createpage = () => {
               <Card>
                 <CardBody>
                   <CardTitle className="mb-4 font-size-18">Create Website</CardTitle>
-                  <form >
+                  <AvForm  onValidSubmit={(e, v) => {
+                        addWebsite(e, v)
+                      }}>
                   <Row>
 
                   <Col lg={6}>
@@ -84,9 +115,10 @@ const Createpage = () => {
                         <label htmlFor="category">Category</label>
                         <Select
                       id="category"
+                      defaultValue={{ label: category, value: category }}
                       options={optionGroupCategory}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setcategory(e.target.value)}
+                      onChange={e => setcategory(e.target.value)}
                       // value = {category}
                     />
                       </div>
@@ -94,13 +126,16 @@ const Createpage = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="name">Web Page</label>
-                        <input
+                        {/* <label htmlFor="name">Web Page</label> */}
+                        <AvField
                           type="text"
+                          label="Web Page"
+                          name="webpage"
                           className="form-control"
                           id="webpage"
                           placeholder="Enter Web Page"
-                          // onChange={e => setwebpage(e.target.value)}
+                          onChange={e => setwebpage(e.target.value)}
+                          required
                           // value={webpage}
                         />
                       </div>
@@ -108,14 +143,17 @@ const Createpage = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="webpage_url">Web Page URL</label>
-                        <input
+                        {/* <label htmlFor="webpage_url">Web Page URL</label> */}
+                        <AvField
                           type="url"
+                          label="Web Page URL"
+                          name="webpage_url"
                           className="form-control"
                           id="webpage_url"
                           placeholder="Enter Web Page URL"
-                          // onChange={e => setwebpage_url(e.target.value)}
+                          onChange={e => setwebpage_url(e.target.value)}
                           // value={webpage_url}
+                          required
                         />
                       </div>
                     </Col>
@@ -123,13 +161,16 @@ const Createpage = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="Published_on">Published On</label>
-                        <input
+                        {/* <label htmlFor="Published_on">Published On</label> */}
+                        <AvField
                           type="date"
+                          label="Published On"
+                          name="published_on"
                           className="form-control"
                           id="published_on"
-                          // onChange={e => setPublished_on(e.target.value)}
+                          onChange={e => setpublished_on(e.target.value)}
                           // value={published_on}
+                          required
                         />
                       </div>
                     </Col>
@@ -138,14 +179,24 @@ const Createpage = () => {
                       <div className="mb-3">
                         <label htmlFor="assigned_to">Assigned To</label>
                         <Select
-                      value={selectedMulti}
+                      // value={selectedMulti}
+                      // defaultValue={label: user.name, value: user._id, id: user._id}
                       id="assigned_to"
-
                       isMulti={true}
-                      onChange={() => {
-                        handleMulti();
+                      onChange={(e, val) => {
+                        setassigned_to( prev =>  ([...prev, val.option.value ]))
                       }}
-                      options={optionGroup}
+
+                      options=
+                      {
+                        members_list && members_list.map( user => ( 
+      
+                          { label: user.name, value: user._id, id: user._id }
+                        )
+                        )
+
+                      }
+
                       classNamePrefix="select2-selection"
                     />
                       </div>
@@ -154,13 +205,16 @@ const Createpage = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="effective_from">Effective From</label>
-                        <input
+                        {/* <label htmlFor="effective_from">Effective From</label> */}
+                        <AvField
                           type="date"
+                          label="Effective From"
+                          name="effective_from"
                           className="form-control"
                           id="effective_from"
-                          // onChange={e => seteffective_from(e.target.value)}
+                          onChange={e => seteffective_from(e.target.value)}
                           // value={effective_from}
+                          required
                         />
                       </div>
                     </Col>
@@ -168,7 +222,7 @@ const Createpage = () => {
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => createPage()}>
+                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}}>
                           Create Website
                         </button>
 
@@ -180,7 +234,7 @@ const Createpage = () => {
                     </Col>
 
                   </Row>
-                </form>
+                </AvForm>
                 </CardBody>
               </Card>
             </Col>
