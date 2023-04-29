@@ -23,8 +23,8 @@ export async function get(url, config = {}) {
 }
 
 export async function post(url, data, config = {}) {
-  console.log('config ==>', config);
-  console.log('data ==>', data);
+  // console.log('config ==>', config);
+  // console.log('data ==>', data);
 
   let postData = {...data};
 
@@ -39,8 +39,8 @@ export async function post(url, data, config = {}) {
 
 export async function put(url, data, config = {}) {
 
-  console.log('config ==>', config);
-  console.log('data ==>', data);
+  // console.log('config ==>', config);
+  // console.log('data ==>', data);
 
   let postData = {...data};
 

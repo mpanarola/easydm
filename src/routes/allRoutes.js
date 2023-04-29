@@ -7,6 +7,11 @@ import Dashboard2 from "../pages/Dashboard2.js/index.js"
 
 import Webpages from "../pages/Webpages/Webpage"
 import Members from "../pages/Members/Member"
+import Profile from "../pages/Members/Profile"
+
+
+
+
 
 import Updatebacklink from "../pages/Backlinks/Updatebacklink"
 import Createbacklink from "../pages/Backlinks/Createbacklink"
@@ -22,6 +27,8 @@ import Pages500 from "../pages/Utility/pages-500"
 
 
 // Authentication related pages
+// import Profile from "../pages/Authentication/Profile"
+
 import Login from "../pages/Authentication/Login"
 import Logout from "../pages/Authentication/Logout"
 import ForgetPwd from "../pages/Authentication/ForgetPassword"
@@ -55,6 +62,7 @@ const userRoutes = [
   { path: "/create_website", component: Createpage },
 
   { path: "/members", component: Members },
+  { path: "/profile", component: Profile },
   { path: "/create_member", component: Createmember },
   { path: "/update_member", component: Updatemember },
 
@@ -78,13 +86,17 @@ const userRoutes = [
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
+  { path: "/*", exact: true, component: () => <Redirect to="/pages-404" /> },
+
 ]
 
 const authRoutes = [
 
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
+
   { path: "/forgot-password", component: ForgetPwd },
+  
   { path: "/pages-404", component: Pages404 },
   { path: "/pages-500", component: Pages500 },
 

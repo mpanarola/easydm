@@ -76,8 +76,13 @@ const Createpage = () => {
     // console.log('update website ', website_id)
     addNewWebsite(website_data).then(resp=>{
     // websiteUpdate((website_data, website_id)).then(resp=>{
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }
 
-      console.log('resp?.data ', resp?.data)
+      // console.log('resp?.data ', resp?.data)
       alert.success('Website Create Successfully');
       history.push('/webpages')
 

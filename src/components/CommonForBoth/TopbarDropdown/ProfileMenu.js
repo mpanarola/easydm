@@ -12,10 +12,10 @@ import { withTranslation } from "react-i18next"
 // Redux
 import { connect } from "react-redux"
 import { withRouter, Link, useHistory } from "react-router-dom"
-
+import { getUserProfile } from '../../../helpers/backend_helper'
 
 // users
-import user4 from "../../../assets/images/users/avatar-2.jpg"
+// import user4 from "../../../assets/images/users/avatar-2.jpg"
 
 const ProfileMenu = props => {
   const alert = useAlert();
@@ -23,25 +23,48 @@ const ProfileMenu = props => {
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false)
 
-  const [username, setusername] = useState("Milan")
-  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
-  const user_avatar = get_auth_user.avatar
+  // const [username, setusername] = useState("Milan")
+  // const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
+  // const user_avatar = get_auth_user.avatar
+
+  const [avatar, setavatar] = useState();
+  const [name, setname] = useState(null);
+
+  // useEffect(() => {
+  //   if (localStorage.getItem("authUser")) {
+  //     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
+  //       const obj = JSON.parse(localStorage.getItem("authUser"))
+  //       setusername(obj.displayName)
+  //     } else if (
+  //       process.env.REACT_APP_DEFAULTAUTH === "fake" ||
+  //       process.env.REACT_APP_DEFAULTAUTH === "jwt"
+  //     ) {
+  //       const obj = JSON.parse(localStorage.getItem("authUser"))
+  //       // setusername(obj.username)
+  //     }
+  //   }
+  // }, [props.success])
 
 
-  useEffect(() => {
-    if (localStorage.getItem("authUser")) {
-      if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-        const obj = JSON.parse(localStorage.getItem("authUser"))
-        setusername(obj.displayName)
-      } else if (
-        process.env.REACT_APP_DEFAULTAUTH === "fake" ||
-        process.env.REACT_APP_DEFAULTAUTH === "jwt"
-      ) {
-        const obj = JSON.parse(localStorage.getItem("authUser"))
-        // setusername(obj.username)
+  useEffect(()=>{
+    getUserProfile().then(resp=>{
+      // console.log('user_data ', resp?.data[0].name)
+      // set_get_user_profile(resp?.data[0])
+  
+      if(resp?.data[0] !== null){
+        setname(resp?.data[0].name)
+        // setemail(resp?.data[0].email)
+        setavatar(resp?.data[0].avatar)
+        // set_profile_id(resp?.data[0]._id)
+  
+        // setname(resp?.data[0].name)
+  
       }
-    }
-  }, [props.success])
+      
+    
+    }).catch(err=>{
+    })
+    },[]);
 
 
 
@@ -69,31 +92,29 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-           src={`${process.env.REACT_APP_DATABASEURL}avatar/${user_avatar}`} alt={get_auth_user.name}
+           src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name}
           />{" "}
-          <span className="d-none d-xl-inline-block ms-1">{get_auth_user.name}</span>{" "}
+          <span className="d-none d-xl-inline-block ms-1">{name}</span>{" "}
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block"></i>{" "}
         </DropdownToggle>
        <DropdownMenu className="dropdown-menu-end">
-           {/* <DropdownItem tag="a" href="/profile">
-            {" "}
-            <i className="bx bx-user font-size-16 align-middle me-1"></i>{" "}
-            {props.t("View Profile")}{" "}
+           <DropdownItem >
+            <Link className="waves-effect waves-light" to="/profile">   <i className="bx bx-user font-size-16 align-middle me-1"></i> View Profile </Link>
           </DropdownItem>
-          <DropdownItem tag="a" href="/#">
+          {/* <DropdownItem tag="a" href="/#">
             <i className="bx bx-wallet font-size-16 align-middle me-1"></i>{" "}
             {props.t("My Wallet")}
-          </DropdownItem>
-          <DropdownItem tag="a" href="#">
+          </DropdownItem> */}
+          {/* <DropdownItem tag="a" href="#">
             <span className="badge bg-success float-end">11</span><i
               className="bx bx-wrench font-size-16 align-middle me-1"></i>{" "}
             {props.t("Settings")}
-          </DropdownItem>
-          <DropdownItem tag="a" href="auth-lock-screen">
+          </DropdownItem> */}
+          {/* <DropdownItem tag="a" href="auth-lock-screen">
             <i className="bx bx-lock-open font-size-16 align-middle me-1"></i>{" "}
             {props.t("Lock screen")}
           </DropdownItem> */}
-          {/* <div className="dropdown-divider" /> */}
+       
           
           <Link to="#"   onClick={() => logOut()} className="dropdown-item text-danger">
             <i className="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>{" "}

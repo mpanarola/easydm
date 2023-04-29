@@ -122,6 +122,11 @@ const Webpage = props => {
       setWebsites_list(resp?.data[0]?.list)
       // console.log('resp?.data ', resp?.data[0]?.list)
       // dispatch(getMembers(resp?.data))
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }
 
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');

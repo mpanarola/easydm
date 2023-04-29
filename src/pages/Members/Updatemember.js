@@ -41,12 +41,8 @@ const Updatemember = (props) => {
   const status_check = member_data.data.isActive ? '1' : '0';
   const [status, setstatus] = useState('1');
   const [id, setid] = useState(member_data.data._id);
-  // console.log('id ' , member_data.data._id)
-// console.log('status_check ', status_check)
-//   const [selectedMulti, setselectedMulti] = useState(null);
-
-const [password, setspassword] = useState(null);
-const [passwordType, setPasswordType] = useState("password");
+  const [password, setspassword] = useState(null);
+  const [passwordType, setPasswordType] = useState("password");
 
 
 const handleFileChange = (file) => {
@@ -83,8 +79,14 @@ const togglePassword =()=>{
       if(resp.status == true){
       alert.success('Member Updated Successfully');
       dispatch(UpdateMember(resp?.data))
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }
+      else{
       history.push('/members')
-
+    }
     }else{
       alert.error('Please Try Again...');
     }

@@ -5,7 +5,7 @@ import { websites } from "../common/data"
 
 // Gets the logged in user data from local session
 const getLoggedInUser = () => {
-  const user = localStorage.getItem("user")
+  const user = localStorage.getItem("authUser")
   if (user) return JSON.parse(user)
   return null
 }
@@ -161,13 +161,15 @@ export const getUsers = () => get(url.GET_USERS)
 
 
 
-export const getUserProfile = () => get(url.GET_USER_PROFILE)
+// export const getUserProfile = () => get(url.GET_USER_PROFILE)
 
 
 /** MPA API Method */
 
 const userLogin = data => post(url.USER_LOGIN, data)
 // const addMember = data => post(url.ADD_MEMBER, data)
+
+export const getUserProfile = () => get(url.GET_USER_PROFILE)
 
 const getAllMembers = data => post(url.GET_MEMBERS, data)
 const addMember = data => post(url.ADD_MEMBER, data, {headers: {'Content-Type': 'multipart/form-data'}})

@@ -64,6 +64,10 @@ const confirmDelete = (id) => {
       setconfirm_both(false)
       alert.success('Your member has been deleted.');
       allMembers()
+      if(resp?.status == false){
+        history.push('/logout')
+        alert.error('Session timeout');
+      }
     }).catch(err=>{
       alert.error('Please try again...');
     })
@@ -75,9 +79,12 @@ const confirmDelete = (id) => {
   const allMembers = (event, values) => {
     getAllMembers().then(resp=>{
       setcmembers_list(resp?.data[0]?.list)
-      
-      console.log('resp?.data ', resp?.data[0]?.list)
+      // console.log('resp?.data ', resp?.data[0]?.list)
       dispatch(getMembers(resp?.data))
+      if(resp?.message == 'Unauthorized User!!'){
+        history.push('/logout')
+        alert.error('Session timeout');
+      }
     
     }).catch(err=>{
       dispatch(getMembers(err.response))

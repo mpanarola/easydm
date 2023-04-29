@@ -2,27 +2,32 @@ import React, { useState, useEffect } from "react"
 import { Button, Card, CardBody, CardTitle } from "reactstrap"
 import {activityWebsite } from '../../helpers/backend_helper'
 import Moment from 'moment';
+import { useHistory } from 'react-router-dom';
+import { useAlert } from "react-alert";
 
 const HistoryTimeline = (props) => {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = { }
-  // }
-// console.log('props ', props.id)
+
+  const history = useHistory();
+const alert = useAlert();
 
   const [activity_list, setactivity_list] = useState([]);
 
 const getallActivityWebsite = () => {
   activityWebsite(props.id).then(resp=>{
-    console.log('datass ', resp?.data[0])
+    // console.log('datass ', resp?.data[0])
     setactivity_list(resp?.data[0])
-  
+    if(resp?.message == 'Unauthorized User!!')
+    {          
+        history.push('/logout')
+        alert.error('Session timeout');
+    }
   }).catch(err=>{
+    
   })
   
 }
 
-console.log('activity ', activity_list)
+// console.log('activity ', activity_list)
 
 useEffect(()=>{
 
@@ -33,7 +38,7 @@ useEffect(()=>{
 },[]);
 
 
-console.log('dsad ', activity_list.length)
+// console.log('dsad ', activity_list.length)
     return (
       <React.Fragment>
         <Card>
@@ -41,7 +46,7 @@ console.log('dsad ', activity_list.length)
             <CardTitle className="h4 mb-5 font-size-18">Activity</CardTitle>
             <ul className="list-unstyled activity-wid">
               
-              { activity_list.length == 0 ? <h5>Sorry, no records found...</h5> : '' }
+              { activity_list && activity_list.length == 0 ? <h5>Sorry, no records found...</h5> : '' }
 
             {  activity_list && activity_list.map( activity => ( 
       

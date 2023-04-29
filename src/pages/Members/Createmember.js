@@ -75,8 +75,11 @@ const togglePassword =()=>{
         dispatch(registerUser(resp?.data))
         history.push('/members')
 
-      }else{
-        alert.error('Please Try Again...');
+      }
+      else if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
       }
       
       }).catch(err=>{

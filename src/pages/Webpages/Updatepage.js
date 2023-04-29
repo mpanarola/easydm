@@ -89,9 +89,17 @@ const alert = useAlert();
     websiteUpdate(website_data, id).then(resp=>{
     // websiteUpdate((website_data, website_id)).then(resp=>{
 
-      console.log('resp?.data ', resp?.data)
-      alert.success('Member Updated Successfully');
-      history.push('/webpages')
+      // console.log('resp?.data ', resp?.data)
+     
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }else{
+        alert.success('Member Updated Successfully');
+        history.push('/webpages')
+      }
+      
 
     }).catch(err=>{
       alert.error('Backend server not responding, Please try again....');

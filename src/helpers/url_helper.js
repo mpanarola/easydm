@@ -69,6 +69,7 @@ export const GET_TASKS = "/tasks"
 
 export const GET_MEMBERS = "/members"
 export const GET_MEMBER_DETAIL = "/member"
+export const GET_USER_PROFILE = "/me"
 
 export const GET_CONTENT_SCHEDULERS = "/contents_schedulars"
 export const GET_CONTENT_SCHEDULER_DETAIL = "/contents_schedular"
@@ -86,7 +87,7 @@ export const GET_DAY_BOOK_DETAIL = "/day_book"
 
 //CONTACTS
 export const GET_USERS = "/users"
-export const GET_USER_PROFILE = "/user"
+
 
 
 
