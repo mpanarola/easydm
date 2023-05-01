@@ -106,5 +106,21 @@ export const DELETE_WEBSITE = "/delete_website"
 export const VIEW_WEBSITE_ACTIVITY = "/activity_website"
 
 
+
+export const GET_SCHEDULARS = "/scheduler"
+export const ADD_NEW_SCHEDULAR = "create_scheduler"
+export const UPDATE_SCHEDULAR = "/update_scheduler"
+export const DELETE_SCHEDULAR = "/delete_scheduler"
+export const VIEW_SCHEDULAR_ACTIVITY = "/activity_scheduler"
+
+
+
+export const GET_BACKLINKS = "/backlinks"
+export const ADD_BACK_LINK = "create_scheduler"
+export const UPDATE_BACK_LINK = "/update_scheduler"
+export const DELETE_BACK_LINK = "/delete_scheduler"
+export const VIEW_BACK_LINK_ACTIVITY = "/activity_scheduler"
+
+
 // export const GET_MEMBERS = "/registration"
 

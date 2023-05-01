@@ -190,9 +190,26 @@ export const addNewWebsite = website => post(url.ADD_NEW_WEBSITE, website)
 export const updateWebsite = (website, id) => put(`${url.UPDATE_WEBSITE}/${id}`, website )
 export const deleteWebsite = id =>
   del(`${url.DELETE_WEBSITE}/${id}`, { headers: { id } })
+export const activityWebsite = (id) => get(`${url.VIEW_WEBSITE_ACTIVITY}/${id}` )
 
 
-  export const activityWebsite = (id) => get(`${url.VIEW_WEBSITE_ACTIVITY}/${id}` )
+export const getContentSchedulars = schedular =>   post(url.GET_SCHEDULARS, schedular)
+export const addNewSchedular = schedular => post(url.ADD_NEW_SCHEDULAR, schedular)
+export const updateSchedular = (schedular, id) => put(`${url.UPDATE_SCHEDULAR}/${id}`, schedular )
+// export const updateSchedular = (schedular, id) => put(`${url.UPDATE_SCHEDULAR}/${id}`, schedular )
+export const deleteSchedular = id =>
+  del(`${url.DELETE_SCHEDULAR}/${id}`, { headers: { id } })
+export const activitySchedular = (id) => get(`${url.VIEW_SCHEDULAR_ACTIVITY}/${id}` )
+
+
+
+// export const getBackLinks = backlink =>   post(url.GET_SCHEDULARS, backlink)
+// export const addBackLink = backlink => post(url.ADD_NEW_SCHEDULAR, backlink)
+// export const updateBackLink = (backlink, id) => put(`${url.UPDATE_SCHEDULAR}/${id}`, backlink )
+// // export const updateSchedular = (schedular, id) => put(`${url.UPDATE_SCHEDULAR}/${id}`, schedular )
+// export const deleteBackLink = id =>
+//   del(`${url.DELETE_SCHEDULAR}/${id}`, { headers: { id } })
+// export const activityBackLink = (id) => get(`${url.VIEW_SCHEDULAR_ACTIVITY}/${id}` )
 
   
 

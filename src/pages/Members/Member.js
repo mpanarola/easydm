@@ -64,7 +64,7 @@ const confirmDelete = (id) => {
       setconfirm_both(false)
       alert.success('Your member has been deleted.');
       allMembers()
-      if(resp?.status == false){
+      if(resp?.message == 'Unauthorized User!!'){
         history.push('/logout')
         alert.error('Session timeout');
       }

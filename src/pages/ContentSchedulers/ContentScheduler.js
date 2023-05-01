@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { MDBDataTable } from "mdbreact"
 import {
   Row, Col, Card, CardBody, CardTitle, Button, UncontrolledPopover,
@@ -7,70 +7,26 @@ import {
 import Select from "react-select";
 import { Link } from "react-router-dom"
 import AddSchedular from "./CreateScheduler"
-
+import { useAlert } from "react-alert";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
 import SweetAlert from "react-bootstrap-sweetalert"
 import { useHistory } from 'react-router-dom';
-
-
-// User Status
-const optionGroupStaus = [
-  {
-    label: "Status",
-    options: [
-      { label: "In Progress", value: "In Progress" },
-      { label: "Complete", value: "Complete" },
-      { label: "Input missing", value: "Input missing" },
-      { label: "In review", value: " In review" },
-    ],
-  },
-
-];
-
-// Users
-const optionGroupMembers = [
-  {
-    label: "Members",
-    options: [
-      { label: "Ashish", value: "Ashish" },
-      { label: "Nilesh", value: "Nilesh" },
-      { label: "Milan", value: "Milan" }
-    ],
-  },
-
-];
-
-// User Type
-const optionGroupType = [
-  {
-    label: "Type",
-    options: [
-      { label: "Blog", value: "Blog" },
-      { label: "Article", value: "Article" },
-      { label: "eBook", value: "eBook" },
-      { label: "Infographics", value: "Infographics" },
-      { label: "PPT", value: "PPT" },
-    ],
-  },
-
-];
+import { columns, payload } from './Constants'
+import Moment from 'moment';
+import { getContentSchedulars, deleteSchedular } from '../../helpers/backend_helper'
 
 
 
 
-// const addSchedular = (e) => {
-//   setmodal(true);
-//   };
 
 const ContentScheduler = () => {
   const history = useHistory();
-  const [popoverleft, setpopoverleft] = useState(false)
-  const [popoverdismiss, setpopoverdismiss] = useState(false)
+  const alert = useAlert();
 
-
-  const [modal, setmodal] = useState(false)
+  const [schedulars_list, setSchedulars_list] = useState([])
+  const [record_id, set_id] = useState()
 
 
   const [success_dlg, setsuccess_dlg] = useState(false)
@@ -81,157 +37,132 @@ const ContentScheduler = () => {
   const [confirm_alert, setconfirm_alert] = useState(false)
 
 
-  const updateContentScheduler = (e) => {
-    history.push('/update_schedular')
+  const updateContentScheduler = (data) => {
+
+    history.push({
+      pathname: '/update_schedular',
+      state: { data: data },
+    })
+
   };
 
+
+  const confirmDelete = (id) => {
+    setconfirm_both(true)
+    set_id(id)
+  
+  };
 
   const deleteContentScheduler = (e) => {
-    setconfirm_both(true)
+    // setconfirm_both(true)
+
+    if(record_id !== ''){
+      deleteSchedular(record_id).then(resp=>{
+        setconfirm_both(false)
+        alert.success('Scheduler has been deleted.');
+        getAllSchedulars()
+        if(resp?.message == 'Unauthorized User!!'){
+          history.push('/logout')
+          alert.error('Session timeout');
+        }
+      }).catch(err=>{
+        alert.error('Please try again...');
+      })
+  
+    }
+
   };
 
+  const getAllSchedulars = (event, values) => {
+    getContentSchedulars(payload).then(resp => {
+      setSchedulars_list(resp?.data[0]?.list)
+      // console.log('resp?.data ', resp?.data[0]?.list)
+      // dispatch(getMembers(resp?.data))
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }
 
-  const data = {
-    columns: [
-      {
-        label: "ID",
-        field: "id",
-        sort: "asc",
-        width: 50,
-      },
-      {
-        label: "Content Type",
-        field: "content_type",
-        sort: "asc",
-        width: 50,
-      },
-      {
-        label: "Web Page",
-        field: "web_page",
-        sort: "asc",
-        width: 200,
-      },
-      {
-        label: "Topic Title",
-        field: "topic_title",
-        sort: "asc",
-        width: 200,
-      },
+    }).catch(err => {
+      alert.error('Backend server not responding, Please try again....');
+    })
 
-      // {
-      //   label: "Doc Link",
-      //   field: "doc_link",
-      //   sort: "asc",
-      //   width: 100,
-      // },
-      // {
-      //   label: "Referece Links",
-      //   field: "referece_links",
-      //   sort: "asc",
-      //   width: 100,
-      // },
-      {
-        label: "Expected Words",
-        field: "expected_words",
-        sort: "asc",
-        width: 50,
-      },
-      {
-        label: "Actual Words",
-        field: "actual_words",
-        sort: "asc",
-        width: 50,
-      },
-      {
-        label: "Assigned On",
-        field: "assigned_on",
-        sort: "asc",
-        width: 100,
-      },
-
-      {
-        label: "Assigned By",
-        field: "assigned_by",
-        sort: "asc",
-        width: 50,
-      },
-
-      {
-        label: "Submiited On",
-        field: "submiited_on",
-        sort: "asc",
-        width: 100,
-      },
-      {
-        label: "Written By",
-        field: "written_by",
-        sort: "asc",
-        width: 50,
-      },
-      {
-        label: "Content Status",
-        field: "content_status",
-        sort: "asc",
-        width: 100,
-      },
-      {
-        label: "Action",
-        field: "action",
-        width: 50,
-      },
-
-    ],
-    rows: [
-      {
-        id: "1",
-        content_type: "Blog",
-        web_page: (<a href="https://www.home.com" target="_blank"> Home </a>),
-        topic_title: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> Digital Marketing </a>),
-       
-        // doc_link: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a>),
-        // referece_links: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a> ),
-        expected_words: (
-          <span class="bg-primary badge badge-secondary" style={{fontSize: "14px"}}>1450</span>
-        ),
-        actual_words: (
-          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>50</span>
-        ),
-        assigned_on: "27-Mar-2023",
-        assigned_by: "Milan",
-        submiited_on: "27-Mar-2023",
-        written_by: "Ashish",
-        content_status: (
-        <span class="bg-warning badge badge-secondary font-size-13">In Progress</span>
-        ),
-
-        action: (
-          <div className="d-flex" style={{
-            width: "150px"
-          }}>
-
-            <div
-              className="btn btn-primary"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => updateContentScheduler()}
-            >
-              View
-            </div>
-
-            <div
-              className="btn btn-danger"
-              onClick={() => deleteContentScheduler()}
-            >
-              Delete
-            </div>
-
-          </div>
-        )
-      },
-    ],
   }
+
+  useEffect(() => {
+    setTimeout(function () {
+      getAllSchedulars()
+    }, 1000);
+
+  }, []);
+
+
+  const rows = useMemo(() =>
+  schedulars_list && schedulars_list.map((row, order) => ({
+    ...row,
+    id: order + 1,
+      content_type: row.contentType,
+      web_page: (<a href={row.webpage && row.webpage.webpageUrl} target="_blank"> {row.webpage && row.webpage.webpage} </a>),
+      topic_title: (<a href={row.docLink} target="_blank"> {row.topicTitle} </a>),
+     
+      // doc_link: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a>),
+      // referece_links: (<a href="https://docs.google.com/spreadsheets/" target="_blank"> View </a> ),
+      expected_words: (
+        <span class="bg-primary badge badge-secondary" style={{fontSize: "14px"}}>{row.expectedWords}</span>
+      ),
+      actual_words: (
+        <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>{row.actualWords}</span>
+      ),
+      assigned_on: Moment(row.assignedOn).format('DD-MMM-YYYY'),
+      assigned_by: row.assignedBy && row.assignedBy.name,
+      submiited_on: Moment(row.submitedOn).format('DD-MMM-YYYY'),
+      written_by: row.assignedBy && row.assignedBy.name,
+      content_status: (
+        row.contentStatus == "Complete" ?
+      <span class="bg-warning badge badge-success font-size-13">{row.contentStatus}</span>
+      :
+      row.contentStatus == "Input-missing" ?
+      <span class="bg-danger badge badge-danger font-size-13">{row.contentStatus}</span>
+      : <span class="bg-warning badge badge-secondary font-size-13">{row.contentStatus}</span>
+      ),
+
+      action: (
+        <div className="d-flex" style={{
+          width: "150px"
+        }}>
+
+          <div
+            className="btn btn-primary"
+            style={{
+              cursor: "pointer",
+              marginRight: "10px"
+            }}
+            onClick={() => updateContentScheduler(row)}
+          >
+            View
+          </div>
+
+          <div
+            className="btn btn-danger"
+            // onClick={() => deleteContentScheduler()}
+            onClick={() => confirmDelete(row._id) }
+          >
+            Delete
+          </div>
+
+        </div>
+      )
+
+
+  })), [schedulars_list])
+
+
+  // rows: [
+  //   {
+      
+  //   },
+  // ]
 
   return (
     <React.Fragment>
@@ -271,7 +202,7 @@ const ContentScheduler = () => {
             <Card>
               <CardBody>
                 <CardTitle>Content Schedulers List </CardTitle>
-                <MDBDataTable responsive bordered data={data} />
+                <MDBDataTable responsive bordered data={{ rows, columns }} />
               </CardBody>
             </Card>
           </Col>
@@ -288,16 +219,14 @@ const ContentScheduler = () => {
               confirmBtnBsStyle="success"
               cancelBtnBsStyle="danger"
               onConfirm={() => {
+                deleteContentScheduler()
                 setconfirm_both(false)
-                setsuccess_dlg(true)
-                setdynamic_title("Deleted")
-                setdynamic_description("Your content schedular has been deleted.")
               }}
               onCancel={() => {
                 setconfirm_both(false)
-                setsuccess_dlg(true)
-                setdynamic_title("Cancelled")
-                setdynamic_description("Your content schedular is safe :)")
+                // setsuccess_dlg(true)
+                // setdynamic_title("Cancelled")
+                // setdynamic_description("Your content schedular is safe :)")
               }}
             >
               You won't be able to revert this!
