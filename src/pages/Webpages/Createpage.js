@@ -28,12 +28,8 @@ const Createpage = () => {
   const [published_on, setpublished_on] = useState(null);
   const [members_list, setmembers_list] = useState([])
 
-// console.log('webpage ', webpage)
   const history = useHistory();
   const alert = useAlert();
-  function handleMulti(selectedMulti) {
-    setselectedMulti(selectedMulti);
-  }
 
 
   const member_payload =  {
@@ -44,13 +40,11 @@ const Createpage = () => {
   
   const allMembers = () => {
     getAllMembers(member_payload).then(resp=>{
-      setmembers_list(resp?.data?.list)
-    
+      setmembers_list(resp?.data[0].list)
     }).catch(err=>{
     })
     
   }
-
 
   useEffect(()=>{
   
@@ -123,7 +117,7 @@ const Createpage = () => {
                       defaultValue={{ label: category, value: category }}
                       options={optionGroupCategory}
                       classNamePrefix="select2-selection"
-                      onChange={e => setcategory(e.target.value)}
+                      onChange={e => setcategory(e.value)}
                       // value = {category}
                     />
                       </div>
@@ -177,10 +171,11 @@ const Createpage = () => {
                           // value={published_on}
                           required
                         />
+                       
                       </div>
                     </Col>
 
-                    <Col lg={6}>
+                    {/* <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="assigned_to">Assigned To</label>
                         <Select
@@ -206,7 +201,26 @@ const Createpage = () => {
                     />
                       </div>
                     </Col>
+                     */}
 
+<Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="assigned_to">Assigned To</label>
+                        <Select
+                      id="assigned_to"
+                      isMulti={true}
+                      onChange= { setassigned_to}
+                      options= {
+                        members_list && members_list.map( user => ( 
+                          { label: user.name, value: user._id, id: user._id }
+                        )
+                        )
+                      }
+                      
+                      classNamePrefix="select2-selection"
+                    />
+                      </div>
+                    </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">

@@ -28,10 +28,11 @@ const Webpage = props => {
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
   const [confirm_alert, setconfirm_alert] = useState(false)
-
-
   const [websites_list, setWebsites_list] = useState([])
   const [record_id, set_id] = useState()
+  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
+
+  const [is_loading, setloading] = useState(true)
 
   const confirmDelete = (id) => {
     setconfirm_both(true)
@@ -74,16 +75,12 @@ const Webpage = props => {
       assigned_to: (
         <div className="d-flex align-items-start">
           {
-            row.assignedTo.length > 0 ?
+            row.assignedTo.length > 0 &&
               row.assignedTo && row.assignedTo.map(data => (
-                
                 <div className="me-3 align-self-center">
-                  <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${data.avatar}`} alt={ data.name} className="avatar-sm rounded-circle" title={data.name} />
+                  <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${data.avatar}`} alt={data.name} className="avatar-sm rounded-circle" title={data.name} />
                 </div>
-              )) :
-              <div className="me-3 align-self-center">
-                <img src={`${process.env.REACT_APP_DATABASEURL}avatar/def.png`} alt="Default Image" className="avatar-sm rounded-circle"  />
-              </div>
+              ))
           }
         </div>
 
@@ -103,14 +100,14 @@ const Webpage = props => {
           >
             View
           </div>
-
-          <div
-            className="btn btn-danger"
-            onClick={() => confirmDelete(row._id)}
-          >
-            Delete
-          </div>
-
+          { get_auth_user.userRole == 1 &&
+              <div
+                className="btn btn-danger"
+                onClick={() => confirmDelete(row._id)}
+              >
+                Delete
+              </div>
+          }
         </div>
       )
 
@@ -120,12 +117,12 @@ const Webpage = props => {
   const getAllWebsites = (event, values) => {
     getWebsites(payload).then(resp => {
       setWebsites_list(resp?.data[0]?.list)
+      setloading(false)
       // console.log('resp?.data ', resp?.data[0]?.list)
       // dispatch(getMembers(resp?.data))
-      if(resp?.message == 'Unauthorized User!!')
-      {          
-          history.push('/logout')
-          alert.error('Session timeout');
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
       }
 
     }).catch(err => {
@@ -142,11 +139,6 @@ const Webpage = props => {
 
   }, []);
 
-
-
-  // const recentTasks = tasks.find(task => task.title === "Recent Tasks")
-
-  // console.log('websites ', getWebsites())
   return (
     <React.Fragment>
       <div className="page-content">
@@ -187,7 +179,11 @@ const Webpage = props => {
             <Card>
               <CardBody>
                 <CardTitle>Websites List </CardTitle>
+                {
+                  is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :
+                
                 <MDBDataTable responsive bordered data={{ rows, columns }} />
+              }
               </CardBody>
             </Card>
           </Col>
@@ -226,26 +222,5 @@ const Webpage = props => {
     </React.Fragment>
   )
 }
-
-// Webpage.propTypes = {
-//   websites: PropTypes.array,
-//   onGetWebsites: PropTypes.func,
-//   onDeleteWebsite: PropTypes.func,
-
-// }
-
-// const mapStateToProps = ({ websites }) => ({
-//   websites: websites.websites,
-// })
-
-// const mapDispatchToProps = dispatch => ({
-//   onGetWebsites: () => dispatch(getWebsites()),
-//   onDeleteWebsite: website => dispatch(deleteWebsite(website)),
-// })
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(withRouter(Webpage))
 
 export default withRouter(Webpage)

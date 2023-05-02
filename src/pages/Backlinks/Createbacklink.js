@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Row,
   Col,
@@ -9,52 +9,103 @@ import {
 import Select from "react-select";
 import { useHistory } from 'react-router-dom';
 
+import {addBackLink, getWebsites } from '../../helpers/backend_helper'
+
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
+import { AvForm, AvField } from "availity-reactstrap-validation"
+import { useAlert } from "react-alert";
+import Moment from 'moment';
+import {optionGroupCategory, optionGroupWebPage} from './Constants'
 
 const Createbacklink = () => {
+  // let today_date = Moment(today).format('YYYY-MM-DD');
 
-  const [webpage, setwebpage] = useState(null);
-  const [monthyear, setmonthyear] = useState(null);
+  // console.log( ' date ', )
+
+  const [webpage, setwebpage] = useState();
+  const [monthyear, setmonthyear] = useState( Moment().subtract(1, "month").format("YYYY-MM") );
   const [category, setcategory] = useState(null);
-  const [total_backlinks, settotal_backlinks] = useState(null);
+  const [total_backlinks, settotal_backlinks] = useState();
+  const [published_on, setpublished_on] = useState(null);
+
+  const [webpages_list, setwebpages_list] = useState([]);
+
+
 
   const history = useHistory();
+  const alert = useAlert();
 
-    // Webpages
-    const optionGroupWebPage = [
-      {
-        label: "Web Pages",
-        options: [
-          { label: "Home", value: "Home" },
-          { label: "About", value: "About" },
-          { label: "Contact", value: "Contact" },
-          { label: "Blogs", value: "Blogs" },
-          { label: "Events", value: "Events" },
-        ],
-      },
+  const insertBackLink = (event, values) => {
+
+    const backlink_data = {
+      webpage: webpage,
+      monthYear: monthyear,
+      category: category,
+      numberOfBacklinks: total_backlinks,
+      publishedOn: published_on
+    }
+
+
+    addBackLink(backlink_data).then(resp=>{
+    // websiteUpdate((website_data, website_id)).then(resp=>{
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }
+
+      // console.log('resp?.data ', resp?.data)
+      alert.success('Backlink Create Successfully');
+      history.push('/backlinks')
+
+    }).catch(err=>{
+      alert.error('Backend server not responding, Please try again....');
+    })
+    
+  }
+
+
+
+  const webpages_payload =  {
+    "options": {
+      "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
+    }
+  }
   
-    ];
+  const allWebpages = () => {
+    getWebsites(webpages_payload).then(resp=>{
+      setwebpages_list(resp?.data[0]?.list)
+    
+    }).catch(err=>{
+    })
+    
+  }
 
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
-   
-  ];
+  const handleWebpage = (e)=>{
+    if(e){
+    console.log(' e ', e)
+    setwebpage(e.value);
+    setcategory(e.category);
+    setpublished_on(e.publishedOn);
+  }
+    // setwebpageurl(e.url);
+}
+
+console.log('category ', category)
+console.log('publish ', published_on)
+// console('category ', category)
 
 
-  const createBacklink = (e) => {
-    history.push('/backlinks')
-  };
+  useEffect(()=>{
+  
+    setTimeout(function() {
+      allWebpages()
+      // handleWebpage()
+  }, 1000);
+  
+  },[]);
 
 
   const goBack = (e) => {
@@ -63,7 +114,9 @@ const Createbacklink = () => {
   };
 
   return (
+    
     <>
+    { console.log('category ', category) }
       <div className="page-content">
         
           {/* Render Breadcrumbs */}
@@ -74,70 +127,96 @@ const Createbacklink = () => {
               <Card>
                 <CardBody >
                   <CardTitle className="mb-4">Create Back Link</CardTitle>
-                  <form >
+                  <AvForm  onValidSubmit={(e, v) => {
+                        insertBackLink(e, v)
+                      }}>
                   <Row>
                   <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
                         <Select
                       id="webpage"
-                      options={optionGroupWebPage}
+                      // options={optionGroupWebPage}
+                      options= {
+                            webpages_list && webpages_list.map( website => ( 
+          
+                              { label: website.webpage, value: website._id, id: website._id, url: website.webpageUrl, category: website.category, publishedOn: website.publishedOn }
+                            )
+                            )
+    
+                          }
                       classNamePrefix="select2-selection"
-                      // onChange={e => setwebpage(e.target.value)}
+                      onChange={e =>  handleWebpage(e)}
+                      
                       // value = {webpage}
                     />
                       </div>
                     </Col>
 
-
+                       
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="published_on">Published On</label>
                         <input
                           type="date"
+                          name="published_on"
+                          label="Published On"
                           className="form-control"
                           id="published_on"
-                          // onChange={e => setassigned_on(e.target.value)}
+                          onChange={e => setpublished_on(e.target.value)}
+                          value ={ Moment(published_on).format('YYYY-MM-DD') }
                         />
                       </div>
                     </Col>
+                   
 
+              
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
                         <Select
                       id="category"
-                      options={optionGroupCategory}
+                      name="category"
+                      label="Category"
+                      // options={optionGroupCategory}
                       classNamePrefix="select2-selection"
-                      // onChange={e => setcategory(e.target.value)}
+                      onChange={e => setcategory(e.value)}
                       // value = {category}
+                      value={ {label: category, value: category } }
                     />
                       </div>
                     </Col>
+                    
 
                     <Row className="mt-4">
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="month_year">Month-Year</label>
-                        <input
+                        {/* <label htmlFor="month_year">Month-Year</label> */}
+                        <AvField
                           type="month"
+                          name="month_year"
+                          label="Month-Year"
                           className="form-control"
                           id="month_year"
-                          // onChange={e => setmonthyear(e.target.value)}
-                          // value={monthyear}
+                          required
+                          onChange={e => setmonthyear(e.target.value)}
+                          defaultValue = {monthyear}
                         />
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="total_backlinks">Number of Backlinks</label>
-                        <input
+                        {/* <label htmlFor="total_backlinks">Number of Backlinks</label> */}
+                        <AvField
                           type="number"
+                          name="total_backlinks"
+                          label="Number of Backlinks"
                           className="form-control"
                           id="total_backlinks"
-                          // onChange={e => settotal_backlinks(e.target.value)}
+                          required
+                          onChange={e => settotal_backlinks(e.target.value)}
                           // value={total_backlinks}
                         />
                       </div>
@@ -146,7 +225,7 @@ const Createbacklink = () => {
                     </Row>
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => createBacklink()}>
+                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} >
                           Create Backlink
                         </button>
 
@@ -159,7 +238,7 @@ const Createbacklink = () => {
 
                   </Row>
 
-                </form>
+                </AvForm>
                 </CardBody>
               </Card>
             </Col>

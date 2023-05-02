@@ -17,9 +17,9 @@ import { userLogin } from '../../helpers/backend_helper'
 
 const Login = (props) => {
   const alert = useAlert();
-const dispatch = useDispatch();
-const history = useHistory();
-  
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   useEffect(() => {
     document.body.className = "authentication-bg";
     // remove classname when component will unmount
@@ -30,35 +30,29 @@ const history = useHistory();
 
   // handleValidSubmit
   const handleValidSubmit = (event, values) => {
-    // props.loginUser(values, props.history)
-    
-    userLogin({
-      email: values.email,
-      password: values.password,
-    }).then(resp=>{
-      // console.log('resp =>>', resp);
-      // console.log('token ', resp?.data[0].token)
-      if(resp.status == true){
-      alert.success('Login Successfully');
-      dispatch(loginUser(resp?.data))
 
-      let auth_data = { name: resp?.data[0].name, email: resp?.data[0].email,  avatar: resp?.data[0].avatar, token: resp?.data[0].token, userRole: resp?.data[0].userRole, user_id: resp?.data[0]._id }
-      localStorage.setItem("authUser", JSON.stringify(auth_data))
-      history.push("/dashboard") 
-      // localStorage.setItem("userName", 'Milan Paladiya')
-      // localStorage.setItem("userPic", 'http://localhost:3000/static/media/avatar-2.feb0f89d.jpg')
-     
-      // console.log('token ', resp?.data)
-    }else{
-      alert.error('Invalid Credentials');
-    }
-    
-    }).catch(err=>{
+    userLogin({
+      username: values.email,
+      password: values.password,
+    }).then(resp => {
+      if (resp.status == true) {
+        alert.success('Login Successfully');
+        dispatch(loginUser(resp?.data))
+
+        let auth_data = { name: resp?.data[0].name, email: resp?.data[0].email, avatar: resp?.data[0].avatar, token: resp?.data[0].token, userRole: resp?.data[0].userRole, user_id: resp?.data[0]._id }
+        localStorage.setItem("authUser", JSON.stringify(auth_data))
+        // history.push("/dashboard")
+        window.location.replace("/dashboard");
+
+      } else {
+        alert.error('Invalid Credentials');
+      }
+
+    }).catch(err => {
       alert.error('Invalid Credentials');
       dispatch(loginUser(err.response))
-      // console.log('resp err=>>', err.response);
     })
-    
+
   }
 
   return (
@@ -96,11 +90,11 @@ const history = useHistory();
                       ) : null}
 
                       <div className="mb-3">
-                        
+
                         <AvField
                           name="email"
                           label="Email"
-                          value="admin@themesbrand.com"
+                          value="admin@narola.email"
                           className="form-control"
                           placeholder="Enter email"
                           type="email"
@@ -112,14 +106,14 @@ const history = useHistory();
                         <AvField
                           name="password"
                           label="Password"
-                          value="123456"
+                          value="Password@14"
                           type="password"
                           required
                           placeholder="Enter Password"
                         />
                       </div>
 
-                      <div className="form-check">
+                      {/* <div className="form-check">
                         <input
                           type="checkbox"
                           className="form-check-input"
@@ -131,7 +125,7 @@ const history = useHistory();
                         >
                           Remember me
                         </label>
-                      </div>
+                      </div> */}
 
                       <div className="mt-3">
                         <button
@@ -156,7 +150,7 @@ const history = useHistory();
                   lassName="fw-medium text-primary"> Signup now </Link> </p> */}
                 <p>© {new Date().getFullYear()} EasyDM. Crafted with <i
                   className="mdi mdi-heart text-danger"></i> by Narola
-                        </p>
+                </p>
               </div>
             </Col>
           </Row>

@@ -216,7 +216,7 @@ const AddSchedular = () => {
                           options={optionGroupType}
                           classNamePrefix="select2-selection"
                         onChange={e => settopic_type(e.value)}
-                        defaultValue = 'Blog'
+                        defaultValue = {{ label: 'Blog' }}
                         />
                       </div>
                     </Col>
@@ -356,7 +356,8 @@ const AddSchedular = () => {
                           className="form-control"
                           id="expected_words"
                           placeholder="Enter Expected Words"
-                        onChange={e => setexpected_words(e.target.value)}
+                          required
+                          onChange={e => setexpected_words(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -463,7 +464,7 @@ const AddSchedular = () => {
                           options={optionGroupStaus}
                           classNamePrefix="select2-selection"
                         onChange={e => setcontent_status(e.value)}
-                        defaultValue = 'In Progress'
+                        defaultValue = { {label: "In Progress"} }
                         required
                         />
                       </div>

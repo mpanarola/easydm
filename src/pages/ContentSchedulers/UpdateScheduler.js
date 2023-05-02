@@ -38,13 +38,23 @@ console.log('schedular_data ', schedular_data)
   const [doc_link, setdoc_link] = useState(schedular_data && schedular_data.docLink);
   const [ref_links, setref_links] = useState([]);
 
-  const inpRow = schedular_data && schedular_data.refereceLinks
+  let inpRow = []
+
+  if(schedular_data.refereceLinks.length > 0 ){
+    inpRow = schedular_data && schedular_data.refereceLinks
+  }
+  // const inpRow = schedular_data && schedular_data !== null ? schedular_data.refereceLinks : inpRow_default
+// console.log('inpRow ', inpRow)
   const [referece_links, setreferece_links] = useState(inpRow)
   const [expected_words, setexpected_words] = useState(schedular_data && schedular_data.expectedWords);
   const [actual_words, setactual_words] = useState(schedular_data && schedular_data.actualWords);
   const [content_status, setcontent_status] = useState(schedular_data && schedular_data.contentStatus);
-  const [assigned_by, setassigned_by] = useState(schedular_data && schedular_data.assignedBy);
-  const [written_by, setwritten_by] = useState(schedular_data && schedular_data.writtenBy);
+  const [assigned_by, setassigned_by] = useState(schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id);
+  const [written_by, setwritten_by] = useState(schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id);
+
+  const [assigned_by_name, setassigned_by_name] = useState(schedular_data && schedular_data.assignedBy && schedular_data.assignedBy.name);
+  const [written_by_name, setwritten_by_name] = useState(schedular_data && schedular_data.writtenBy && schedular_data.writtenBy.name);
+
   const [assigned_on, setassigned_on] = useState(schedular_data && schedular_data.assignedOn);
   const [submited_on, setsubmited_on] = useState(schedular_data && schedular_data.submitedOn);
 
@@ -59,7 +69,7 @@ console.log('schedular_data ', schedular_data)
   const [webpages_list, setwebpages_list] = useState([])
 
 
-
+// console.log('written_by ', schedular_data && schedular_data.assignedBy && schedular_data.assignedBy.name)
   const member_payload =  {
     "options": {
       "select": ['name']
@@ -68,6 +78,7 @@ console.log('schedular_data ', schedular_data)
   
   const allMembers = () => {
     getAllMembers(member_payload).then(resp=>{
+
       setmembers_list(resp?.data[0]?.list)
     
     }).catch(err=>{
@@ -101,32 +112,12 @@ console.log('schedular_data ', schedular_data)
   },[]);
 
 
-
-
-  // Webpages
-  // const optionGroupWebPage = [
-  //   {
-  //     label: "Web Pages",
-  //     options: [
-  //       { label: "Home", value: "Home" , url: "https://www.home.com/"},
-  //         { label: "About", value: "About", url: "https://www.about.com/" },
-  //         { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
-  //         { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
-  //         { label: "Events", value: "Events", url: "https://www.events.com/" },
-  //     ],
-  //   },
-
-  // ];
-
-
   const handleWebpage = (e)=>{
     setwebpage(e.value);
     setwebpage_id(e.value);
     setwebpageurl(e.url);
 
 }
-
-
 
   const handleChange = (index, evnt)=>{
     const { value } = evnt.target;
@@ -135,10 +126,9 @@ console.log('schedular_data ', schedular_data)
     setref_links(list);
 }
 
-
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { ref_link: "" }
+    const item1 = {}
     setreferece_links([...referece_links, item1])
   }
 
@@ -151,8 +141,6 @@ console.log('schedular_data ', schedular_data)
   }
 
   const updateScheduler = (e) => {
-    // alert(id)
-    // console.log('id ', id)
     const schedular_data = {
       contentType : topic_type,
       webpage: webpage_id,
@@ -171,21 +159,15 @@ console.log('schedular_data ', schedular_data)
     toneOfVoice: ton_voice_semrush,
     originality: originality_semrush,
     contentScore: content_score_semrush
-
-    //   id: id
     }
-
-    // console.log('update schedular_data ', schedular_data)
     updateSchedular(schedular_data, id).then(resp=>{
-    // websiteUpdate((website_data, website_id)).then(resp=>{
-      // console.log('resp ', resp)
+
       if(resp?.message == 'Unauthorized User!!')
       {          
           history.push('/logout')
           alert.error('Session timeout');
       }
 
-      // console.log('resp?.data ', resp?.data)
       alert.success('Content Schedular Create Successfully');
       history.push('/content_schedulers')
 
@@ -199,6 +181,8 @@ console.log('schedular_data ', schedular_data)
     // history.goBack();
     history.push('/content_schedulers');
   };
+
+  // console.log('referece_links ', referece_links)
 
   return (
     <>
@@ -264,24 +248,24 @@ console.log('schedular_data ', schedular_data)
                             className="inner col-lg-12 ml-md-auto"
                             id="repeater"
                           >
-                            {referece_links.map((field, key) => (
+                            {referece_links && referece_links.map((field, key) => (
+                         
                               <div
                                 key={key}
                                 id={"nested" + key}
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
+                                  
                                 <AvField
                                     type="url"
                                     name="url"
                                     className="inner form-control"
-                                    defaultValue={field}
+                                    defaultValue={ typeof field !== 'object' ? field : ''  }
                                     placeholder="Enter Referece Link"
                                     onChange={(evnt)=>handleChange(key, evnt)}
-                                    // onChange={(e) => {
-                                    //   setref_links( ...ref_links,  e.target.value)
-                                    // }}
                                   />
+                            
                                 </Col>
 
                               { key != 0 &&
@@ -411,9 +395,6 @@ console.log('schedular_data ', schedular_data)
                         <Select
                           id="assigned_by"
                           isMulti={false}
-                          onChange={(e) => {
-                            setassigned_by( e.value )
-                          }}
                           options= {
                             members_list && members_list.map( user => ( 
           
@@ -422,9 +403,12 @@ console.log('schedular_data ', schedular_data)
                             )
     
                           }
+                          onChange={(e) => {
+                            setassigned_by( e.value )
+                          }}
                           classNamePrefix="select2-selection"
                         // onChange={e => setwritten_by(e.target.value)}
-                        defaultValue = {{label : assigned_by.name}}
+                        defaultValue = {{value : assigned_by, label: assigned_by_name}}
                         />
                       </div>
                     </Col>
@@ -450,10 +434,6 @@ console.log('schedular_data ', schedular_data)
                         <Select
                           id="written_by"
                           isMulti={false}
-                          onChange={(e) => {
-                            
-                            setwritten_by( e.value )
-                          }}
                           options= {
                             members_list && members_list.map( user => ( 
           
@@ -462,7 +442,11 @@ console.log('schedular_data ', schedular_data)
                             )
     
                           }
-                          defaultValue = {{label : written_by.name}}
+                          onChange={(e) => {
+                            
+                            setwritten_by( e.value )
+                          }}
+                          defaultValue = {{value : written_by, label: written_by_name}}
                           classNamePrefix="select2-selection"
                         // onChange={e => setwritten_by(e.target.value)}
                         />

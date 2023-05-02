@@ -7,11 +7,10 @@ import { withRouter, Link } from "react-router-dom"
 import { withTranslation } from "react-i18next"
 import SidebarContent from "./SidebarContent"
 import { getUserProfile } from '../../helpers/backend_helper'
-import avatar2 from "../../assets/images/users/avatar-2.jpg"
+// import avatar2 from "../../assets/images/users/avatar-2.jpg"
 
 const Sidebar = props => {
-
-  const {userDetail} = useSelector((state)=>state?.Login)
+  const { userDetail } = useSelector((state) => state?.Login);
   const [avatar, setavatar] = useState();
   const [name, setname] = useState(null);
   // console.log('useDetails =>', userDetail);
@@ -19,28 +18,27 @@ const Sidebar = props => {
   // const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
   // const user_avatar = get_auth_user.avatar
 
-  useEffect(()=>{
-    getUserProfile().then(resp=>{
-      // console.log('user_data ', resp?.data[0].name)
-      // set_get_user_profile(resp?.data[0])
-  
-      if(resp?.data[0] !== null){
-        setname(resp?.data[0].name)
-        // setemail(resp?.data[0].email)
-        setavatar(resp?.data[0].avatar)
-        // set_profile_id(resp?.data[0]._id)
-  
-        // setname(resp?.data[0].name)
-  
-      }
-      
-    
-    }).catch(err=>{
-    })
-    },[]);
 
-  // put(`${url.UPDATE_MEMBER}/${'6449f881268ec292ea774b50'}`, data, {headers: {'Content-Type': 'multipart/form-data'}}
-  
+  useEffect(()=>{
+    if(userDetail){
+      setavatar(userDetail[0]?.avatar)
+      setname(userDetail[0]?.name)
+    }
+  },[userDetail])
+
+
+  useEffect(() => {
+    getUserProfile().then(resp => {
+      if (resp?.data[0] !== null) {
+        setname(resp?.data[0].name)
+        setavatar(resp?.data[0].avatar)
+      }
+
+
+    }).catch(err => {
+    })
+  }, []);
+
   return (
     <React.Fragment>
       <div className="vertical-menu">
@@ -50,30 +48,30 @@ const Sidebar = props => {
               <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name} className="avatar-md mx-auto rounded-circle" />
             </div>
 
-              <div className="mt-3">
-                <Link to="#" className="text-dark fw-medium font-size-16">{name}</Link>
-                {/* <p className="text-body mt-1 mb-0 font-size-13">UI/UX Designer</p> */}
-              </div>
+            <div className="mt-3">
+              <Link to="#" className="text-dark fw-medium font-size-16">{name}</Link>
+              {/* <p className="text-body mt-1 mb-0 font-size-13">UI/UX Designer</p> */}
             </div>
-            <div data-simplebar className="h-100">
+          </div>
+          <div data-simplebar className="h-100">
             {props.type !== "condensed" ? <SidebarContent /> : <SidebarContent />}
           </div>
-          </div>
         </div>
+      </div>
     </React.Fragment>
   )
 }
 
 Sidebar.propTypes = {
-        type: PropTypes.string,
+  type: PropTypes.string,
 }
 
 const mapStatetoProps = state => {
   return {
-        layout: state.Layout,
+    layout: state.Layout,
   }
 }
 export default connect(
   mapStatetoProps,
-      {}
+  {}
 )(withRouter(withTranslation()(Sidebar)))

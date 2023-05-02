@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Row,
   Col,
@@ -16,56 +16,93 @@ import Moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 
-const Updatebacklink = () => {
 
+import { AvForm, AvField } from "availity-reactstrap-validation"
+import { useAlert } from "react-alert";
+import { getWebsite, updateBackLink } from '../../helpers/backend_helper'
+import {optionGroupCategory, optionGroupWebPage} from './Constants'
+
+const Updatebacklink = (props) => {
+
+  const history = useHistory();
+  const alert = useAlert();
+
+  const data =   props.location && props.location.state;
+console.log('data ', data)
   var today = new Date(); //Current Date
   let today_date = Moment(today).format('YYYY-MM-DD');
 
   let head_published_on = Moment(today).format('DD-MMMM-YYYY');
 
-  const [webpage, setwebpage] = useState('Home');
-  const [monthyear, setmonthyear] = useState('2023-03');
-  const [category, setcategory] = useState('Services');
-  const [total_backlinks, settotal_backlinks] = useState('20');
+  const [webpage, setwebpage] = useState(data.data.webpage.webpage);
+  const [webpage_id, setwebpage_id] = useState(data.data.webpage._id);
+
+  const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
+  const [category, setcategory] = useState();
+  const [total_backlinks, settotal_backlinks] = useState(data.data.numberOfBacklinks);
+  const [published_on, setpublished_on] = useState( Moment(data.data.publishedOn).format('YYYY-MM-DD') );
+  const [webpages_list, setwebpages_list] = useState([]);
   const [date, setdate] = useState(today_date);
+  const [id, setid] = useState(data.data._id);
 
+// console.log('webpage ', data.data.webpage.webpage)
 
-  const history = useHistory();
+  const updateBacklink = (event, values) => {
 
-  // Webpages
-  const optionGroupWebPage = [
-    {
-      label: "Web Pages",
-      options: [
-        { label: "Home", value: "Home" },
-        { label: "About", value: "About" ,isdisabled: true  },
-        { label: "Contact", value: "Contact" ,isdisabled: true  },
-        { label: "Blogs", value: "Blogs" ,isdisabled: true  },
-        { label: "Events", value: "Events" ,isdisabled: true  },
-      ],
-    },
+    const backlink_data = {
+      webpage: webpage_id,
+      monthYear: monthyear,
+      category: category,
+      numberOfBacklinks: total_backlinks,
+      publishedOn: published_on
+    }
 
-  ];
+    updateBackLink(backlink_data, id).then(resp=>{
+      if(resp?.message == 'Unauthorized User!!')
+      {          
+          history.push('/logout')
+          alert.error('Session timeout');
+      }else{
+        alert.success('Backlink Updated Successfully');
+        history.push('/backlinks')
+      }
+      
 
+    }).catch(err=>{
+      alert.error('Backend server not responding, Please try again....');
+    })
+    
+  }
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" ,isdisabled: true  },
-        { label: "Technologies", value: "Technologies" ,isdisabled: true  },
-        { label: "Career", value: "Career" ,isdisabled: true  },
-        { label: "Blogs", value: "Blogs" ,isdisabled: true  }
-      ],
-    },
+  // const webpages_payload =  {
+  //   "options": {
+  //     "select": ['webpage', 'webpageUrl', 'category']
+  //   }
+  // }
+  
+  const allWebpages = () => {
+    getWebsite(webpage_id).then(resp=>{
+      const data = resp?.data[0];
 
-  ];
+      setpublished_on(data.publishedOn)
+      setwebpage(data.webpage)
+      setwebpage_id(data._id)
 
+      setcategory(data.category)
+      setwebpages_list(resp?.data[0])
+    }).catch(err=>{
+    })
+    
+  }
+  console.log('fdfdsf ', category)
 
-  const updateBacklink = (e) => {
-    history.push('/backlinks')
-  };
+  useEffect(()=>{
+  
+    setTimeout(function() {
+      allWebpages()
+  }, 500);
+  
+  },[]);
 
   const goBack = (e) => {
     // history.goBack();
@@ -78,12 +115,13 @@ const Updatebacklink = () => {
       <div className="page-content">
 
         {/* Render Breadcrumbs */}
+        {console.log( 'webpages_list ', webpages_list)}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
 
         <Row>
           <Card>
             <CardBody>
-              <h4 className="me-4"> ID:  #1</h4>
+              <h4 className="me-4"> ID:  {id}</h4>
               <label htmlFor="created_on">Created On :  {head_published_on}</label>
             </CardBody>
           </Card>
@@ -93,36 +131,41 @@ const Updatebacklink = () => {
               <CardBody>
 
                 <CardTitle className="mb-4 font-size-18">Update Back Link</CardTitle>
-                <form >
+                <AvForm  onValidSubmit={(e, v) => {
+                        updateBacklink(e, v)
+                      }}>
                   <Row>
                     <Col lg={6} >
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
                         <Select
                           id="webpage"
-                          options={optionGroupWebPage}
+                          // options={optionGroupWebPage}
+                          // options= {{ label: webpage, value: webpage_id }}
                           classNamePrefix="select2-selection"
-                        // onChange={e => setwebpage(e.target.value)}
+                        // onChange={e => setwebpage_id(e.value)}
                         defaultValue={{ label: webpage, value: webpage }}
-                        isOptionDisabled={(option) => option.isdisabled}
-
-                        
+                        readOnly
+                        // isOptionDisabled={(option) => option.isdisabled}
                         />
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="published_on">Published On</label>
-                        <input
+                        {/* <label htmlFor="published_on">Published On</label> */}
+                        <AvField
                           type="date"
+                          name="published_on"
+                          label="Published On"
                           className="form-control"
                           id="published_on"
-                          defaultValue = {today_date}
-                          max={today_date}
-                          min={today_date}
-
-                          // onChange={e => setassigned_on(e.target.value)}
+                          defaultValue = {published_on}
+                          max={published_on}
+                          min={published_on}
+                          required
+                          onChange={e => setpublished_on(e.target.value)}
+                          readOnly
                         />
                       </div>
                     </Col>
@@ -132,12 +175,9 @@ const Updatebacklink = () => {
                         <label htmlFor="category">Category</label>
                         <Select
                           id="category"
-                          options={optionGroupCategory}
                           classNamePrefix="select2-selection"
-                        // onChange={e => setcategory(e.target.value)}
-                        defaultValue={{ label: category, value: category }}
-                        isOptionDisabled={(option) => option.isdisabled}
-
+                          value={{ label: category && category, value: category && category }}
+                        // defaultValue={{ label: category, value: category }}
                         />
                       </div>
                     </Col>
@@ -146,31 +186,35 @@ const Updatebacklink = () => {
 
 <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="month_year">Month-Year</label>
-                        <input
+                        {/* <label htmlFor="month_year">Month-Year</label> */}
+                        <AvField
                           type="month"
+                          name="month_year"
+                          label="Month-Year"
                           className="form-control"
                           id="month_year"
-                          defaultValue = {monthyear}
-                          // min={monthyear}
-                          max={monthyear}
-
-                        // onChange={e => setmonthyear(e.target.value)}
+                          // defaultValue = {monthyear}
+                          readOnly
+                        required
+                        onChange={e => setmonthyear(e.target.value)}
                         // value={monthyear}
+                        defaultValue= {monthyear}
                         />
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="total_backlinks">Number of Back Links</label>
-                        <input
+                        {/* <label htmlFor="total_backlinks">Number of Back Links</label> */}
+                        <AvField
                           type="number"
+                          name="total_backlinks"
+                          label="Number of Back Links"
                           className="form-control"
                           id="total_backlinks"
-                        // onChange={e => settotal_backlinks(e.target.value)}
+                        onChange={e => settotal_backlinks(e.target.value)}
                         defaultValue = {total_backlinks}
-
+                        required
                         />
                       </div>
                     </Col>
@@ -179,7 +223,7 @@ const Updatebacklink = () => {
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => updateBacklink()}>
+                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
                           Update Back Link
                         </button>
 
@@ -192,13 +236,13 @@ const Updatebacklink = () => {
 
                   </Row>
 
-                </form>
+                </AvForm>
               </CardBody>
             </Card>
           </Col>
 
-          <Performance />
-          <HistoryTimeline />
+          <Performance id={id} />
+          <HistoryTimeline id={id}/>
         </Row>
       </div>
     </>

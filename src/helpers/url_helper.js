@@ -99,7 +99,7 @@ export const DELETE_MEMBER = "/delete_member"
 
 
 export const GET_WEBSITES = "/get_websites"
-// export const GET_WEBSITE_DETAIL = "/website"
+export const GET_WEBSITE_DETAIL = "/get_website_ById"
 export const ADD_NEW_WEBSITE = "create_website"
 export const UPDATE_WEBSITE = "/update_website"
 export const DELETE_WEBSITE = "/delete_website"
@@ -116,10 +116,21 @@ export const VIEW_SCHEDULAR_ACTIVITY = "/activity_scheduler"
 
 
 export const GET_BACKLINKS = "/backlinks"
-export const ADD_BACK_LINK = "create_scheduler"
-export const UPDATE_BACK_LINK = "/update_scheduler"
-export const DELETE_BACK_LINK = "/delete_scheduler"
-export const VIEW_BACK_LINK_ACTIVITY = "/activity_scheduler"
+export const ADD_BACK_LINK = "create_backlink"
+export const UPDATE_BACK_LINK = "/update_backlink"
+export const DELETE_BACK_LINK = "/delete_backlink"
+export const VIEW_BACK_LINK_ACTIVITY = "/activity_backlink"
+export const VIEW_BACK_LINK_PERFORMANCE = "/backLinkHistory"
+
+
+
+export const GET_PAGEVIEWS = "/pageviews"
+export const ADD_PAGE_VIEW = "create_pageview"
+export const UPDATE_PAGE_VIEW = "/update_pageview"
+export const DELETE_PAGE_VIEW = "/delete_pageview"
+export const VIEW_PAGE_VIEW_ACTIVITY = "/activity_pageview"
+export const PAGE_VIEW_PERFORMANCE = "/pageViewHistory"
+
 
 
 // export const GET_MEMBERS = "/registration"
