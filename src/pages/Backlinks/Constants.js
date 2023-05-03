@@ -4,7 +4,7 @@ export const webpage_payload =  {
     "populate": [
       {
         "path": "webpage",
-        "select": ["webpage","webpageUrl", "category"]
+        "select": ["webpage","webpageUrl", "category", "publishedOn"]
       }
     ]
   }

@@ -8,19 +8,15 @@ import { useHistory } from 'react-router-dom';
 import { useAlert } from "react-alert";
 
 const Performance = (props) => {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {}
-    // }
 
     const history = useHistory();
     const alert = useAlert();
     
       const [activity_list, setactivity_list] = useState([]);
     
-    const getallPerformancePageView = () => {
-        performancePageView().then(resp=>{
-        // console.log('datass ', )
+    const getallPerformancePageviews = () => {
+        performancePageView(props.id).then(resp=>{
+        // console.log('datass ', resp?.data[0])
         setactivity_list(resp?.data)
         if(resp?.message == 'Unauthorized User!!')
         {          
@@ -38,7 +34,7 @@ const Performance = (props) => {
     useEffect(()=>{
     
       setTimeout(function() {
-        getallPerformancePageView()
+        getallPerformancePageviews()
     }, 1000);
     
     },[]);
@@ -47,8 +43,8 @@ console.log(' p data ', activity_list)
     const series = [
            
         {
-            name: "Total Back Links",
-            data: activity_list.data, //[10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
+            name: "Total Page Views",
+            data: activity_list.data, // [10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
             type: 'area',
         }]
     

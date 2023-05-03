@@ -78,8 +78,16 @@ const Member = () => {
   };
 
 
+   const payload =  {
+    "options": {
+      "sort": {
+        "createdAt": [1/-1]
+    }
+    }
+  }
+
   const allMembers = (event, values) => {
-    getAllMembers().then(resp => {
+    getAllMembers(payload).then(resp => {
       setcmembers_list(resp?.data[0]?.list)
       // console.log('resp?.data ', resp?.data[0]?.list)
       setloading(false)
@@ -104,7 +112,7 @@ const Member = () => {
       avatar: (
         <div className="d-flex align-items-start">
           <div className="me-3 align-self-center">
-            <img src={`${'http://localhost:8080/avatar'}/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
+            <img src={`${'http://192.168.100.14:8080/avatar'}/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
           </div>
         </div>
       ),
@@ -116,7 +124,7 @@ const Member = () => {
           : <span className="bg-danger badge badge-secondary font-size-13">In Active</span>
 
       ),
-      createdAt: Moment(row.createdAt).format('DD-MMMM-YYYY'),
+      createdAt: Moment(row.createdAt).format('DD-MMM-YY'),
       action: (
         <div className="d-flex">
           <div

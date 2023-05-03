@@ -20,58 +20,57 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import { getWebsite, updateBackLink } from '../../helpers/backend_helper'
-import {optionGroupCategory, optionGroupWebPage} from './Constants'
+import { optionGroupCategory, optionGroupWebPage } from './Constants'
 
 const Updatebacklink = (props) => {
 
   const history = useHistory();
   const alert = useAlert();
 
-  const data =   props.location && props.location.state;
-console.log('data ', data)
-  var today = new Date(); //Current Date
-  let today_date = Moment(today).format('YYYY-MM-DD');
+  const data = props.location && props.location.state;
+  console.log('data ', data)
+  //   var today = new Date(); //Current Date
+  //   let today_date = Moment(today).format('YYYY-MM-DD');
 
-  let head_published_on = Moment(today).format('DD-MMMM-YYYY');
+  let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
 
-  const [webpage, setwebpage] = useState(data.data.webpage.webpage);
-  const [webpage_id, setwebpage_id] = useState(data.data.webpage._id);
+  const [webpage, setwebpage] = useState(data && data.data.webpage.webpage);
+  const [webpage_id, setwebpage_id] = useState(data && data.data.webpage._id);
 
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState();
-  const [total_backlinks, settotal_backlinks] = useState(data.data.numberOfBacklinks);
-  const [published_on, setpublished_on] = useState( Moment(data.data.publishedOn).format('YYYY-MM-DD') );
+  const [total_backlinks, settotal_backlinks] = useState(data && data.data.numberOfBacklinks);
+  const [published_on, setpublished_on] = useState(Moment(data && data.data.publishedOn).format('YYYY-MM-DD'));
   const [webpages_list, setwebpages_list] = useState([]);
-  const [date, setdate] = useState(today_date);
-  const [id, setid] = useState(data.data._id);
+  // const [date, setdate] = useState(today_date);
+  const [id, setid] = useState(data && data.data._id);
 
-// console.log('webpage ', data.data.webpage.webpage)
+  // console.log('webpage ', data.data.webpage.webpage)
 
   const updateBacklink = (event, values) => {
 
     const backlink_data = {
-      webpage: webpage_id,
-      monthYear: monthyear,
-      category: category,
-      numberOfBacklinks: total_backlinks,
+      // webpage: data && data.data.webpage._id !== webpage_id ? webpage_id : undefined,
+      monthYear: Moment(monthyear).format('YYYY-MM-DD'),
+      // category: category,
+      numberOfBacklinks: data && data.data.numberOfBacklinks !== total_backlinks ? total_backlinks : undefined,
       publishedOn: published_on
     }
 
-    updateBackLink(backlink_data, id).then(resp=>{
-      if(resp?.message == 'Unauthorized User!!')
-      {          
-          history.push('/logout')
-          alert.error('Session timeout');
-      }else{
+    updateBackLink(backlink_data, id).then(resp => {
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
+      } else {
         alert.success('Backlink Updated Successfully');
         history.push('/backlinks')
       }
-      
 
-    }).catch(err=>{
+
+    }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
-    
+
   }
 
   // const webpages_payload =  {
@@ -79,9 +78,9 @@ console.log('data ', data)
   //     "select": ['webpage', 'webpageUrl', 'category']
   //   }
   // }
-  
+
   const allWebpages = () => {
-    getWebsite(webpage_id).then(resp=>{
+    getWebsite(webpage_id).then(resp => {
       const data = resp?.data[0];
 
       setpublished_on(data.publishedOn)
@@ -90,19 +89,19 @@ console.log('data ', data)
 
       setcategory(data.category)
       setwebpages_list(resp?.data[0])
-    }).catch(err=>{
+    }).catch(err => {
     })
-    
-  }
-  console.log('fdfdsf ', category)
 
-  useEffect(()=>{
-  
-    setTimeout(function() {
+  }
+  // console.log('fdfdsf ', category)
+
+  useEffect(() => {
+
+    setTimeout(function () {
       allWebpages()
-  }, 500);
-  
-  },[]);
+    }, 500);
+
+  }, []);
 
   const goBack = (e) => {
     // history.goBack();
@@ -115,7 +114,7 @@ console.log('data ', data)
       <div className="page-content">
 
         {/* Render Breadcrumbs */}
-        {console.log( 'webpages_list ', webpages_list)}
+        {console.log('webpages_list ', webpages_list)}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
 
         <Row>
@@ -131,9 +130,9 @@ console.log('data ', data)
               <CardBody>
 
                 <CardTitle className="mb-4 font-size-18">Update Back Link</CardTitle>
-                <AvForm  onValidSubmit={(e, v) => {
-                        updateBacklink(e, v)
-                      }}>
+                <AvForm onValidSubmit={(e, v) => {
+                  updateBacklink(e, v)
+                }}>
                   <Row>
                     <Col lg={6} >
                       <div className="mb-3">
@@ -143,9 +142,9 @@ console.log('data ', data)
                           // options={optionGroupWebPage}
                           // options= {{ label: webpage, value: webpage_id }}
                           classNamePrefix="select2-selection"
-                        // onChange={e => setwebpage_id(e.value)}
-                        defaultValue={{ label: webpage, value: webpage }}
-                        readOnly
+                          // onChange={e => setwebpage_id(e.value)}
+                          defaultValue={{ label: webpage, value: webpage }}
+                          readOnly
                         // isOptionDisabled={(option) => option.isdisabled}
                         />
                       </div>
@@ -160,10 +159,9 @@ console.log('data ', data)
                           label="Published On"
                           className="form-control"
                           id="published_on"
-                          defaultValue = {published_on}
-                          max={published_on}
-                          min={published_on}
-                          required
+                          defaultValue={published_on}
+
+
                           onChange={e => setpublished_on(e.target.value)}
                           readOnly
                         />
@@ -182,44 +180,44 @@ console.log('data ', data)
                       </div>
                     </Col>
 
-<Row className="mt-4">
+                    <Row className="mt-4">
 
-<Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="month_year">Month-Year</label> */}
-                        <AvField
-                          type="month"
-                          name="month_year"
-                          label="Month-Year"
-                          className="form-control"
-                          id="month_year"
-                          // defaultValue = {monthyear}
-                          readOnly
-                        required
-                        onChange={e => setmonthyear(e.target.value)}
-                        // value={monthyear}
-                        defaultValue= {monthyear}
-                        />
-                      </div>
-                    </Col>
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="month_year">Month-Year</label> */}
+                          <AvField
+                            type="month"
+                            name="month_year"
+                            label="Month-Year"
+                            className="form-control"
+                            id="month_year"
+                            // defaultValue = {monthyear}
+                            readOnly
+                            required
+                            onChange={e => setmonthyear(e.target.value)}
+                            // value={monthyear}
+                            defaultValue={monthyear}
+                          />
+                        </div>
+                      </Col>
 
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="total_backlinks">Number of Back Links</label> */}
-                        <AvField
-                          type="number"
-                          name="total_backlinks"
-                          label="Number of Back Links"
-                          className="form-control"
-                          id="total_backlinks"
-                        onChange={e => settotal_backlinks(e.target.value)}
-                        defaultValue = {total_backlinks}
-                        required
-                        />
-                      </div>
-                    </Col>
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="total_backlinks">Number of Back Links</label> */}
+                          <AvField
+                            type="number"
+                            name="total_backlinks"
+                            label="Number of Back Links"
+                            className="form-control"
+                            id="total_backlinks"
+                            onChange={e => settotal_backlinks(e.target.value)}
+                            defaultValue={total_backlinks}
+                            required
+                          />
+                        </div>
+                      </Col>
 
-</Row>
+                    </Row>
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
@@ -242,7 +240,7 @@ console.log('data ', data)
           </Col>
 
           <Performance id={id} />
-          <HistoryTimeline id={id}/>
+          <HistoryTimeline id={id} />
         </Row>
       </div>
     </>

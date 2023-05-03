@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Row,
   Col,
@@ -7,145 +7,188 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
+import { addPageView, getWebsites } from '../../helpers/backend_helper'
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
+import { AvForm, AvField } from "availity-reactstrap-validation"
+import { useAlert } from "react-alert";
+import Moment from 'moment';
+import { webpages_payload } from './Constants'
 
 const Createpageview = () => {
 
-  const [webpage, setwebpage] = useState(null);
-  const [monthyear, setmonthyear] = useState(null);
+  const [webpage, setwebpage] = useState();
+  const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState(null);
-  const [total_page_views, settotal_page_views] = useState(null);
-
+  const [total_pageviews, settotal_pageviews] = useState();
+  const [published_on, setpublished_on] = useState(null);
+  const [webpages_list, setwebpages_list] = useState([]);
   const history = useHistory();
+  const alert = useAlert();
 
-    // Webpages
-    const optionGroupWebPage = [
-      {
-        label: "Web Pages",
-        options: [
-          { label: "Home", value: "Home" , url: "https://www.home.com/"},
-          { label: "About", value: "About", url: "https://www.about.com/" },
-          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
-          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
-          { label: "Events", value: "Events", url: "https://www.events.com/" },
-        ],
-      },
-  
-    ];
+  const insertPageView = (event, values) => {
 
+    const pageview_data = {
+      webpage: webpage,
+      monthYear: monthyear,
+      category: category,
+      numberOfPageviews: total_pageviews,
+      publishedOn: published_on
+    }
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
-   
-  ];
+    addPageView(pageview_data).then(resp => {
+      // websiteUpdate((website_data, website_id)).then(resp=>{
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
+      }
 
+      // console.log('resp?.data ', resp?.data)
+      alert.success('Pageview Created Successfully');
+      history.push('/page_views')
 
-  const createPageView = (e) => {
-    history.push('/page_views');
-  };
+    }).catch(err => {
+      alert.error('Backend server not responding, Please try again....');
+    })
+
+  }
+
+  const allWebpages = () => {
+    getWebsites(webpages_payload).then(resp => {
+      setwebpages_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
+  }
+
+  const handleWebpage = (e) => {
+    if (e) {
+      setwebpage(e.value);
+      setcategory(e.category);
+      setpublished_on(e.publishedOn);
+    }
+
+  }
+
+  useEffect(() => {
+    setTimeout(function () {
+      allWebpages()
+    }, 1000);
+
+  }, []);
+
 
   const goBack = (e) => {
-    // history.goBack();
     history.push('/page_views');
   };
-
 
   return (
     <>
       <div className="page-content">
-        
-          {/* Render Breadcrumbs */}
-          <Breadcrumbs title="Page Views" breadcrumbItem="Create Page View" />
 
-          <Row>
-            <Col lg="12">
-              <Card>
-                <CardBody>
-                  <CardTitle className="mb-4 font-size-18">Create Page View</CardTitle>
-                  <form >
+        {/* Render Breadcrumbs */}
+        <Breadcrumbs title="Page Views" breadcrumbItem="Create Page View" />
+
+        <Row>
+          <Col lg="12">
+            <Card>
+              <CardBody >
+                <CardTitle className="mb-4">Create Page View</CardTitle>
+                <AvForm onValidSubmit={(e, v) => {
+                  insertPageView(e, v)
+                }}>
                   <Row>
-                  <Col lg={6}>
+                    <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
-                        { webpage!== null && <Link to={webpage} style={{ float: "right"}} >View Page</Link> }
                         <Select
-                      id="webpage"
-                      options={optionGroupWebPage}
-                      classNamePrefix="select2-selection"
-                      onChange={e => setwebpage(e.url)}
-                      // value = {webpage}
-                    />
-                  
+                          id="webpage"
+                          options={
+                            webpages_list && webpages_list.map(website => (
+
+                              { label: website.webpage, value: website._id, id: website._id, url: website.webpageUrl, category: website.category, publishedOn: website.publishedOn }
+                            )
+                            )
+                          }
+                          classNamePrefix="select2-selection"
+                          onChange={e => handleWebpage(e)}
+                        />
                       </div>
                     </Col>
-
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="published_on">Published On</label>
                         <input
                           type="date"
+                          name="published_on"
+                          label="Published On"
                           className="form-control"
                           id="published_on"
-                          // onChange={e => setassigned_on(e.target.value)}
+                          onChange={e => setpublished_on(e.target.value)}
+                          value={Moment(published_on).format('YYYY-MM-DD')}
+                          readOnly
+                          required
                         />
                       </div>
                     </Col>
+
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
                         <Select
-                      id="category"
-                      options={optionGroupCategory}
-                      classNamePrefix="select2-selection"
-                      // onChange={e => setcategory(e.target.value)}
-                      // value = {category}
-                    />
-                      </div>
-                    </Col>
-
-                  <Row className="mt-4">
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="month_year">Month-Year</label>
-                        <input
-                          type="month"
-                          className="form-control"
-                          id="month_year"
-                          // onChange={e => setmonthyear(e.target.value)}
-                          // value={monthyear}
+                          id="category"
+                          name="category"
+                          label="Category"
+                          // options={optionGroupCategory}
+                          classNamePrefix="select2-selection"
+                          onChange={e => setcategory(e.value)}
+                          // value = {category}
+                          value={{ label: category, value: category }}
                         />
                       </div>
                     </Col>
 
-                    <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="total_backlinks">Number of Backlinks</label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          id="total_backlinks"
-                          // onChange={e => settotal_page_views(e.target.value)}
-                          // value={total_page_views}
-                        />
-                      </div>
-                    </Col>
+
+                    <Row className="mt-4">
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="month_year">Month-Year</label> */}
+                          <AvField
+                            type="month"
+                            name="month_year"
+                            label="Month-Year"
+                            className="form-control"
+                            id="month_year"
+                            required
+                            onChange={e => setmonthyear(e.target.value)}
+                            defaultValue={monthyear}
+                          />
+                        </div>
+                      </Col>
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="total_pageviews">Number of Backlinks</label> */}
+                          <AvField
+                            type="number"
+                            name="total_pageviews"
+                            label="Number of Page Views"
+                            className="form-control"
+                            id="total_pageviews"
+                            required
+                            onChange={e => settotal_pageviews(e.target.value)}
+                          // value={total_pageviews}
+                          />
+                        </div>
+                      </Col>
+
                     </Row>
-
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit" className="btn btn-primary" style={{marginRight: "30px"}} onClick={() => createPageView()}>
+                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
                           Create Page View
                         </button>
 
@@ -157,11 +200,12 @@ const Createpageview = () => {
                     </Col>
 
                   </Row>
-                </form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+
+                </AvForm>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     </>
   )

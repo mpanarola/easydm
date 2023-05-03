@@ -19,7 +19,7 @@ const Performance = (props) => {
       const [activity_list, setactivity_list] = useState([]);
     
     const getallPerformanceBacklink = () => {
-        performanceBackLink().then(resp=>{
+        performanceBackLink(props.id).then(resp=>{
         // console.log('datass ', resp?.data[0])
         setactivity_list(resp?.data)
         if(resp?.message == 'Unauthorized User!!')

@@ -104,9 +104,9 @@ const ContentScheduler = () => {
       actual_words: (
         <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.actualWords}</span>
       ),
-      assigned_on: Moment(row.assignedOn).format('DD-MMM-YYYY'),
+      assigned_on: Moment(row.assignedOn).format('DD-MMM-YY'),
       assigned_by: row.assignedBy && row.assignedBy.name,
-      submiited_on: Moment(row.submitedOn).format('DD-MMM-YYYY'),
+      submiited_on: Moment(row.submitedOn).format('DD-MMM-YY'),
       written_by: row.assignedBy && row.assignedBy.name,
       content_status: (
         row.contentStatus == "Complete" ?

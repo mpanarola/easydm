@@ -62,7 +62,7 @@ const Createpage = () => {
       webpage: webpage,
       webpageUrl: webpage_url,
       category: category,
-      assignedTo: assigned_to,
+      assignedTo: assigned_to.map(i => i.value ? i.value : i._id),
       effectiveFrom: effective_from,
       publishedOn: published_on
     }

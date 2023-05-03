@@ -27,10 +27,12 @@ const Backlink = () => {
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
   const [confirm_alert, setconfirm_alert] = useState(false)
+
   const [backlinks_list, setbacklinks_list] = useState([])
   const [record_id, set_id] = useState()
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
   const [is_loading, setloading] = useState(true)
+  
   const confirmDelete = (id) => {
     setconfirm_both(true)
     set_id(id)
@@ -93,10 +95,10 @@ const Backlink = () => {
       webpage: (
         <a href={row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage.webpage}</a>
       ),
-      date: Moment(row.publishedOn).format('DD-MMM-YYYY'),
+      date: Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
       // webpage_url: "",
       category: row.webpage.category,
-      month_year: Moment(row.monthYear).format('MMM-YYYY'),
+      month_year: Moment(row.monthYear).format('MMM-YY'),
       total_backlinks: (
         <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.numberOfBacklinks}</span>
       ),

@@ -56,7 +56,7 @@ const Createbacklink = () => {
       }
 
       // console.log('resp?.data ', resp?.data)
-      alert.success('Backlink Create Successfully');
+      alert.success('Backlink Created Successfully');
       history.push('/backlinks')
 
     }).catch(err=>{
@@ -165,6 +165,7 @@ console.log('publish ', published_on)
                           id="published_on"
                           onChange={e => setpublished_on(e.target.value)}
                           value ={ Moment(published_on).format('YYYY-MM-DD') }
+                          readOnly
                         />
                       </div>
                     </Col>

@@ -13,7 +13,7 @@ import { useHistory, Link } from 'react-router-dom';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { optionGroupType, optionGroupStaus } from './Constants'
-import {addNewSchedular, getWebsites, getAllMembers } from '../../helpers/backend_helper'
+import { addNewSchedular, getWebsites, getAllMembers } from '../../helpers/backend_helper'
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 
@@ -26,7 +26,7 @@ const AddSchedular = () => {
   const [webpage_url, setwebpageurl] = useState(null);
 
   const [topic_title, settopic_title] = useState(null);
-  const [topic_type, settopic_type] = useState(null);
+  const [topic_type, settopic_type] = useState('Article');
   const [doc_link, setdoc_link] = useState(null);
   const [ref_links, setref_links] = useState([]);
 
@@ -34,7 +34,7 @@ const AddSchedular = () => {
   const [referece_links, setreferece_links] = useState(inpRow)
   const [expected_words, setexpected_words] = useState(null);
   const [actual_words, setactual_words] = useState(null);
-  const [content_status, setcontent_status] = useState(null);
+  const [content_status, setcontent_status] = useState('In-progress');
   const [assigned_by, setassigned_by] = useState();
   const [written_by, setwritten_by] = useState();
   const [assigned_on, setassigned_on] = useState(null);
@@ -47,86 +47,64 @@ const AddSchedular = () => {
   const [originality_semrush, setoriginality_semrush] = useState();
   const [content_score_semrush, setcontent_score_semrush] = useState();
 
-  
+
   const [members_list, setmembers_list] = useState([])
   const [webpages_list, setwebpages_list] = useState([])
 
 
 
-  const member_payload =  {
+  const member_payload = {
     "options": {
       "select": ['name']
     }
   }
-  
+
   const allMembers = () => {
-    getAllMembers(member_payload).then(resp=>{
+    getAllMembers(member_payload).then(resp => {
       setmembers_list(resp?.data[0]?.list)
-    
-    }).catch(err=>{
+
+    }).catch(err => {
     })
-    
+
   }
-  
-  const webpages_payload =  {
+
+  const webpages_payload = {
     "options": {
       "select": ['webpage', 'webpageUrl']
     }
   }
-  
+
   const allWebpages = () => {
-    getWebsites(webpages_payload).then(resp=>{
+    getWebsites(webpages_payload).then(resp => {
       setwebpages_list(resp?.data[0]?.list)
-    
-    }).catch(err=>{
+
+    }).catch(err => {
     })
-    
+
   }
 
-  useEffect(()=>{
-  
-    setTimeout(function() {
+  useEffect(() => {
+
+    setTimeout(function () {
       allMembers()
       allWebpages()
 
-  }, 1000);
-  
-  },[]);
+    }, 1000);
+
+  }, []);
 
 
-
-
-  // Webpages
-  // const optionGroupWebPage = [
-  //   {
-  //     label: "Web Pages",
-  //     options: [
-  //       { label: "Home", value: "Home" , url: "https://www.home.com/"},
-  //         { label: "About", value: "About", url: "https://www.about.com/" },
-  //         { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
-  //         { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
-  //         { label: "Events", value: "Events", url: "https://www.events.com/" },
-  //     ],
-  //   },
-
-  // ];
-
-
-  const handleWebpage = (e)=>{
+  const handleWebpage = (e) => {
     setwebpage(e.value);
     setwebpageurl(e.url);
+  }
 
-}
-
-
-
-  const handleChange = (index, evnt)=>{
+  const handleChange = (index, evnt) => {
     const { value } = evnt.target;
     const list = [...ref_links];
     list[index] = value;
     setref_links(list);
-}
-
+  }
 
   // Function for Create Input Fields
   function handleAddFields() {
@@ -138,14 +116,14 @@ const AddSchedular = () => {
   function handleRemoveFields(idx) {
     document.getElementById("nested" + idx).style.display = "none"
     const rows = [...ref_links];
-        rows.splice(idx, 1);
-        setref_links(rows);
+    rows.splice(idx, 1);
+    setref_links(rows);
   }
 
   const createScheduler = (e) => {
     // console.log('referece_links ', ref_links)
     const schedular_data = {
-      contentType : topic_type,
+      contentType: topic_type,
       webpage: webpage,
       refereceLinks: ref_links,
       topicTitle: topic_title,
@@ -165,20 +143,19 @@ const AddSchedular = () => {
     }
 
     // console.log('update website ', website_id)
-    addNewSchedular(schedular_data).then(resp=>{
-    // websiteUpdate((website_data, website_id)).then(resp=>{
+    addNewSchedular(schedular_data).then(resp => {
+      // websiteUpdate((website_data, website_id)).then(resp=>{
       // console.log('resp ', resp)
-      if(resp?.message == 'Unauthorized User!!')
-      {          
-          history.push('/logout')
-          alert.error('Session timeout');
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
       }
 
       // console.log('resp?.data ', resp?.data)
       alert.success('Content Schedular Create Successfully');
       history.push('/content_schedulers')
 
-    }).catch(err=>{
+    }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
 
@@ -189,6 +166,8 @@ const AddSchedular = () => {
     history.push('/content_schedulers');
   };
 
+
+  // console.log(' members_list ', members_list[0].name)
   return (
     <>
       <div className="page-content">
@@ -202,9 +181,9 @@ const AddSchedular = () => {
               <CardBody>
                 <CardTitle className="mb-4">Create Content Scheduler</CardTitle>
 
-                <AvForm  onValidSubmit={(e, v) => {
-                        createScheduler(e, v)
-                      }}>
+                <AvForm onValidSubmit={(e, v) => {
+                  createScheduler(e, v)
+                }}>
                   <Row>
 
                     <Col lg={6}>
@@ -215,8 +194,8 @@ const AddSchedular = () => {
                           isMulti={false}
                           options={optionGroupType}
                           classNamePrefix="select2-selection"
-                        onChange={e => settopic_type(e.value)}
-                        defaultValue = {{ label: 'Blog' }}
+                          onChange={e => settopic_type(e.value)}
+                          defaultValue={{ label: 'Article' }}
                         />
                       </div>
                     </Col>
@@ -224,18 +203,15 @@ const AddSchedular = () => {
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="web_page">Web Page</label>
-                        { webpage_url!== null && <a href={webpage_url} target="_blank" style={{ float: "right"}} >View Page</a> }
+                        {webpage_url !== null && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <Select
                           id="web_page"
                           isMulti={false}
-                          // options={optionGroupWebPage}
-                          options= {
-                            webpages_list && webpages_list.map( website => ( 
-          
+                          options={
+                            webpages_list && webpages_list.map(website => (
                               { label: website.webpage, value: website._id, id: website._id, url: website.webpageUrl }
                             )
                             )
-    
                           }
                           classNamePrefix="select2-selection"
                           onChange={e => handleWebpage(e)}
@@ -259,34 +235,31 @@ const AddSchedular = () => {
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
-                                <AvField
+                                  <AvField
                                     type="url"
                                     name="url"
                                     className="inner form-control"
                                     defaultValue={field.name}
                                     placeholder="Enter Referece Link"
-                                    onChange={(evnt)=>handleChange(key, evnt)}
-                                    // onChange={(e) => {
-                                    //   setref_links( ...ref_links,  e.target.value)
-                                    // }}
+                                    onChange={(evnt) => handleChange(key, evnt)}
                                   />
                                 </Col>
 
-                              { key != 0 &&
-                                <Col md="1">
-                                  <div className="mt-2 mt-md-0 d-grid">
-                                    <Button
-                                      color="danger"
-                                      className="inner"
-                                      onClick={() => {
-                                        handleRemoveFields(key)
-                                      }}
-                                      block
-                                    >
-                                      Remove
-                                    </Button>
-                                  </div>
-                                </Col>
+                                {key != 0 &&
+                                  <Col md="1">
+                                    <div className="mt-2 mt-md-0 d-grid">
+                                      <Button
+                                        color="danger"
+                                        className="inner"
+                                        onClick={() => {
+                                          handleRemoveFields(key)
+                                        }}
+                                        block
+                                      >
+                                        Remove
+                                      </Button>
+                                    </div>
+                                  </Col>
                                 }
                               </div>
                             ))}
@@ -313,7 +286,7 @@ const AddSchedular = () => {
                   </Row>
 
                   <Row>
-                  <Col lg={6}>
+                    <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="topic_title">Topic Title</label> */}
                         <AvField
@@ -323,8 +296,8 @@ const AddSchedular = () => {
                           className="form-control"
                           id="topic_title"
                           placeholder="Enter Topic Title"
-                        onChange={e => settopic_title(e.target.value)}
-                        required
+                          onChange={e => settopic_title(e.target.value)}
+                          required
                         />
                       </div>
                     </Col>
@@ -339,8 +312,8 @@ const AddSchedular = () => {
                           className="form-control"
                           id="doc_link"
                           placeholder="Enter Doc Link"
-                        onChange={e => setdoc_link(e.target.value)}
-                        required
+                          onChange={e => setdoc_link(e.target.value)}
+                          required
                         />
                       </div>
                     </Col>
@@ -372,8 +345,8 @@ const AddSchedular = () => {
                           className="form-control"
                           id="actual_words"
                           placeholder="Enter Actual Words"
-                        onChange={e => setactual_words(e.target.value)}
-                        required
+                          onChange={e => setactual_words(e.target.value)}
+                          required
                         />
                       </div>
                     </Col>
@@ -387,8 +360,8 @@ const AddSchedular = () => {
                           label="Assigned On"
                           className="form-control"
                           id="assigned_on"
-                        onChange={e => setassigned_on(e.target.value)}
-                        required
+                          onChange={e => setassigned_on(e.target.value)}
+                          required
                         />
                       </div>
                     </Col>
@@ -400,18 +373,16 @@ const AddSchedular = () => {
                           id="assigned_by"
                           isMulti={false}
                           onChange={(e) => {
-                            setassigned_by( e.value )
+                            setassigned_by(e.value)
                           }}
-                          options= {
-                            members_list && members_list.map( user => ( 
-          
+                          options={
+                            members_list && members_list.map( (user)  => (
                               { label: user.name, value: user._id, id: user._id }
                             )
                             )
-    
                           }
+
                           classNamePrefix="select2-selection"
-                        // onChange={e => setwritten_by(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -438,19 +409,15 @@ const AddSchedular = () => {
                           id="written_by"
                           isMulti={false}
                           onChange={(e) => {
-                            
-                            setwritten_by( e.value )
+                            setwritten_by(e.value)
                           }}
-                          options= {
-                            members_list && members_list.map( user => ( 
-          
+                          options={
+                            members_list && members_list.map(user => (
                               { label: user.name, value: user._id, id: user._id }
                             )
                             )
-    
                           }
                           classNamePrefix="select2-selection"
-                        // onChange={e => setwritten_by(e.target.value)}
                         />
                       </div>
                     </Col>
@@ -463,9 +430,9 @@ const AddSchedular = () => {
                           isMulti={false}
                           options={optionGroupStaus}
                           classNamePrefix="select2-selection"
-                        onChange={e => setcontent_status(e.value)}
-                        defaultValue = { {label: "In Progress"} }
-                        required
+                          onChange={e => setcontent_status(e.value)}
+                          defaultValue={{ label: "In-progress" }}
+                          required
                         />
                       </div>
                     </Col>
@@ -476,95 +443,95 @@ const AddSchedular = () => {
 
                   <Row className="mt-4">
 
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="readability_semrush"
-        name="readability_semrush"
-        label="Readability (SEMRush)"
-        type="number"
-        classNamePrefix="form-control"
-        onChange={e => setreadability_semrush(e.target.value)}
-      />
-    </div>
-  </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="readability_semrush"
+                          name="readability_semrush"
+                          label="Readability (SEMRush)"
+                          type="number"
+                          classNamePrefix="form-control"
+                          onChange={e => setreadability_semrush(e.target.value)}
+                        />
+                      </div>
+                    </Col>
 
- 
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="SEO_semrush"
-        name="SEO_semrush"
-        type="number"
-        label="SEO (SEMRush)"
-        classNamePrefix="form-control"
-        onChange={e => setseo_semrush(e.target.value)}
-      />
-    </div>
-  </Col>
 
-  
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="ton_voice_semrush"
-        name="ton_voice_semrush"
-        label="Tone of Voice (SEMRush)"
-        type="number"
-        classNamePrefix="form-control"
-        onChange={e => setton_voice_semrush(e.target.value)}
-      />
-    </div>
-  </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="SEO_semrush"
+                          name="SEO_semrush"
+                          type="number"
+                          label="SEO (SEMRush)"
+                          classNamePrefix="form-control"
+                          onChange={e => setseo_semrush(e.target.value)}
+                        />
+                      </div>
+                    </Col>
 
-  
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="originality_semrush"
-        name="originality_semrush"
-        label="Originality (SEMRush)"
-        classNamePrefix="form-control"
-        onChange={e => setoriginality_semrush(e.target.value)}
-      />
-    </div>
-  </Col>
 
-  <Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="content_score_semrush"
-        name="content_score_semrush"
-        label="Content Score (Surfer SEO)"
-        type="number"
-        classNamePrefix="form-control"
-        onChange={e => setcontent_score_semrush(e.target.value)}
-      />
-    </div>
-  </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="ton_voice_semrush"
+                          name="ton_voice_semrush"
+                          label="Tone of Voice (SEMRush)"
+                          type="number"
+                          classNamePrefix="form-control"
+                          onChange={e => setton_voice_semrush(e.target.value)}
+                        />
+                      </div>
+                    </Col>
 
-</Row>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="originality_semrush"
+                          name="originality_semrush"
+                          label="Originality (SEMRush)"
+                          classNamePrefix="form-control"
+                          onChange={e => setoriginality_semrush(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="content_score_semrush"
+                          name="content_score_semrush"
+                          label="Content Score (Surfer SEO)"
+                          type="number"
+                          classNamePrefix="form-control"
+                          onChange={e => setcontent_score_semrush(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                  </Row>
 
                   <Row>
-                  <Col lg={6}>
+                    <Col lg={6}>
 
-<div className="text-right col-lg-10 d-flex">
-  <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
-    Create Content Scheduler
-  </button>
+                      <div className="text-right col-lg-10 d-flex">
+                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
+                          Create Content Scheduler
+                        </button>
 
-  <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
-    Back
-  </button>
+                        <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
+                          Back
+                        </button>
 
-</div>
+                      </div>
 
-</Col>
+                    </Col>
                   </Row>
 
                 </AvForm>

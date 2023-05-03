@@ -13,26 +13,22 @@ import { useHistory, Link } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-import { optionGroupType, optionGroupStaus } from './Constants'
-import {updateSchedular, getWebsites, getAllMembers } from '../../helpers/backend_helper'
+import { optionGroupType, optionGroupStaus, isArrayEquals } from './Constants'
+import { updateSchedular, getWebsites, getAllMembers } from '../../helpers/backend_helper'
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import Historytimeline from "./Historytimeline"
 
 const UpdateSchedular = (props) => {
 
-  const schedular_data =   props.location && props.location.state.data;
-console.log('schedular_data ', schedular_data)
+  const schedular_data = props.location && props.location.state.data;
+  console.log('schedular_data ', schedular_data)
   const history = useHistory();
   const alert = useAlert();
-
   const [id, setid] = useState(schedular_data && schedular_data._id);
-
-  const [webpage, setwebpage] = useState(schedular_data && schedular_data.webpage.webpage);
-  const [webpage_id, setwebpage_id] = useState(schedular_data && schedular_data.webpage._id);
-
-  const [webpage_url, setwebpageurl] = useState(schedular_data && schedular_data.webpage.webpageUrl);
-
+  const [webpage, setwebpage] = useState(schedular_data && schedular_data.webpage && schedular_data.webpage.webpage);
+  const [webpage_id, setwebpage_id] = useState(schedular_data && schedular_data.webpage && schedular_data.webpage._id);
+  const [webpage_url, setwebpageurl] = useState(schedular_data && schedular_data.webpage && schedular_data.webpage.webpageUrl);
   const [topic_title, settopic_title] = useState(schedular_data && schedular_data.topicTitle);
   const [topic_type, settopic_type] = useState(schedular_data && schedular_data.contentType);
   const [doc_link, setdoc_link] = useState(schedular_data && schedular_data.docLink);
@@ -40,149 +36,143 @@ console.log('schedular_data ', schedular_data)
 
   let inpRow = []
 
-  if(schedular_data.refereceLinks.length > 0 ){
+  if (schedular_data.refereceLinks.length > 0) {
     inpRow = schedular_data && schedular_data.refereceLinks
   }
-  // const inpRow = schedular_data && schedular_data !== null ? schedular_data.refereceLinks : inpRow_default
-// console.log('inpRow ', inpRow)
+  let head_published_on = Moment(schedular_data && schedular_data.submitedOn).format('DD-MMM-YY');
   const [referece_links, setreferece_links] = useState(inpRow)
   const [expected_words, setexpected_words] = useState(schedular_data && schedular_data.expectedWords);
   const [actual_words, setactual_words] = useState(schedular_data && schedular_data.actualWords);
   const [content_status, setcontent_status] = useState(schedular_data && schedular_data.contentStatus);
   const [assigned_by, setassigned_by] = useState(schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id);
   const [written_by, setwritten_by] = useState(schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id);
-
   const [assigned_by_name, setassigned_by_name] = useState(schedular_data && schedular_data.assignedBy && schedular_data.assignedBy.name);
   const [written_by_name, setwritten_by_name] = useState(schedular_data && schedular_data.writtenBy && schedular_data.writtenBy.name);
-
   const [assigned_on, setassigned_on] = useState(schedular_data && schedular_data.assignedOn);
   const [submited_on, setsubmited_on] = useState(schedular_data && schedular_data.submitedOn);
-
-
   const [readability_semrush, setreadability_semrush] = useState(schedular_data && schedular_data.readability);
   const [seo_semrush, setseo_semrush] = useState(schedular_data && schedular_data.seo);
   const [ton_voice_semrush, setton_voice_semrush] = useState(schedular_data && schedular_data.toneOfVoice);
   const [originality_semrush, setoriginality_semrush] = useState(schedular_data && schedular_data.originality);
   const [content_score_semrush, setcontent_score_semrush] = useState(schedular_data && schedular_data.contentScore);
-  
   const [members_list, setmembers_list] = useState([])
   const [webpages_list, setwebpages_list] = useState([])
 
-
-// console.log('written_by ', schedular_data && schedular_data.assignedBy && schedular_data.assignedBy.name)
-  const member_payload =  {
+  const member_payload = {
     "options": {
       "select": ['name']
     }
   }
-  
+
   const allMembers = () => {
-    getAllMembers(member_payload).then(resp=>{
+    getAllMembers(member_payload).then(resp => {
 
       setmembers_list(resp?.data[0]?.list)
-    
-    }).catch(err=>{
+
+    }).catch(err => {
     })
-    
+
   }
-  
-  const webpages_payload =  {
+
+  const webpages_payload = {
     "options": {
       "select": ['webpage', 'webpageUrl']
     }
   }
-  
+
   const allWebpages = () => {
-    getWebsites(webpages_payload).then(resp=>{
+    getWebsites(webpages_payload).then(resp => {
       setwebpages_list(resp?.data[0]?.list)
-    
-    }).catch(err=>{
+
+    }).catch(err => {
     })
-    
+
   }
 
-  useEffect(()=>{
-  
-    setTimeout(function() {
+  useEffect(() => {
+
+    setTimeout(function () {
       allMembers()
       allWebpages()
 
-  }, 1000);
-  
-  },[]);
+    }, 1000);
+
+  }, []);
 
 
-  const handleWebpage = (e)=>{
+  const handleWebpage = (e) => {
     setwebpage(e.value);
     setwebpage_id(e.value);
     setwebpageurl(e.url);
 
-}
+  }
 
-  const handleChange = (index, evnt)=>{
+  const handleChange = (index, evnt) => {
     const { value } = evnt.target;
-    const list = [...ref_links];
-    list[index] = value;
-    setref_links(list);
-}
+    if (value) {
+      const list = [...referece_links];
+      list[index] = value;
+      setreferece_links(list);
+    }
+  }
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = {}
+    const item1 = []
     setreferece_links([...referece_links, item1])
   }
 
   // Function for Remove Input Fields
-  function handleRemoveFields(idx) {
+  function handleRemoveFields(e, idx) {
     document.getElementById("nested" + idx).style.display = "none"
-    const rows = [...ref_links];
-        rows.splice(idx, 1);
-        setref_links(rows);
+    const rows = [...referece_links];
+    rows.splice(idx, 1);
+    setreferece_links(rows);
   }
 
   const updateScheduler = (e) => {
-    const schedular_data = {
-      contentType : topic_type,
-      webpage: webpage_id,
-      refereceLinks: ref_links,
-      topicTitle: topic_title,
-      docLink: doc_link,
-      expectedWords: expected_words,
-      actualWords: actual_words,
-      assignedOn: assigned_on,
-      assignedBy: assigned_by,
-      submitedOn: submited_on ,
-      writtenBy: written_by,
-      contentStatus: content_status,
-    readability: readability_semrush,
-    seo: seo_semrush,
-    toneOfVoice: ton_voice_semrush,
-    originality: originality_semrush,
-    contentScore: content_score_semrush
-    }
-    updateSchedular(schedular_data, id).then(resp=>{
+    const is_assigned_equal = isArrayEquals(referece_links, schedular_data.refereceLinks);
 
-      if(resp?.message == 'Unauthorized User!!')
-      {          
-          history.push('/logout')
-          alert.error('Session timeout');
+    const schedularData = {
+      contentType: schedular_data && schedular_data.contentType !== topic_type ? topic_type : undefined,
+      webpage: schedular_data && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage? webpage_id : webpage_id : undefined,
+      refereceLinks: schedular_data && !is_assigned_equal ? referece_links : undefined,
+      topicTitle: schedular_data && schedular_data.topicTitle !== topic_title ? topic_title : undefined,
+      docLink: schedular_data && schedular_data.docLink !== doc_link ? doc_link : undefined,
+      expectedWords: schedular_data && schedular_data.expectedWords !== expected_words ? expected_words : undefined,
+      actualWords: schedular_data && schedular_data.actualWords !== actual_words ? actual_words : undefined,
+      assignedOn: schedular_data && schedular_data.assignedOn !== assigned_on ? assigned_on : undefined,
+      assignedBy: schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id !== assigned_by ? !schedular_data.assignedBy? assigned_by : assigned_by : undefined,
+      submitedOn: schedular_data && schedular_data.submitedOn !== submited_on ? submited_on : undefined,
+      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by ? !schedular_data.writtenBy? written_by : written_by : undefined,
+      contentStatus: schedular_data && schedular_data.contentStatus !== content_status ? content_status : undefined,
+      readability: schedular_data && schedular_data.readability !== readability_semrush ? readability_semrush : undefined,
+      seo: schedular_data && schedular_data.seo !== seo_semrush ? seo_semrush : undefined,
+      toneOfVoice: schedular_data && schedular_data.toneOfVoice !== ton_voice_semrush ? ton_voice_semrush : undefined,
+      originality: schedular_data && schedular_data.originality !== originality_semrush ? originality_semrush : undefined,
+      contentScore: schedular_data && schedular_data.contentScore !== content_score_semrush ? content_score_semrush : undefined,
+    }
+
+    // console.log('schedularData ', schedularData)
+
+    updateSchedular(schedularData, id).then(resp => {
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
       }
 
       alert.success('Content Schedular Create Successfully');
       history.push('/content_schedulers')
 
-    }).catch(err=>{
+    }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
 
   };
 
   const goBack = (e) => {
-    // history.goBack();
     history.push('/content_schedulers');
   };
-
-  // console.log('referece_links ', referece_links)
 
   return (
     <>
@@ -192,14 +182,20 @@ console.log('schedular_data ', schedular_data)
         <Breadcrumbs title="Content Schedulers" breadcrumbItem="Update Content Scheduler" />
 
         <Row>
+        <Card>
+            <CardBody>
+              <h4 className="me-4"> ID:  {id}</h4>
+              <label htmlFor="created_on">Submiited On :  {head_published_on}</label>
+            </CardBody>
+          </Card>
+
           <Col lg="12">
             <Card>
               <CardBody>
-                <CardTitle className="mb-4">Update Content Scheduler</CardTitle>
 
-                <AvForm  onValidSubmit={(e, v) => {
-                        updateScheduler(e, v)
-                      }}>
+                <AvForm onValidSubmit={(e, v) => {
+                  updateScheduler(e, v)
+                }}>
                   <Row>
 
                     <Col lg={6}>
@@ -210,8 +206,8 @@ console.log('schedular_data ', schedular_data)
                           isMulti={false}
                           options={optionGroupType}
                           classNamePrefix="select2-selection"
-                        onChange={e => settopic_type(e.value)}
-                        defaultValue= {{label : topic_type ? topic_type : 'Blog'}}
+                          onChange={e => settopic_type(e.value)}
+                          defaultValue={{ label: topic_type ? topic_type : 'Blog' }}
                         />
                       </div>
                     </Col>
@@ -219,22 +215,22 @@ console.log('schedular_data ', schedular_data)
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="web_page">Web Page</label>
-                        { webpage_url!== null && <a href={webpage_url} target="_blank" style={{ float: "right"}} >View Page</a> }
+                        {webpage_url !== null && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <Select
                           id="web_page"
                           isMulti={false}
                           // options={optionGroupWebPage}
-                          options= {
-                            webpages_list && webpages_list.map( website => ( 
-          
+                          options={
+                            webpages_list && webpages_list.map(website => (
+
                               { label: website.webpage, value: website._id, id: website._id, url: website.webpageUrl }
                             )
                             )
-    
+
                           }
                           classNamePrefix="select2-selection"
                           onChange={e => handleWebpage(e)}
-                          defaultValue= { { label: webpage}}
+                          defaultValue={{ label: webpage }}
                         />
                       </div>
                     </Col>
@@ -249,40 +245,40 @@ console.log('schedular_data ', schedular_data)
                             id="repeater"
                           >
                             {referece_links && referece_links.map((field, key) => (
-                         
+
                               <div
                                 key={key}
                                 id={"nested" + key}
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
-                                  
-                                <AvField
+
+                                  <AvField
                                     type="url"
                                     name="url"
                                     className="inner form-control"
-                                    defaultValue={ typeof field !== 'object' ? field : ''  }
+                                    defaultValue={typeof field !== 'object' ? field : ''}
                                     placeholder="Enter Referece Link"
-                                    onChange={(evnt)=>handleChange(key, evnt)}
+                                    onChange={(evnt) => handleChange(key, evnt)}
                                   />
-                            
+
                                 </Col>
 
-                              { key != 0 &&
-                                <Col md="1">
-                                  <div className="mt-2 mt-md-0 d-grid">
-                                    <Button
-                                      color="danger"
-                                      className="inner"
-                                      onClick={() => {
-                                        handleRemoveFields(key)
-                                      }}
-                                      block
-                                    >
-                                      Remove
-                                    </Button>
-                                  </div>
-                                </Col>
+                                {key != 0 &&
+                                  <Col md="1">
+                                    <div className="mt-2 mt-md-0 d-grid">
+                                      <Button
+                                        color="danger"
+                                        className="inner"
+                                        onClick={(e) => {
+                                          handleRemoveFields(e, key)
+                                        }}
+                                        block
+                                      >
+                                        Remove
+                                      </Button>
+                                    </div>
+                                  </Col>
                                 }
                               </div>
                             ))}
@@ -309,7 +305,7 @@ console.log('schedular_data ', schedular_data)
                   </Row>
 
                   <Row>
-                  <Col lg={6}>
+                    <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="topic_title">Topic Title</label> */}
                         <AvField
@@ -319,8 +315,8 @@ console.log('schedular_data ', schedular_data)
                           className="form-control"
                           id="topic_title"
                           placeholder="Enter Topic Title"
-                        onChange={e => settopic_title(e.target.value)}
-                        defaultValue = {topic_title}
+                          onChange={e => settopic_title(e.target.value)}
+                          defaultValue={topic_title}
                         />
                       </div>
                     </Col>
@@ -335,8 +331,8 @@ console.log('schedular_data ', schedular_data)
                           className="form-control"
                           id="doc_link"
                           placeholder="Enter Doc Link"
-                        onChange={e => setdoc_link(e.target.value)}
-                        defaultValue = {doc_link}
+                          onChange={e => setdoc_link(e.target.value)}
+                          defaultValue={doc_link}
                         />
                       </div>
                     </Col>
@@ -352,8 +348,8 @@ console.log('schedular_data ', schedular_data)
                           className="form-control"
                           id="expected_words"
                           placeholder="Enter Expected Words"
-                        onChange={e => setexpected_words(e.target.value)}
-                        defaultValue = {expected_words}
+                          onChange={e => setexpected_words(e.target.value)}
+                          defaultValue={expected_words}
                         />
                       </div>
                     </Col>
@@ -368,8 +364,8 @@ console.log('schedular_data ', schedular_data)
                           className="form-control"
                           id="actual_words"
                           placeholder="Enter Actual Words"
-                        onChange={e => setactual_words(e.target.value)}
-                        defaultValue = {actual_words}
+                          onChange={e => setactual_words(e.target.value)}
+                          defaultValue={actual_words}
                         />
                       </div>
                     </Col>
@@ -383,8 +379,8 @@ console.log('schedular_data ', schedular_data)
                           label="Assigned On"
                           className="form-control"
                           id="assigned_on"
-                        onChange={e => setassigned_on(e.target.value)}
-                        defaultValue = { Moment(assigned_on).format('YYYY-MM-DD') }
+                          onChange={e => setassigned_on(e.target.value)}
+                          defaultValue={Moment(assigned_on).format('YYYY-MM-DD')}
                         />
                       </div>
                     </Col>
@@ -395,20 +391,20 @@ console.log('schedular_data ', schedular_data)
                         <Select
                           id="assigned_by"
                           isMulti={false}
-                          options= {
-                            members_list && members_list.map( user => ( 
-          
+                          options={
+                            members_list && members_list.map(user => (
+
                               { label: user.name, value: user._id, id: user._id }
                             )
                             )
-    
+
                           }
                           onChange={(e) => {
-                            setassigned_by( e.value )
+                            setassigned_by(e.value)
                           }}
                           classNamePrefix="select2-selection"
-                        // onChange={e => setwritten_by(e.target.value)}
-                        defaultValue = {{value : assigned_by, label: assigned_by_name}}
+                          // onChange={e => setwritten_by(e.target.value)}
+                          defaultValue={{ value: assigned_by, label: assigned_by_name }}
                         />
                       </div>
                     </Col>
@@ -423,7 +419,7 @@ console.log('schedular_data ', schedular_data)
                           className="form-control"
                           id="submitted_on"
                           onChange={e => setsubmited_on(e.target.value)}
-                          defaultValue = {Moment(submited_on).format('YYYY-MM-DD') }
+                          defaultValue={Moment(submited_on).format('YYYY-MM-DD')}
                         />
                       </div>
                     </Col>
@@ -434,19 +430,19 @@ console.log('schedular_data ', schedular_data)
                         <Select
                           id="written_by"
                           isMulti={false}
-                          options= {
-                            members_list && members_list.map( user => ( 
-          
+                          options={
+                            members_list && members_list.map(user => (
+
                               { label: user.name, value: user._id, id: user._id }
                             )
                             )
-    
+
                           }
                           onChange={(e) => {
-                            
-                            setwritten_by( e.value )
+
+                            setwritten_by(e.value)
                           }}
-                          defaultValue = {{value : written_by, label: written_by_name}}
+                          defaultValue={{ value: written_by, label: written_by_name }}
                           classNamePrefix="select2-selection"
                         // onChange={e => setwritten_by(e.target.value)}
                         />
@@ -461,8 +457,8 @@ console.log('schedular_data ', schedular_data)
                           isMulti={false}
                           options={optionGroupStaus}
                           classNamePrefix="select2-selection"
-                        onChange={e => setcontent_status(e.value)}
-                        defaultValue = { {label : content_status ? content_status : 'In Progress'} }
+                          onChange={e => setcontent_status(e.value)}
+                          defaultValue={{ label: content_status ? content_status : 'In Progress' }}
                         />
                       </div>
                     </Col>
@@ -471,100 +467,100 @@ console.log('schedular_data ', schedular_data)
 
                   <Row className="mt-4">
 
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="readability_semrush"
-        name="readability_semrush"
-        label="Readability (SEMRush)"
-        type="number"
-        classNamePrefix="form-control"
-        onChange={e => setreadability_semrush(e.target.value)}
-        defaultValue={readability_semrush}
-      />
-    </div>
-  </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="readability_semrush"
+                          name="readability_semrush"
+                          label="Readability (SEMRush)"
+                          type="number"
+                          classNamePrefix="form-control"
+                          onChange={e => setreadability_semrush(e.target.value)}
+                          defaultValue={readability_semrush}
+                        />
+                      </div>
+                    </Col>
 
- 
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="SEO_semrush"
-        name="SEO_semrush"
-        type="number"
-        label="SEO (SEMRush)"
-        classNamePrefix="form-control"
-        onChange={e => setseo_semrush(e.target.value)}
-        defaultValue={seo_semrush}
-      />
-    </div>
-  </Col>
 
-  
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="ton_voice_semrush"
-        name="ton_voice_semrush"
-        label="Tone of Voice (SEMRush)"
-        type="number"
-        classNamePrefix="form-control"
-        onChange={e => setton_voice_semrush(e.target.value)}
-        defaultValue={ton_voice_semrush}
-      />
-    </div>
-  </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="SEO_semrush"
+                          name="SEO_semrush"
+                          type="number"
+                          label="SEO (SEMRush)"
+                          classNamePrefix="form-control"
+                          onChange={e => setseo_semrush(e.target.value)}
+                          defaultValue={seo_semrush}
+                        />
+                      </div>
+                    </Col>
 
-  
-<Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="originality_semrush"
-        name="originality_semrush"
-        label="Originality (SEMRush)"
-        classNamePrefix="form-control"
-        onChange={e => setoriginality_semrush(e.target.value)}
-        defaultValue={originality_semrush}
-      />
-    </div>
-  </Col>
 
-  <Col lg={6}>
-    <div className="mb-3">
-      {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
-      <AvField
-        id="content_score_semrush"
-        name="content_score_semrush"
-        label="Content Score (Surfer SEO)"
-        type="number"
-        classNamePrefix="form-control"
-        onChange={e => setcontent_score_semrush(e.target.value)}
-        defaultValue = {content_score_semrush}
-      />
-    </div>
-  </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="ton_voice_semrush"
+                          name="ton_voice_semrush"
+                          label="Tone of Voice (SEMRush)"
+                          type="number"
+                          classNamePrefix="form-control"
+                          onChange={e => setton_voice_semrush(e.target.value)}
+                          defaultValue={ton_voice_semrush}
+                        />
+                      </div>
+                    </Col>
 
-</Row>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="originality_semrush"
+                          name="originality_semrush"
+                          label="Originality (SEMRush)"
+                          classNamePrefix="form-control"
+                          onChange={e => setoriginality_semrush(e.target.value)}
+                          defaultValue={originality_semrush}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                        <AvField
+                          id="content_score_semrush"
+                          name="content_score_semrush"
+                          label="Content Score (Surfer SEO)"
+                          type="number"
+                          classNamePrefix="form-control"
+                          onChange={e => setcontent_score_semrush(e.target.value)}
+                          defaultValue={content_score_semrush}
+                        />
+                      </div>
+                    </Col>
+
+                  </Row>
 
                   <Row>
-                  <Col lg={6}>
+                    <Col lg={6}>
 
-<div className="text-right col-lg-10 d-flex">
-  <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
-    Update Content Scheduler
-  </button>
+                      <div className="text-right col-lg-10 d-flex">
+                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
+                          Update Content Scheduler
+                        </button>
 
-  <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
-    Back
-  </button>
+                        <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
+                          Back
+                        </button>
 
-</div>
+                      </div>
 
-</Col>
+                    </Col>
                   </Row>
 
                 </AvForm>
@@ -573,7 +569,7 @@ console.log('schedular_data ', schedular_data)
             </Card>
           </Col>
         </Row>
-                          <Historytimeline id={id}/>
+        <Historytimeline id={id} />
 
       </div>
     </>

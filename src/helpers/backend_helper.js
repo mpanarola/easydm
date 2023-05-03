@@ -212,20 +212,20 @@ export const updateBackLink = (backlink, id) => put(`${url.UPDATE_BACK_LINK}/${i
 export const deleteBackLink = id =>
   del(`${url.DELETE_BACK_LINK}/${id}`, { headers: { id } })
 export const activityBackLink = (id) => get(`${url.VIEW_BACK_LINK_ACTIVITY}/${id}` )
-export const performanceBackLink = () => get(`${url.VIEW_BACK_LINK_PERFORMANCE}` )
-// export const performanceBackLink = (id) => get(`${url.VIEW_BACK_LINK_PERFORMANCE}/${id}` )
+// export const performanceBackLink = () => get(`${url.VIEW_BACK_LINK_PERFORMANCE}` )
+export const performanceBackLink = (id) => get(`${url.VIEW_BACK_LINK_PERFORMANCE}/${id}` )
 
 
 
 
 
 export const getPageViews = views =>   post(url.GET_PAGEVIEWS, views)
-export const addPageView = view => post(url.ADD_BACK_LINK, view)
-export const updatePageView = (view, id) => put(`${url.UPDATE_BACK_LINK}/${id}`, view )
+export const addPageView = view => post(url.ADD_PAGE_VIEW, view)
+export const updatePageView = (view, id) => put(`${url.UPDATE_PAGE_VIEW}/${id}`, view )
 // export const updateSchedular = (schedular, id) => put(`${url.UPDATE_SCHEDULAR}/${id}`, schedular )
 export const deletePageView = id =>
-  del(`${url.DELETE_BACK_LINK}/${id}`, { headers: { id } })
-export const activityPageView = (id) => get(`${url.VIEW_BACK_LINK_ACTIVITY}/${id}` )
+  del(`${url.DELETE_PAGE_VIEW}/${id}`, { headers: { id } })
+export const activityPageView = (id) => get(`${url.VIEW_PAGE_VIEW_ACTIVITY}/${id}` )
 export const performancePageView = () => get(`${url.PAGE_VIEW_PERFORMANCE}` )
 
 // export const performancePageView = (id) => get(`${url.PAGE_VIEW_PERFORMANCE}/${id}` )

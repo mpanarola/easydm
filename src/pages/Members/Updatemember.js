@@ -113,8 +113,9 @@ const Updatemember = (props) => {
                   <h4 className="me-4"> ID:  {id}</h4>
                   <label htmlFor="published_on">Created On :  {head_published_on}</label>
                 </div>
+                
                 <div className="col-md-1" style={{ float: "right" }}>
-                  <img src={`${'http://localhost:8080/avatar'}/${avatar}`} alt={name} width="90px" />
+                  <img src={`${'http://192.168.100.14:8080/avatar'}/${avatar}`} alt={name} width="90px" />
                 </div>
               </div>
             </CardBody>

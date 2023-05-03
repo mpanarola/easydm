@@ -10,7 +10,7 @@ const Footer = () => {
             <Col sm={6}>{new Date().getFullYear()} © EasyDM.</Col>
             <Col sm={6}>
               <div className="text-sm-end d-none d-sm-block">
-                Design & Develop <i className="mdi mdi-heart text-danger"></i> by Narola
+          All Rights Reserved - <a href="https://www.narolainfotech.com/" target="_blank">Narola Infotech</a> 
               </div>
             </Col>
           </Row>

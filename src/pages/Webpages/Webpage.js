@@ -86,8 +86,8 @@ const Webpage = props => {
 
 
       ),
-      effective_from: Moment(row.effectiveFrom).format('DD-MMMM-YYYY'),
-      date: Moment(row.publishedOn).format('DD-MMMM-YYYY'),
+      effective_from: Moment(row.effectiveFrom).format('DD-MMM-YY'),
+      date: Moment(row.publishedOn).format('DD-MMM-YY'),
       action: (
         <div className="d-flex">
           <div

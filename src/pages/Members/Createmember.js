@@ -71,7 +71,7 @@ const togglePassword =()=>{
         // console.log('resp =>>', resp);
         // console.log('token ', resp?.data[0].token)
         if(resp.status == true){
-        alert.success('Member Created Successfully');
+        alert.success('Member Created Successfully.');
         dispatch(registerUser(resp?.data))
         history.push('/members')
 
@@ -80,6 +80,9 @@ const togglePassword =()=>{
       {          
           history.push('/logout')
           alert.error('Session timeout');
+      }
+      else{
+        alert.error('Email already exists.');
       }
       
       }).catch(err=>{
