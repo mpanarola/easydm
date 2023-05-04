@@ -29,7 +29,7 @@ const Updatepage = (props) => {
 
   let published_on_format = Moment(data && data.data.publishedOn).format('YYYY-MM-DD')
   let effective_from_format = Moment(data && data.data.effectiveFrom).format('YYYY-MM-DD')
-  let head_published_on = Moment(data && data.data.publishedOn).format('DD-MMMM-YYYY');
+  let head_published_on = Moment(data && data.data.publishedOn).format('DD-MMM-YY');
 
   const [webpage, setwebpage] = useState(data && data.data.webpage);
   const [webpage_url, setwebpage_url] = useState(data && data.data.webpageUrl);
@@ -65,9 +65,6 @@ const Updatepage = (props) => {
   const history = useHistory();
   const alert = useAlert();
 
-  // console.log('assigned_to ', assigned_to)
-  // console.log('isArrayEquals ',  )
-
   const updateWebsite = (event, values) => {
 
     const is_assigned_equal = isArrayEquals(assigned_to , data.data.assignedTo);
@@ -78,30 +75,22 @@ const Updatepage = (props) => {
       webpageUrl: data.data.webpageUrl !== webpage_url ? webpage_url : undefined,
       effectiveFrom: effective_from !== effective_from_format ? effective_from : undefined,
       publishedOn: published_on !== published_on_format ? published_on : undefined,
-      // assignedTo: assigned_to && ,
-
       assignedTo: !is_assigned_equal ? assigned_to.map(i => i.value ? i.value : i._id) : undefined,
-
-
-      //  data.data.webpage !== webpage  &&   webpage: webpage,
-      // webpageUrl: webpage_url,
-      // category: category,
-
-      // effectiveFrom: effective_from,
-      // publishedOn: published_on 
-    }
-
-    const updated_data = {
-
     }
 
     // console.log('update website ', website_data)
     websiteUpdate(website_data, id).then(resp => {
 
-      if (resp?.message == 'Unauthorized User!!') {
+      if(resp?.status == true){
+        alert.success('Member Updated Successfully');
+        history.push('/webpages')
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
-      } else {
+      } 
+      else {
+        // alert.error('Webpage name already exists.');
         alert.success('Member Updated Successfully');
         history.push('/webpages')
       }
@@ -114,13 +103,8 @@ const Updatepage = (props) => {
   }
 
   const goBack = (e) => {
-    // history.goBack();
     history.push('/webpages');
   };
-
-  // console.log('members_list ', )
-
-
 
   return (
     <>
@@ -128,9 +112,7 @@ const Updatepage = (props) => {
 
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Websites" breadcrumbItem="Update Website" />
-
         <Row>
-
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  {id}</h4>

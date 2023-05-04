@@ -45,16 +45,12 @@ const Updatebacklink = (props) => {
   // const [date, setdate] = useState(today_date);
   const [id, setid] = useState(data && data.data._id);
 
-  // console.log('webpage ', data.data.webpage.webpage)
-
   const updateBacklink = (event, values) => {
-
     const backlink_data = {
-      // webpage: data && data.data.webpage._id !== webpage_id ? webpage_id : undefined,
-      monthYear: Moment(monthyear).format('YYYY-MM-DD'),
+      // monthYear: Moment(monthyear).format('YYYY-MM-DD'),
       // category: category,
       numberOfBacklinks: data && data.data.numberOfBacklinks !== total_backlinks ? total_backlinks : undefined,
-      publishedOn: published_on
+      // publishedOn: published_on
     }
 
     updateBackLink(backlink_data, id).then(resp => {
@@ -69,6 +65,7 @@ const Updatebacklink = (props) => {
 
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
+      history.push('/logout')
     })
 
   }
@@ -93,7 +90,6 @@ const Updatebacklink = (props) => {
     })
 
   }
-  // console.log('fdfdsf ', category)
 
   useEffect(() => {
 
@@ -160,8 +156,6 @@ const Updatebacklink = (props) => {
                           className="form-control"
                           id="published_on"
                           defaultValue={published_on}
-
-
                           onChange={e => setpublished_on(e.target.value)}
                           readOnly
                         />
@@ -239,7 +233,7 @@ const Updatebacklink = (props) => {
             </Card>
           </Col>
 
-          <Performance id={id} />
+          <Performance id={webpage_id} />
           <HistoryTimeline id={id} />
         </Row>
       </div>

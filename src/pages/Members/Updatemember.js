@@ -43,7 +43,7 @@ const Updatemember = (props) => {
   const [id, setid] = useState(member_data && member_data.data._id);
   const [password, setspassword] = useState(null);
   const [passwordType, setPasswordType] = useState("password");
-  let head_published_on = Moment(member_data && member_data.data.createdAt).format('DD-MMMM-YYYY');
+  let head_published_on = Moment(member_data && member_data.data.createdAt).format('DD-MMM-YY');
 
 
   const handleFileChange = (file) => {
@@ -113,9 +113,9 @@ const Updatemember = (props) => {
                   <h4 className="me-4"> ID:  {id}</h4>
                   <label htmlFor="published_on">Created On :  {head_published_on}</label>
                 </div>
-                
+    
                 <div className="col-md-1" style={{ float: "right" }}>
-                  <img src={`${'http://192.168.100.14:8080/avatar'}/${avatar}`} alt={name} width="90px" />
+                  <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name} width="90px" />
                 </div>
               </div>
             </CardBody>

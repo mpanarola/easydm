@@ -69,16 +69,20 @@ const Createpage = () => {
 
     // console.log('update website ', website_id)
     addNewWebsite(website_data).then(resp=>{
-    // websiteUpdate((website_data, website_id)).then(resp=>{
+
+      if(resp?.status == true){
+        alert.success('Website Create Successfully');
+        history.push('/webpages')
+      }
+      else {
+        alert.error('Webpage name already exists.');
+      }
+
       if(resp?.message == 'Unauthorized User!!')
       {          
           history.push('/logout')
           alert.error('Session timeout');
       }
-
-      // console.log('resp?.data ', resp?.data)
-      alert.success('Website Create Successfully');
-      history.push('/webpages')
 
     }).catch(err=>{
       alert.error('Backend server not responding, Please try again....');

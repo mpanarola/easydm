@@ -142,16 +142,12 @@ const AddSchedular = () => {
       contentScore: content_score_semrush
     }
 
-    // console.log('update website ', website_id)
     addNewSchedular(schedular_data).then(resp => {
-      // websiteUpdate((website_data, website_id)).then(resp=>{
-      // console.log('resp ', resp)
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       }
 
-      // console.log('resp?.data ', resp?.data)
       alert.success('Content Schedular Create Successfully');
       history.push('/content_schedulers')
 

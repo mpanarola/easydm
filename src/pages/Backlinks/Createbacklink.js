@@ -28,11 +28,7 @@ const Createbacklink = () => {
   const [category, setcategory] = useState(null);
   const [total_backlinks, settotal_backlinks] = useState();
   const [published_on, setpublished_on] = useState(null);
-
   const [webpages_list, setwebpages_list] = useState([]);
-
-
-
   const history = useHistory();
   const alert = useAlert();
 
@@ -40,7 +36,7 @@ const Createbacklink = () => {
 
     const backlink_data = {
       webpage: webpage,
-      monthYear: monthyear,
+      monthYear: Moment(monthyear).startOf('month').format("YYYY-MM-DD"),
       category: category,
       numberOfBacklinks: total_backlinks,
       publishedOn: published_on
@@ -48,16 +44,21 @@ const Createbacklink = () => {
 
 
     addBackLink(backlink_data).then(resp=>{
-    // websiteUpdate((website_data, website_id)).then(resp=>{
-      if(resp?.message == 'Unauthorized User!!')
+      if(resp.status == true){
+        alert.success('Backlink Created Successfully');
+        history.push('/backlinks')
+      }
+      else if(resp?.message == 'Unauthorized User!!')
       {          
           history.push('/logout')
           alert.error('Session timeout');
       }
+      else {
+        alert.error('Month-Year already added for this page.');
+      }
 
       // console.log('resp?.data ', resp?.data)
-      alert.success('Backlink Created Successfully');
-      history.push('/backlinks')
+
 
     }).catch(err=>{
       alert.error('Backend server not responding, Please try again....');
@@ -92,12 +93,6 @@ const Createbacklink = () => {
   }
     // setwebpageurl(e.url);
 }
-
-console.log('category ', category)
-console.log('publish ', published_on)
-// console('category ', category)
-
-
   useEffect(()=>{
   
     setTimeout(function() {

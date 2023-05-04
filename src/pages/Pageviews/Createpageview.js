@@ -25,6 +25,14 @@ const Createpageview = () => {
   const [category, setcategory] = useState(null);
   const [total_pageviews, settotal_pageviews] = useState();
   const [published_on, setpublished_on] = useState(null);
+
+  const [readability_semrush, setreadability_semrush] = useState();
+  const [seo_semrush, setseo_semrush] = useState();
+  const [ton_voice_semrush, setton_voice_semrush] = useState();
+  const [originality_semrush, setoriginality_semrush] = useState();
+  const [content_score_semrush, setcontent_score_semrush] = useState();
+
+
   const [webpages_list, setwebpages_list] = useState([]);
   const history = useHistory();
   const alert = useAlert();
@@ -33,22 +41,30 @@ const Createpageview = () => {
 
     const pageview_data = {
       webpage: webpage,
-      monthYear: monthyear,
+      monthYear: Moment(monthyear).startOf('month').format("YYYY-MM-DD"),
       category: category,
       numberOfPageviews: total_pageviews,
-      publishedOn: published_on
+      publishedOn: published_on,
+      readability: readability_semrush,
+      seo: seo_semrush,
+      toneOfVoice: ton_voice_semrush,
+      originality: originality_semrush,
+      contentScore: content_score_semrush
     }
 
     addPageView(pageview_data).then(resp => {
-      // websiteUpdate((website_data, website_id)).then(resp=>{
-      if (resp?.message == 'Unauthorized User!!') {
+      if (resp.status == true) {
+        alert.success('Pageview Created Successfully');
+        history.push('/page_views')
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       }
+      else {
+        alert.error('Month-Year already added for this page.');
+      }
 
-      // console.log('resp?.data ', resp?.data)
-      alert.success('Pageview Created Successfully');
-      history.push('/page_views')
 
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
@@ -150,7 +166,6 @@ const Createpageview = () => {
                       </div>
                     </Col>
 
-
                     <Row className="mt-4">
 
                       <Col lg={6}>
@@ -186,6 +201,83 @@ const Createpageview = () => {
                       </Col>
 
                     </Row>
+
+                    <Row className="mt-4">
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="readability_semrush"
+                            name="readability_semrush"
+                            label="Readability (SEMRush)"
+                            type="number"
+                            classNamePrefix="form-control"
+                            onChange={e => setreadability_semrush(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="SEO_semrush"
+                            name="SEO_semrush"
+                            type="number"
+                            label="SEO (SEMRush)"
+                            classNamePrefix="form-control"
+                            onChange={e => setseo_semrush(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="ton_voice_semrush"
+                            name="ton_voice_semrush"
+                            label="Tone of Voice (SEMRush)"
+                            type="number"
+                            classNamePrefix="form-control"
+                            onChange={e => setton_voice_semrush(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="originality_semrush"
+                            name="originality_semrush"
+                            label="Originality (SEMRush)"
+                            classNamePrefix="form-control"
+                            onChange={e => setoriginality_semrush(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="content_score_semrush"
+                            name="content_score_semrush"
+                            label="Content Score (Surfer SEO)"
+                            type="number"
+                            classNamePrefix="form-control"
+                            onChange={e => setcontent_score_semrush(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+
+                    </Row>
+
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >

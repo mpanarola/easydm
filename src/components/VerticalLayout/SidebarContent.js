@@ -143,6 +143,18 @@ const SidebarContent = props => {
               </Link>
             </li>
 
+            <li>
+              <Link to="/#" className="has-arrow waves-effect">
+                <i className="mdi mdi-inbox-full"></i>
+                <span>Reports</span>
+              </Link>
+              <ul className="sub-menu">
+                <li>
+                  <Link to="/daybooks_report">Daybook Summary</Link>
+                </li>
+              </ul>
+            </li>
+
 
             {/* <li>
               <Link to="/calendar" className=" waves-effect">

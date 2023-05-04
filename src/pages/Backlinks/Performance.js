@@ -39,10 +39,9 @@ const Performance = (props) => {
     
       setTimeout(function() {
         getallPerformanceBacklink()
-    }, 1000);
-    
+    }, 1000);    
     },[]);
-console.log(' p data ', activity_list)
+
 
     const series = [
            

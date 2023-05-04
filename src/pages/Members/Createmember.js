@@ -68,8 +68,6 @@ const togglePassword =()=>{
       formData.append("status", status);
 
       addMember(formData).then(resp=>{
-        // console.log('resp =>>', resp);
-        // console.log('token ', resp?.data[0].token)
         if(resp.status == true){
         alert.success('Member Created Successfully.');
         dispatch(registerUser(resp?.data))
@@ -82,7 +80,7 @@ const togglePassword =()=>{
           alert.error('Session timeout');
       }
       else{
-        alert.error('Email already exists.');
+        alert.error('Month-Year already added for this page.');
       }
       
       }).catch(err=>{

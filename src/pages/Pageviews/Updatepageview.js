@@ -28,35 +28,42 @@ const Updatepageview = (props) => {
   const alert = useAlert();
 
   const data = props.location && props.location.state;
-  console.log('data ', data)
-  //   var today = new Date(); //Current Date
-  //   let today_date = Moment(today).format('YYYY-MM-DD');
+  let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
 
-  let head_published_on = Moment(data && data.data.createdAt).format('DD-MMMM-YYYY');
-
+  // console.log('data ',data)
   const [webpage, setwebpage] = useState(data.data.webpage && data.data.webpage.webpage);
   const [webpage_id, setwebpage_id] = useState(data.data.webpage && data.data.webpage._id);
 
-  const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
+  const [monthyear, setmonthyear] = useState(Moment(data && data.data.monthYear).format("YYYY-MM"));
+
+  const [monthyear_full, setmonthyear_full] = useState(Moment(data && data.data.monthYear).startOf('month').format("YYYY-MM-DD"));
+
   const [category, setcategory] = useState();
   const [total_pageviews, settotal_pageviews] = useState(data && data.data.numberOfPageviews);
   const [published_on, setpublished_on] = useState(Moment(data && data.data.publishedOn).format('YYYY-MM-DD'));
   const [webpages_list, setwebpages_list] = useState([]);
 
+  const [readability_semrush, setreadability_semrush] = useState(data && data.data.readability);
+  const [seo_semrush, setseo_semrush] = useState(data && data.data.seo);
+  const [ton_voice_semrush, setton_voice_semrush] = useState(data && data.data.toneOfVoice);
+  const [originality_semrush, setoriginality_semrush] = useState(data && data.data.originality);
+  const [content_score_semrush, setcontent_score_semrush] = useState(data && data.data.contentScore);
+
   const [is_set_webpage_required, setis_set_webpage_required] = useState(false);
 
-  // const [date, setdate] = useState(today_date);
   const [id, setid] = useState(data && data.data._id);
-
-  // console.log('webpage ', data.data.webpage.webpage)
 
   const updatePageView = (event, values) => {
     const pageview_data = {
-      // webpage: data && data.data.webpage._id !== webpage_id ? webpage_id : undefined,
-      monthYear: Moment(monthyear).format('YYYY-MM-DD'),
+      // monthYear: monthyear_full,
       // category: category,
-      numberOfPageviews: data && data.data.numberOfPageviews !== total_pageviews ? total_pageviews : undefined,
-      publishedOn: published_on
+      numberOfPageviews: total_pageviews,
+      readability: readability_semrush,
+      seo: seo_semrush,
+      toneOfVoice: ton_voice_semrush,
+      originality: originality_semrush,
+      contentScore: content_score_semrush
+      // publishedOn: published_on
     }
 
     updatePageview(pageview_data, id).then(resp => {
@@ -67,8 +74,6 @@ const Updatepageview = (props) => {
         alert.success('Pageview Updated Successfully');
         history.push('/page_views')
       }
-
-
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
@@ -97,7 +102,6 @@ const Updatepageview = (props) => {
     })
 
   }
-  // console.log('fdfdsf ', category)
 
   useEffect(() => {
 
@@ -108,7 +112,6 @@ const Updatepageview = (props) => {
   }, []);
 
   const goBack = (e) => {
-    // history.goBack();
     history.push('/page_views');
   };
 
@@ -118,7 +121,6 @@ const Updatepageview = (props) => {
       <div className="page-content">
 
         {/* Render Breadcrumbs */}
-        {/* {console.log('webpages_list ', webpages_list)} */}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
 
         <Row>
@@ -149,8 +151,8 @@ const Updatepageview = (props) => {
 
                         />
                         {is_set_webpage_required == true &&
-                        <div class="d-block">This field is required</div>
-                      }
+                          <div class="d-block">This field is required</div>
+                        }
                       </div>
                     </Col>
 
@@ -192,11 +194,9 @@ const Updatepageview = (props) => {
                             label="Month-Year"
                             className="form-control"
                             id="month_year"
-                            // defaultValue = {monthyear}
                             readOnly
                             required
                             onChange={e => setmonthyear(e.target.value)}
-                            // value={monthyear}
                             defaultValue={monthyear}
                           />
                         </div>
@@ -220,9 +220,90 @@ const Updatepageview = (props) => {
 
                     </Row>
 
+                    <Row className="mt-4">
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="readability_semrush"
+                            name="readability_semrush"
+                            label="Readability (SEMRush)"
+                            type="number"
+                            classNamePrefix="form-control"
+                            onChange={e => setreadability_semrush(e.target.value)}
+                            defaultValue={readability_semrush}
+                          />
+                        </div>
+                      </Col>
+
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="SEO_semrush"
+                            name="SEO_semrush"
+                            type="number"
+                            label="SEO (SEMRush)"
+                            classNamePrefix="form-control"
+                            onChange={e => setseo_semrush(e.target.value)}
+                            defaultValue={seo_semrush}
+                          />
+                        </div>
+                      </Col>
+
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="ton_voice_semrush"
+                            name="ton_voice_semrush"
+                            label="Tone of Voice (SEMRush)"
+                            type="number"
+                            classNamePrefix="form-control"
+                            onChange={e => setton_voice_semrush(e.target.value)}
+                            defaultValue={ton_voice_semrush}
+                          />
+                        </div>
+                      </Col>
+
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="originality_semrush"
+                            name="originality_semrush"
+                            label="Originality (SEMRush)"
+                            classNamePrefix="form-control"
+                            onChange={e => setoriginality_semrush(e.target.value)}
+                            defaultValue={originality_semrush}
+                          />
+                        </div>
+                      </Col>
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
+                          <AvField
+                            id="content_score_semrush"
+                            name="content_score_semrush"
+                            label="Content Score (Surfer SEO)"
+                            type="number"
+                            classNamePrefix="form-control"
+                            defaultValue={content_score_semrush}
+                            onChange={e => setcontent_score_semrush(e.target.value)}
+                          />
+                        </div>
+                      </Col>
+
+                    </Row>
+
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
-                        <button type="submit"  className="btn btn-primary" style={{ marginRight: "30px" }} >
+                        <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
                           Update Back Link
                         </button>
 
@@ -240,7 +321,7 @@ const Updatepageview = (props) => {
             </Card>
           </Col>
 
-          <Performance id={id} />
+          <Performance id={webpage_id} />
           <HistoryTimeline id={id} />
         </Row>
       </div>

@@ -80,9 +80,14 @@ export const GET_BACK_LINK_DETAIL = "/back_link"
 export const GET_PAGE_VIEWS = "/page_views"
 export const GET_PAGE_VIEW_DETAIL = "/page_view"
 
-export const GET_DAY_BOOKS = "/day_books"
-export const GET_DAY_BOOK_DETAIL = "/day_book"
+export const GET_DAY_BOOKS = "/daybooks"
+export const GET_DAY_BOOK_DETAIL = "/get_daybook_ById"
+export const GET_DAY_BOOK_CURRENT_USER = "/usersdaybooks"
 
+export const ADD_DAY_BOOK = "create_daybook"
+export const UPDATE_DAY_BOOK = "/update_website"
+export const DELETE_DAY_BOOK = "/delete_website"
+export const VIEW_DAY_BOOK_ACTIVITY = "/activity_daybook"
 
 
 //CONTACTS

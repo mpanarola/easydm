@@ -1,201 +1,256 @@
-import React, { useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { MDBDataTable } from "mdbreact"
 import {
   Row, Col, Card, CardBody, CardTitle, Button
 } from "reactstrap"
 import { Link } from "react-router-dom"
-
 import SweetAlert from "react-bootstrap-sweetalert"
-
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
-
 import { useHistory } from 'react-router-dom';
+import { useAlert } from "react-alert";
+import { getAlldaybooks, deleteDaybook } from '../../helpers/backend_helper'
+import { columns } from './Constants';
 
 const Daybook = () => {
 
   const history = useHistory();
-  // const updateWebpage = (e) => {
-  //   history.push("/update_daybook")}
-  //  };
-  const [selectedMulti, setselectedMulti] = useState(null);
+  const alert = useAlert();
+
+  const [daybooks_list, setdaybooks_list] = useState([])
+  const [record_id, set_id] = useState()
+
+  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
+  const [is_loading, setloading] = useState(true)
+
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
   const [confirm_alert, setconfirm_alert] = useState(false)
 
-  const deleteDaybook = (e) => {
-    // alert('')
+
+  const confirmDelete = (id) => {
     setconfirm_both(true)
+    set_id(id)
   };
 
 
+  const removeDaybook = () => {
+    if (record_id !== '') {
+      deleteDaybook(record_id).then(resp => {
+        setconfirm_both(false)
+        alert.success('Your daybook has been deleted.');
+        getAlldaybooks()
+      }).catch(err => {
+        alert.error('Please try again...');
+      })
 
-  const data = {
-    columns: [
-      {
-        label: "ID",
-        field: "id",
-        sort: "asc",
-        width: 150,
-      },
-      {
-        label: "Photo",
-        field: "photo",
-        sort: "asc",
-        width: 150,
-      },
-      {
-        label: "Name",
-        field: "name",
-        sort: "asc",
-        width: 270,
-      },
-      {
-        label: "Date",
-        field: "date",
-        sort: "asc",
-        width: 200,
-      },
-      {
-        label: "Hours",
-        field: "hours",
-        sort: "asc",
-        width: 270,
-      },
+    }
+  };
 
-      // {
-      //   label: "Details",
-      //   field: "details",
-      //   sort: "asc",
-      //   width: 200,
-      // },
-      
-      {
-        label: "Action",
-        field: "action",
-        width: 200,
-      },
+  const updateDaybook = (data) => {
+    history.push({
+      pathname: '/update_daybook',
+      state: { data: data },
+    })
+  };
 
-    ],
-    rows: [
-      {
-        id: "1",
-        photo: (
-          <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
-          </div>
-        </div>
-        ),
-        // webpage_url: "",
-        name: "Ashish",
-        date: "27-Mar-2023",
-        hours: (
-          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
-        ),
-        action: (
-          <div className="d-flex">
-            <div
-              className="btn btn-primary"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => { history.push('/update_daybook') }}
-            >
-              View
-            </div>
 
-            <div
-              className="btn btn-danger"
-              onClick={() => deleteDaybook()}
-            >
-              Delete
-            </div>
+ const dayBookPayload = {
+    "search" : {
+        "dateFrom":"2022-01-01",
+        "dateTo" : "2023-05-02"
+    }
+}
 
-          </div>
-        )
-      },
-      {
-        id: "2",
-        photo: (
-          <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-          <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
-          </div>
-        </div>
-        ),
-        name: "Nilesh",
-        date: "27-Mar-2023",
-        hours: (
-          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10</span>
-        ),
-        action: (
-          <div className="d-flex">
-            <div
-              className="btn btn-primary"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => { history.push('/update_daybook') }}
-            >
-              View
-            </div>
-
-            <div
-              className="btn btn-danger"
-              onClick={() => deleteDaybook()}
-            >
-              Delete
-            </div>
-
-          </div>
-        )
-      },
-      {
-        id: "3",
-        photo: (
-          <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-          <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
-          </div>
-        </div>
-        ),
-        name: "Milan",
-        date: "27-Mar-2023",
-        hours: (
-          <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>2</span>
-        ),
-        action: (
-          <div className="d-flex">
-            <div
-              className="btn btn-primary"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => { history.push('/update_daybook') }}
-            >
-              View
-            </div>
-
-            <div
-              className="btn btn-danger"
-              onClick={() => deleteDaybook()}
-            >
-              Delete
-            </div>
-
-          </div>
-        )
+  const getDaybooks = (event, values) => {
+    getAlldaybooks(dayBookPayload).then(resp => {
+      setdaybooks_list(resp?.data[0]?.list)
+      setloading(false)
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
       }
 
-    ],
+    }).catch(err => {
+      alert.error('Backend server not responding, Please try again....');
+    })
+
   }
+
+
+  const rows = useMemo(() =>
+  daybooks_list && daybooks_list.map((row, order) => ({
+    ...row,
+    id: order + 1,
+      photo: (
+        <div className="d-flex align-items-start">
+        <div className="me-3 align-self-center">
+          <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+        </div>
+      </div>
+      ),
+      // webpage_url: "",
+      name: "Ashish",
+      date: "27-Mar-2023",
+      hours: (
+        <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
+      ),
+      action: (
+        <div className="d-flex">
+          <div
+            className="btn btn-primary"
+            style={{
+              cursor: "pointer",
+              marginRight: "10px"
+            }}
+            onClick={() => updateDaybook(row)}
+          >
+            View
+          </div>
+
+          <div
+            className="btn btn-danger"
+            onClick={() => confirmDelete()}
+          >
+            Delete
+          </div>
+
+        </div>
+      )
+    
+
+  })), [daybooks_list])
+
+
+useEffect(() => {
+  setTimeout(function () {
+    getDaybooks()
+  }, 1000);
+
+}, []);
+
+
+  // const data = {
+    
+  //   rows: [
+  //     {
+  //       id: "1",
+  //       photo: (
+  //         <div className="d-flex align-items-start">
+  //         <div className="me-3 align-self-center">
+  //           <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+  //         </div>
+  //       </div>
+  //       ),
+  //       // webpage_url: "",
+  //       name: "Ashish",
+  //       date: "27-Mar-2023",
+  //       hours: (
+  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
+  //       ),
+  //       action: (
+  //         <div className="d-flex">
+  //           <div
+  //             className="btn btn-primary"
+  //             style={{
+  //               cursor: "pointer",
+  //               marginRight: "10px"
+  //             }}
+  //             onClick={() => { history.push('/update_daybook') }}
+  //           >
+  //             View
+  //           </div>
+
+  //           <div
+  //             className="btn btn-danger"
+  //             onClick={() => deleteDaybook()}
+  //           >
+  //             Delete
+  //           </div>
+
+  //         </div>
+  //       )
+  //     },
+  //     {
+  //       id: "2",
+  //       photo: (
+  //         <div className="d-flex align-items-start">
+  //         <div className="me-3 align-self-center">
+  //         <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
+  //         </div>
+  //       </div>
+  //       ),
+  //       name: "Nilesh",
+  //       date: "27-Mar-2023",
+  //       hours: (
+  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10</span>
+  //       ),
+  //       action: (
+  //         <div className="d-flex">
+  //           <div
+  //             className="btn btn-primary"
+  //             style={{
+  //               cursor: "pointer",
+  //               marginRight: "10px"
+  //             }}
+  //             onClick={() => { history.push('/update_daybook') }}
+  //           >
+  //             View
+  //           </div>
+
+  //           <div
+  //             className="btn btn-danger"
+  //             onClick={() => deleteDaybook()}
+  //           >
+  //             Delete
+  //           </div>
+
+  //         </div>
+  //       )
+  //     },
+  //     {
+  //       id: "3",
+  //       photo: (
+  //         <div className="d-flex align-items-start">
+  //         <div className="me-3 align-self-center">
+  //         <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
+  //         </div>
+  //       </div>
+  //       ),
+  //       name: "Milan",
+  //       date: "27-Mar-2023",
+  //       hours: (
+  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>2</span>
+  //       ),
+  //       action: (
+  //         <div className="d-flex">
+  //           <div
+  //             className="btn btn-primary"
+  //             style={{
+  //               cursor: "pointer",
+  //               marginRight: "10px"
+  //             }}
+  //             onClick={() => { history.push('/update_daybook') }}
+  //           >
+  //             View
+  //           </div>
+
+  //           <div
+  //             className="btn btn-danger"
+  //             onClick={() => deleteDaybook()}
+  //           >
+  //             Delete
+  //           </div>
+
+  //         </div>
+  //       )
+  //     }
+
+  //   ],
+  // }
 
   return (
     <React.Fragment>
@@ -253,7 +308,11 @@ const Daybook = () => {
             <Card>
               <CardBody>
                 <CardTitle>Day Books List</CardTitle>
-                <MDBDataTable responsive bordered data={data} />
+                {
+                  is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :
+                
+                <MDBDataTable responsive bordered data={{ rows, columns }} />
+              }
               </CardBody>
             </Card>
           </Col>
@@ -269,16 +328,11 @@ const Daybook = () => {
                 confirmBtnBsStyle="success"
                 cancelBtnBsStyle="danger"
                 onConfirm={() => {
+                  removeDaybook()
                   setconfirm_both(false)
-                  setsuccess_dlg(true)
-                  setdynamic_title("Deleted")
-                  setdynamic_description("Your day book has been deleted.")
                 }}
                 onCancel={() => {
                   setconfirm_both(false)
-                  setsuccess_dlg(true)
-                  setdynamic_title("Cancelled")
-                  setdynamic_description("Your day book is safe :)")
                 }}
               >
                 You won't be able to revert this!

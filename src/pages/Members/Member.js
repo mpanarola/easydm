@@ -112,7 +112,7 @@ const Member = () => {
       avatar: (
         <div className="d-flex align-items-start">
           <div className="me-3 align-self-center">
-            <img src={`${'http://192.168.100.14:8080/avatar'}/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
+            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
           </div>
         </div>
       ),
@@ -122,7 +122,6 @@ const Member = () => {
         row.isActive ?
           <span className="bg-primary badge badge-secondary font-size-13">Active</span>
           : <span className="bg-danger badge badge-secondary font-size-13">In Active</span>
-
       ),
       createdAt: Moment(row.createdAt).format('DD-MMM-YY'),
       action: (

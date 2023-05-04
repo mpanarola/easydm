@@ -46,16 +46,13 @@ import Backlink from "../pages/Backlinks/Backlink"
 import Daybook from "../pages/Daybook/Daybook"
 import Createdaybook from "../pages/Daybook/Createdaybook"
 import Updatedaybook from "../pages/Daybook/Updatedaybook"
+import Reports from "../pages/Daybook/Reports"
 
 
 
 const userRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path : '/dashboard2' , component : Dashboard2},
-
-
-
-
 
   { path: "/webpages", component: Webpages },
   { path: "/update_website", component: Updatepage },
@@ -83,6 +80,8 @@ const userRoutes = [
   { path: "/daybooks", component: Daybook },
   { path: "/create_daybook", component:Createdaybook },
   { path: "/update_daybook", component: Updatedaybook },
+  { path: "/daybooks_report", component: Reports },
+
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/dashboard" /> },
