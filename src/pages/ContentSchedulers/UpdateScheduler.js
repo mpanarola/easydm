@@ -22,7 +22,7 @@ import Historytimeline from "./Historytimeline"
 const UpdateSchedular = (props) => {
 
   const schedular_data = props.location && props.location.state.data;
-  console.log('schedular_data ', schedular_data)
+  // console.log('schedular_datass ', schedular_data)
   const history = useHistory();
   const alert = useAlert();
   const [id, setid] = useState(schedular_data && schedular_data._id);
@@ -132,19 +132,19 @@ const UpdateSchedular = (props) => {
 
   const updateScheduler = (e) => {
     const is_assigned_equal = isArrayEquals(referece_links, schedular_data.refereceLinks);
-
+    // console.log('webpage_id ',webpage_id)
     const schedularData = {
       contentType: schedular_data && schedular_data.contentType !== topic_type ? topic_type : undefined,
-      webpage: schedular_data && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage? webpage_id : webpage_id : undefined,
+      webpage: schedular_data && schedular_data.webpage && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage? webpage_id : webpage_id : webpage_id == '' ? webpage_id : schedular_data.webpage == null ? webpage : undefined,
       refereceLinks: schedular_data && !is_assigned_equal ? referece_links : undefined,
       topicTitle: schedular_data && schedular_data.topicTitle !== topic_title ? topic_title : undefined,
       docLink: schedular_data && schedular_data.docLink !== doc_link ? doc_link : undefined,
       expectedWords: schedular_data && schedular_data.expectedWords !== expected_words ? expected_words : undefined,
       actualWords: schedular_data && schedular_data.actualWords !== actual_words ? actual_words : undefined,
       assignedOn: schedular_data && schedular_data.assignedOn !== assigned_on ? assigned_on : undefined,
-      assignedBy: schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id !== assigned_by ? !schedular_data.assignedBy? assigned_by : assigned_by : undefined,
+      assignedBy: schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id !== assigned_by ? !schedular_data.assignedBy? assigned_by : assigned_by : schedular_data.assignedBy == null ? assigned_by : undefined,
       submitedOn: schedular_data && schedular_data.submitedOn !== submited_on ? submited_on : undefined,
-      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by ? !schedular_data.writtenBy? written_by : written_by : undefined,
+      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by && schedular_data.written_by == null ? written_by : undefined,
       contentStatus: schedular_data && schedular_data.contentStatus !== content_status ? content_status : undefined,
       readability: schedular_data && schedular_data.readability !== readability_semrush ? readability_semrush : undefined,
       seo: schedular_data && schedular_data.seo !== seo_semrush ? seo_semrush : undefined,
@@ -156,14 +156,17 @@ const UpdateSchedular = (props) => {
     // console.log('schedularData ', schedularData)
 
     updateSchedular(schedularData, id).then(resp => {
-      if (resp?.message == 'Unauthorized User!!') {
+      if(resp?.status == true){
+        alert.success('Content Schedular Updated Successfully');
+        history.push('/content_schedulers')
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       }
-
-      alert.success('Content Schedular Create Successfully');
-      history.push('/content_schedulers')
-
+      else{
+        alert.error('Something Went Wrong!!');
+      }
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })

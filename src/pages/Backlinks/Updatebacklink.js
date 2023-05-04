@@ -61,8 +61,6 @@ const Updatebacklink = (props) => {
         alert.success('Backlink Updated Successfully');
         history.push('/backlinks')
       }
-
-
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
       history.push('/logout')

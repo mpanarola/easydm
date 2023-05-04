@@ -14,14 +14,11 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Historytimeline from "./Historytimeline"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
 import { updateWebsite as websiteUpdate } from '../../helpers/backend_helper'
 import { optionGroupCategory, optionGroup, isArrayEquals } from './Constants'
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import { getAllMembers } from '../../helpers/backend_helper'
-
-
 
 const Updatepage = (props) => {
 
@@ -81,20 +78,13 @@ const Updatepage = (props) => {
     // console.log('update website ', website_data)
     websiteUpdate(website_data, id).then(resp => {
 
-      if(resp?.status == true){
-        alert.success('Member Updated Successfully');
-        history.push('/webpages')
-      }
-      else if (resp?.message == 'Unauthorized User!!') {
+      if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       } 
-      else {
-        // alert.error('Webpage name already exists.');
-        alert.success('Member Updated Successfully');
-        history.push('/webpages')
-      }
 
+      alert.success('Webpage Updated Successfully');
+      history.push('/webpages')
 
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
@@ -204,11 +194,7 @@ const Updatepage = (props) => {
                         <Select
                           id="assigned_to"
                           isMulti={true}
-                          // onChange= { (e, val) => {
-                          //   setassigned_to( prev =>  ([...prev, val.option.value ]) )
-                          // } }
                           onChange={setassigned_to}
-
                           options={
                             members_list && members_list.map(user => (
                               { label: user.name, value: user._id, id: user._id }

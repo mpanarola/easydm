@@ -9,7 +9,7 @@ import {
 } from "reactstrap"
 import Select from "react-select";
 import { useHistory, Link } from 'react-router-dom';
-
+import Moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { optionGroupType, optionGroupStaus } from './Constants'
@@ -37,8 +37,8 @@ const AddSchedular = () => {
   const [content_status, setcontent_status] = useState('In-progress');
   const [assigned_by, setassigned_by] = useState();
   const [written_by, setwritten_by] = useState();
-  const [assigned_on, setassigned_on] = useState(null);
-  const [submited_on, setsubmited_on] = useState(null);
+  const [assigned_on, setassigned_on] = useState(Moment().format('YYYY-MM-DD'));
+  const [submited_on, setsubmited_on] = useState(Moment().format('YYYY-MM-DD'));
 
 
   const [readability_semrush, setreadability_semrush] = useState();
@@ -84,7 +84,6 @@ const AddSchedular = () => {
   }
 
   useEffect(() => {
-
     setTimeout(function () {
       allMembers()
       allWebpages()
@@ -143,13 +142,19 @@ const AddSchedular = () => {
     }
 
     addNewSchedular(schedular_data).then(resp => {
-      if (resp?.message == 'Unauthorized User!!') {
+      if(resp?.status == true){
+        alert.success('Content Schedular Created Successfully');
+        history.push('/content_schedulers')
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       }
+      else{
+        alert.error('Something Went Wrong!!');
+      }
 
-      alert.success('Content Schedular Create Successfully');
-      history.push('/content_schedulers')
+
 
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
@@ -356,6 +361,7 @@ const AddSchedular = () => {
                           label="Assigned On"
                           className="form-control"
                           id="assigned_on"
+                          defaultValue={assigned_on}
                           onChange={e => setassigned_on(e.target.value)}
                           required
                         />
@@ -392,6 +398,7 @@ const AddSchedular = () => {
                           label="Submiited On"
                           className="form-control"
                           id="submitted_on"
+                          defaultValue={submited_on}
                           onChange={e => setsubmited_on(e.target.value)}
                           required
                         />

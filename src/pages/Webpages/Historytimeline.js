@@ -70,7 +70,7 @@ const HistoryTimeline = (props) => {
                               <li key={key} className="mt-2 mb-2">
                                 {insertSpaces(key)+ ' To : ' }
                                 {
-                                  <b>{key =='assignedTo' ? 'members updated. '  : key=='publishedOn' || key=='effectiveFrom' ? Moment(activity.newData[key]).format('DD-MMM-YY') : activity.newData[key]}</b>
+                                  <b>{key =='assignedTo' ? 'Members Changed. '  : key=='publishedOn' || key=='effectiveFrom' ? Moment(activity.newData[key]).format('DD-MMM-YY') : activity.newData[key]}</b>
                                 }
 
                               </li>

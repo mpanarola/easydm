@@ -54,8 +54,7 @@ const Updatemember = (props) => {
     }
     reader.readAsDataURL(file);
   }
-
-
+  
   const togglePassword = () => {
     if (passwordType === "password") {
       setPasswordType("text")
