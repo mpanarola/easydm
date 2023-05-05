@@ -67,7 +67,7 @@ const Daybook = () => {
   }
 
   const getDaybooks = (event, values) => {
-    getAlldaybooks(dayBookPayload).then(resp => {
+    getAlldaybooks().then(resp => {
       console.log('row ',resp?.data[0])
       setdaybooks_list(resp?.data[0])
       setloading(false)
@@ -98,7 +98,7 @@ const Daybook = () => {
       ),
       // webpage_url: "",
       name: row['info'][0].userName,
-      date: Moment(row['info'][0].dayBookCreationDate).format('DD-MMM-YY'),
+      date: Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
       hours: (
         <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
       ),

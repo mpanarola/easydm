@@ -68,7 +68,7 @@ const HistoryTimeline = (props) => {
                           activity.newData ?
                             Object.keys(activity.newData).map(key => (
                               <li key={key} className="mt-2 mb-2">
-                                 {insertSpaces(key) && insertSpaces(key) == 'Assigned To' || insertSpaces(key) == 'Webpage' ? insertSpaces(key)  + ' : ' : insertSpaces(key) + ' To : '}
+                                 {insertSpaces(key) && insertSpaces(key) == 'Assigned To' ? insertSpaces(key)  + ' : ' : insertSpaces(key) + ' To : '}
                                 {/* {insertSpaces(key)+ ' To : ' } */}
                                 {
                                   <b>{key =='assignedTo' ? 'Members Changed. '  : key=='publishedOn' || key=='effectiveFrom' ? Moment(activity.newData[key]).format('DD-MMM-YY') : activity.newData[key]}</b>

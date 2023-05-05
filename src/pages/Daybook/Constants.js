@@ -70,11 +70,11 @@ export const optionCategory = [
   {
     label: "Category",
     options: [
-      { label: "Services", value: "services" },
-      { label: "Industry", value: "industry" },
-      { label: "Technologies", value: "technologies" },
-      { label: "Career", value: "career" },
-      { label: "Blogs", value: "blogs" }
+      { label: "Services", value: "Services" },
+      { label: "Industry", value: "Industry" },
+      { label: "Technologies", value: "Technologies" },
+      { label: "Career", value: "Career" },
+      { label: "Blogs", value: "Blogs" }
     ],
   },
 

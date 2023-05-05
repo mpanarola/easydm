@@ -27,7 +27,7 @@ const Createdaybook = () => {
   const history = useHistory();
 
 
-  const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: today_date, id: Date.now() }]
+  const inpRow = [{ webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }]
   const [inputFields, setinputFields] = useState(inpRow)
   const [webpages_list, setwebpages_list] = useState([]);
   const [webpage, setwebpage] = useState(null);
@@ -55,7 +55,7 @@ const Createdaybook = () => {
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { webpage: "", category: "", hours: "", details: "", date: today_date, id: Date.now() }
+    const item1 = { webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }
     setinputFields([...inputFields, item1])
   }
 
@@ -65,6 +65,11 @@ const Createdaybook = () => {
   }
 
   const createDaybook = (e) => {
+    const result =  {
+      data : inputFields
+    }
+  
+
 
     
     if(inputFields == null){
@@ -72,7 +77,8 @@ const Createdaybook = () => {
     }
     else{
 
-      addDaybook().then(resp => {
+      // console.log('result ',result[0])
+      addDaybook(result).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Added Successfully');
           history.push('/daybooks')
@@ -90,10 +96,7 @@ const Createdaybook = () => {
       })
 
     }
-    // console.log('inputFields ', inputFields)
-    
-      
-    
+
   };
 
 
@@ -149,7 +152,7 @@ const Createdaybook = () => {
                                     type="date"
                                     name="date"
                                     className="inner form-control"
-                                    defaultValue={field.date}
+                                    defaultValue={field.creationDate}
                                     // onChange={e => [...inputFields, item1] }
                                     onChange={e => handleInput(key, "date", e.target.value) }
                                   />
@@ -196,7 +199,7 @@ const Createdaybook = () => {
                               <Col md="2">
                                 <div className="mb-4  mt-md-0">
                                   <input
-                                    type="text"
+                                    type="number"
                                     name="hours"
                                     className="inner form-control"
                                     defaultValue={field.hours}
