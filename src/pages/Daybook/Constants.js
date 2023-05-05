@@ -1,3 +1,4 @@
+
 export const columns = [
     {
       label: "ID",
@@ -65,6 +66,22 @@ export const columns = [
   }
 
 
+export const optionCategory = [
+  {
+    label: "Category",
+    options: [
+      { label: "Services", value: "services" },
+      { label: "Industry", value: "industry" },
+      { label: "Technologies", value: "technologies" },
+      { label: "Career", value: "career" },
+      { label: "Blogs", value: "blogs" }
+    ],
+  },
 
+];
 
-  
+export const webpagesPayload =  {
+  "options": {
+    "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
+  }
+}

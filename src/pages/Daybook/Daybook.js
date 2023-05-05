@@ -5,6 +5,7 @@ import {
 } from "reactstrap"
 import { Link } from "react-router-dom"
 import SweetAlert from "react-bootstrap-sweetalert"
+import Moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
@@ -58,16 +59,17 @@ const Daybook = () => {
   };
 
 
- const dayBookPayload = {
-    "search" : {
-        "dateFrom":"2022-01-01",
-        "dateTo" : "2023-05-02"
+  const dayBookPayload = {
+    "search": {
+      "dateFrom": "",
+      "dateTo": ""
     }
-}
+  }
 
   const getDaybooks = (event, values) => {
     getAlldaybooks(dayBookPayload).then(resp => {
-      setdaybooks_list(resp?.data[0]?.list)
+      console.log('row ',resp?.data[0])
+      setdaybooks_list(resp?.data[0])
       setloading(false)
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -82,21 +84,23 @@ const Daybook = () => {
 
 
   const rows = useMemo(() =>
-  daybooks_list && daybooks_list.map((row, order) => ({
-    ...row,
-    id: order + 1,
+    daybooks_list && daybooks_list.map((row, order) => (
+    
+      {
+      ...row,
+      id: order + 1,
       photo: (
         <div className="d-flex align-items-start">
-        <div className="me-3 align-self-center">
-          <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
+          <div className="me-3 align-self-center">
+            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+          </div>
         </div>
-      </div>
       ),
       // webpage_url: "",
-      name: "Ashish",
-      date: "27-Mar-2023",
+      name: row['info'][0].userName,
+      date: Moment(row['info'][0].dayBookCreationDate).format('DD-MMM-YY'),
       hours: (
-        <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
+        <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
       ),
       action: (
         <div className="d-flex">
@@ -120,21 +124,21 @@ const Daybook = () => {
 
         </div>
       )
-    
-
-  })), [daybooks_list])
 
 
-useEffect(() => {
-  setTimeout(function () {
-    getDaybooks()
-  }, 1000);
+    })), [daybooks_list])
 
-}, []);
+
+  useEffect(() => {
+    setTimeout(function () {
+      getDaybooks()
+    }, 1000);
+
+  }, []);
 
 
   // const data = {
-    
+
   //   rows: [
   //     {
   //       id: "1",
@@ -271,34 +275,34 @@ useEffect(() => {
         ) : null}
 
         <Card >
-          <CardBody > 
+          <CardBody >
             {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
 
             <div className="col-md-8 float-start">
-            <div> <div class="card-title">Date Filter</div> </div>
-            <div className="float-start  d-flex ">
-              
-              <input type="date" name="start_date" className="form-control"  />
-              {/* <span>Start</span> */}
-              <input type="date" name="end_date" className="form-control mx-2"/>
-              <button type="button" className="btn btn-secondary" >
-                         Search
-                        </button>
-            </div>
+              <div> <div class="card-title">Date Filter</div> </div>
+              <div className="float-start  d-flex ">
+
+                <input type="date" name="start_date" className="form-control" />
+                {/* <span>Start</span> */}
+                <input type="date" name="end_date" className="form-control mx-2" />
+                <button type="button" className="btn btn-secondary" >
+                  Search
+                </button>
+              </div>
             </div>
 
             <div className="col-md-4 float-end mt-4">
-            <div className="float-end ">
-              <Link
-                onClick={() => {
-                  history.push("/create_daybook")
-                }}
-                to="#"
-                className="btn btn-primary"
-              >
-                Add Day Book
-              </Link>
-            </div>
+              <div className="float-end ">
+                <Link
+                  onClick={() => {
+                    history.push("/create_daybook")
+                  }}
+                  to="#"
+                  className="btn btn-primary"
+                >
+                  Add Day Book
+                </Link>
+              </div>
             </div>
           </CardBody>
         </Card>
@@ -309,10 +313,10 @@ useEffect(() => {
               <CardBody>
                 <CardTitle>Day Books List</CardTitle>
                 {
-                  is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :
-                
-                <MDBDataTable responsive bordered data={{ rows, columns }} />
-              }
+                  is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+
+                    <MDBDataTable responsive bordered data={{ rows, columns }} />
+                }
               </CardBody>
             </Card>
           </Col>

@@ -118,7 +118,7 @@ const UpdateSchedular = (props) => {
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = []
+    const item1 = { ref_link: "", id: Date.now() }
     setreferece_links([...referece_links, item1])
   }
 
@@ -144,7 +144,10 @@ const UpdateSchedular = (props) => {
       assignedOn: schedular_data && schedular_data.assignedOn !== assigned_on ? assigned_on : undefined,
       assignedBy: schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id !== assigned_by ? !schedular_data.assignedBy? assigned_by : assigned_by : schedular_data.assignedBy == null ? assigned_by : undefined,
       submitedOn: schedular_data && schedular_data.submitedOn !== submited_on ? submited_on : undefined,
-      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by && schedular_data.written_by == null ? written_by : undefined,
+
+      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by ? !schedular_data.writtenBy? written_by : written_by : schedular_data.writtenBy == null ? written_by : undefined,
+      
+      // writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by && schedular_data.written_by == null ? written_by : undefined,
       contentStatus: schedular_data && schedular_data.contentStatus !== content_status ? content_status : undefined,
       readability: schedular_data && schedular_data.readability !== readability_semrush ? readability_semrush : undefined,
       seo: schedular_data && schedular_data.seo !== seo_semrush ? seo_semrush : undefined,

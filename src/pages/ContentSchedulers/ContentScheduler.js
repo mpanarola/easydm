@@ -114,7 +114,10 @@ const ContentScheduler = () => {
           :
           row.contentStatus == "Input-missing" ?
             <span class="bg-danger badge badge-danger font-size-13">{row.contentStatus}</span>
-            : <span class="bg-warning badge badge-secondary font-size-13">{row.contentStatus}</span>
+            : row.contentStatus == "In-review" ? 
+            <span class="bg-info badge badge-info font-size-13">{row.contentStatus}</span>
+            :
+             <span class="bg-warning badge badge-secondary font-size-13">{row.contentStatus}</span>
       ),
 
       action: (
@@ -147,13 +150,6 @@ const ContentScheduler = () => {
 
 
     })), [schedulars_list])
-
-
-  // rows: [
-  //   {
-
-  //   },
-  // ]
 
   return (
     <React.Fragment>

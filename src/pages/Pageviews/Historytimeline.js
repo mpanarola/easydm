@@ -55,7 +55,7 @@ const HistoryTimeline = (props) => {
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
-                    <h5 className="font-size-14">{Moment(activity.time).format('DD-MMM-YY HH:mm')} <i
+                    <h5 className="font-size-14">{Moment(activity.updatedAt).format('DD-MMM-YY HH:mm')} <i
                       className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
                     </h5>
                   </div>

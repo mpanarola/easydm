@@ -23,6 +23,10 @@ const AddSchedular = () => {
   const alert = useAlert();
 
   const [webpage, setwebpage] = useState(null);
+  const [webpage_err, setwebpage_err] = useState(false);
+  const [assigned_by_err, setassigned_by_err] = useState(false);
+  const [written_by_err, setwritten_by_err] = useState(false);
+
   const [webpage_url, setwebpageurl] = useState(null);
 
   const [topic_title, settopic_title] = useState(null);
@@ -50,8 +54,6 @@ const AddSchedular = () => {
 
   const [members_list, setmembers_list] = useState([])
   const [webpages_list, setwebpages_list] = useState([])
-
-
 
   const member_payload = {
     "options": {
@@ -96,6 +98,7 @@ const AddSchedular = () => {
   const handleWebpage = (e) => {
     setwebpage(e.value);
     setwebpageurl(e.url);
+    webpage == null &&   setwebpage_err(false)
   }
 
   const handleChange = (index, evnt) => {
@@ -107,7 +110,7 @@ const AddSchedular = () => {
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { ref_link: "" }
+    const item1 = { ref_link: "", id: Date.now() }
     setreferece_links([...referece_links, item1])
   }
 
@@ -141,24 +144,32 @@ const AddSchedular = () => {
       contentScore: content_score_semrush
     }
 
-    addNewSchedular(schedular_data).then(resp => {
-      if(resp?.status == true){
-        alert.success('Content Schedular Created Successfully');
-        history.push('/content_schedulers')
-      }
-      else if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
-        alert.error('Session timeout');
-      }
-      else{
-        alert.error('Something Went Wrong!!');
-      }
+    if(webpage == null || written_by == null || assigned_by == null ){
+      alert.error('Please select required fields');
+      webpage == null && setwebpage_err(true)
+      assigned_by == null && setassigned_by_err(true)
+      written_by  == null && setwritten_by_err(true)
+
+    }
+    else{
+      addNewSchedular(schedular_data).then(resp => {
+        if(resp?.status == true){
+          alert.success('Content Schedular Created Successfully');
+          history.push('/content_schedulers')
+        }
+        else if (resp?.message == 'Unauthorized User!!') {
+          history.push('/logout')
+          alert.error('Session timeout');
+        }
+        else{
+          alert.error('Something Went Wrong!!');
+        }
+      }).catch(err => {
+        alert.error('Backend server not responding, Please try again....');
+      })
+    }
 
 
-
-    }).catch(err => {
-      alert.error('Backend server not responding, Please try again....');
-    })
 
   };
 
@@ -203,7 +214,7 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="web_page">Web Page</label>
+                      <label htmlFor="webpage" className= {webpage_err ? ' text-danger': ''}>Web Page</label>
                         {webpage_url !== null && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <Select
                           id="web_page"
@@ -217,6 +228,7 @@ const AddSchedular = () => {
                           classNamePrefix="select2-selection"
                           onChange={e => handleWebpage(e)}
                         />
+                        {webpage_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
                       </div>
                     </Col>
 
@@ -348,6 +360,10 @@ const AddSchedular = () => {
                           placeholder="Enter Actual Words"
                           onChange={e => setactual_words(e.target.value)}
                           required
+                          // validate={{
+                          //   required: {value: true},
+                          //   maxLength: {value: 5}
+                          // }}
                         />
                       </div>
                     </Col>
@@ -370,11 +386,12 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="assigned_by">Assigned By</label>
+                         <label htmlFor="assigned_by" className= {assigned_by_err ? ' text-danger': ''}>Assigned By</label>
                         <Select
                           id="assigned_by"
                           isMulti={false}
                           onChange={(e) => {
+                            setassigned_by_err(false)
                             setassigned_by(e.value)
                           }}
                           options={
@@ -386,6 +403,7 @@ const AddSchedular = () => {
 
                           classNamePrefix="select2-selection"
                         />
+                          {assigned_by_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
                       </div>
                     </Col>
 
@@ -407,11 +425,12 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="written_by">Written By</label>
+                        <label htmlFor="written_by" className= {written_by_err ? ' text-danger': ''}>Written By</label>
                         <Select
                           id="written_by"
                           isMulti={false}
                           onChange={(e) => {
+                            setwritten_by_err(false)
                             setwritten_by(e.value)
                           }}
                           options={
@@ -422,6 +441,7 @@ const AddSchedular = () => {
                           }
                           classNamePrefix="select2-selection"
                         />
+                          {written_by_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
                       </div>
                     </Col>
 

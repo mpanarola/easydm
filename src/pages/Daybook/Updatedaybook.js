@@ -219,7 +219,7 @@ const Updatedaybook = () => {
                           ))}
                         </div>
                       </div>
-                      <Row className="justify-content-end m" style={{ marginTop: "-10px " }}>
+                      {/* <Row className="justify-content-end m" style={{ marginTop: "-10px " }}>
                         <Col lg="12" md="2">
                           <Button
                             color="success"
@@ -231,7 +231,7 @@ const Updatedaybook = () => {
                             Add More
                           </Button>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </div>
 
 

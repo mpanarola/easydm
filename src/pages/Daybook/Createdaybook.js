@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Row,
   Col,
@@ -11,80 +11,102 @@ import {
 } from "reactstrap"
 import Select from "react-select";
 import { useHistory, Link } from 'react-router-dom';
-
+import { optionCategory, webpagesPayload } from './Constants'
+import { AvForm, AvField } from "availity-reactstrap-validation"
+import { useAlert } from "react-alert";
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import Moment from 'moment';
+
+import { addDaybook, getWebsites } from '../../helpers/backend_helper'
+
 const Createdaybook = () => {
   let today = new Date(); //Current Date
   let today_date = Moment(today).format('YYYY-MM-DD');
+  const alert = useAlert();
+  const history = useHistory();
 
-  const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: today_date }]
+
+  const inpRow = [{ webpage: "", category: "", hours: "", details: "", date: today_date, id: Date.now() }]
   const [inputFields, setinputFields] = useState(inpRow)
-
+  const [webpages_list, setwebpages_list] = useState([]);
   const [webpage, setwebpage] = useState(null);
   const [date, setdate] = useState(today_date);
   const [category, setcategory] = useState(null);
   const [hours, setHours] = useState(null);
   const [details, setdetails] = useState(null);
-
   const [totalHours, settotalHours] = useState(0);
 
-  const history = useHistory();
-
-  // Webpages
-  const optionGroupWebPage = [
-    {
-      label: "Web Pages",
-      options: [
-        { label: "Home", value: "Home" , url: "https://www.home.com/"},
-          { label: "About", value: "About", url: "https://www.about.com/" },
-          { label: "Contact", value: "Contact", url: "https://www.contact.com/" },
-          { label: "Blogs", value: "Blogs", url: "https://www.blogs.com/" },
-          { label: "Events", value: "Events", url: "https://www.events.com/" },
-      ],
-    },
-
-  ];
 
 
-  const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
+  const allWebpages = () => {
+    getWebsites(webpagesPayload).then(resp => {
+      setwebpages_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
 
-  ];
+  }
 
+  useEffect(() => {
+    setTimeout(function () {
+      allWebpages()
+    }, 1000);
+  }, []);
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { webpage: "", category: "", hours: "", details: "", date: today_date }
+    const item1 = { webpage: "", category: "", hours: "", details: "", date: today_date, id: Date.now() }
     setinputFields([...inputFields, item1])
   }
 
   // Function for Remove Input Fields
-  function handleRemoveFields(idx) {
-    // alert(idx);
-    if(idx !== 0){
-    document.getElementById("nested" + idx).style.display = "none"
+  function handleRemoveFields(id) {
+    setinputFields(prev => prev.filter((item) => item.id!==id) );
   }
-  }
-
 
   const createDaybook = (e) => {
-    history.push('/daybooks')
+
+    
+    if(inputFields == null){
+      alert.error('Please input or select some values..');
+    }
+    else{
+
+      addDaybook().then(resp => {
+        if (resp.status == true) {
+          alert.success('Daybook Added Successfully');
+          history.push('/daybooks')
+        }
+        else if (resp?.message == 'Unauthorized User!!') {
+          history.push('/logout')
+          alert.error('Session timeout');
+        }
+        else {
+          alert.error('Already added daybook for the day.');
+        }
+
+      }).catch(err => {
+        alert.error('Backend server not responding, Please try again....');
+      })
+
+    }
+    // console.log('inputFields ', inputFields)
+    
+      
+    
   };
 
 
+  const handleInput = (index, name, value) => {
+    
+     setinputFields(prev => prev.map((item, idx) => {
+      if(index === idx && item.hasOwnProperty(name))  item[name] = value
+      return item
+     }))
+
+  }
+
   const goBack = (e) => {
-    // history.goBack();
     history.push('/daybooks');
   };
 
@@ -100,7 +122,9 @@ const Createdaybook = () => {
             <Card>
               <CardBody>
                 <CardTitle className="mb-4 font-size-18">Add Day Book</CardTitle>
-                <form >
+                <AvForm onValidSubmit={(e, v) => {
+                  createDaybook(e, v)
+                }}>
                   <Row>
                     <div className="inner-repeater mb-5">
                       <div className="inner form-group mb-0 row">
@@ -121,68 +145,80 @@ const Createdaybook = () => {
 
                               <Col md="2">
                                 <div className="mb-4 mt-md-0">
-                                <input
-                                      type="date"
-                                      className="inner form-control"
-                                      defaultValue={field.date}
-                                      onChange={e => setdate(e.target.value)}
-                                    />
+                                <AvField
+                                    type="date"
+                                    name="date"
+                                    className="inner form-control"
+                                    defaultValue={field.date}
+                                    // onChange={e => [...inputFields, item1] }
+                                    onChange={e => handleInput(key, "date", e.target.value) }
+                                  />
+                                </div>
+                              </Col>
+
+                              <Col md="2">
+                                <div className="mb-4 mt-md-0">        
+                                  <Select
+                                    id="category"
+                                    name="category"
+                                    options={optionCategory}
+                                    classNamePrefix="select2-selection"
+                                    placeholder={<div>Category</div>}
+                                    // onChange={e => setcategory(e.value)}
+                                    defaultValue={field.category}
+                                    onChange={e => handleInput(key, "category", e.value) }
+                                  />
                                 </div>
                               </Col>
 
                               <Col md="2">
                                 <div className="mb-4 mt-md-0">
                                   <Select
-                                    id="category"
-                                    options={optionGroupCategory}
+                                    id="webpage"
+                                    name="webpage"
+                                    options={
+                                      webpages_list && webpages_list.map(website => (
+                                        { label: website.webpage, value: website._id }
+                                      )
+                                      )
+                                    }
                                     classNamePrefix="select2-selection"
-                                    placeholder={<div>Category</div>}
-                                    onChange={e => setcategory(e.value)}
-                                    defaultValue={field.category}
+                                    defaultValue={field.webpage}
+                                    placeholder={<div>Web Page</div>}
+                                    // onChange={e => setwebpage(e.value)}
+                                    onChange={e => handleInput(key, "webpage", e.value) }
                                   />
-                                </div>
-                              </Col>
-                              
-                              <Col md="2">
-                            
-                              <div className="mb-4 mt-md-0">
-                            
-                                <Select
-                                  id="webpage"
-                                  options={optionGroupWebPage}
-                                  classNamePrefix="select2-selection"
-                                  defaultValue={field.webpage}
-                                  placeholder={<div>Web Page</div>}
-                                  onChange={e => setwebpage(e.value)}
-                                // value = {webpage}
-                                />
                                   {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
                                 </div>
-                                
+
                               </Col>
 
                               <Col md="2">
                                 <div className="mb-4  mt-md-0">
-                                <input
-                                      type="text"
-                                      className="inner form-control"
-                                      defaultValue={field.hours}
-                                      placeholder="Enter Hours"
-                                      maxLength="3"
-                                      onChange={e => settotalHours(e.target.value)}
-                                    />
+                                  <input
+                                    type="text"
+                                    name="hours"
+                                    className="inner form-control"
+                                    defaultValue={field.hours}
+                                    placeholder="Enter Hours"
+                                    maxLength="3"
+                                    // onChange={e => settotalHours(e.target.value)}
+                                    onChange={e => handleInput(key, "hours", e.target.value) }
+                                  />
                                 </div>
                               </Col>
 
                               <Col md="3">
                                 <div className="mb-4 mt-md-0">
-                                <textarea
-                                     rows="4" cols="5"
-                                      className="inner form-control"
-                                      defaultValue={field.details}
-                                      placeholder="Enter Details"
-                                      onChange={e => setdetails(e.target.value)}
-                                    />
+                                  <textarea
+                                    rows="4" cols="5"
+                                    name="details"
+                                    className="inner form-control"
+                                    defaultValue={field.details}
+                                    placeholder="Enter Details"
+                                    // onChange={e => setdetails(e.target.value)}
+                                    onChange={e => handleInput(key, "details", e.target.value) }
+                                  />
                                 </div>
                               </Col>
 
@@ -190,22 +226,22 @@ const Createdaybook = () => {
 
                               {
                                 key !== 0 &&
-                             
-                              <Col md="1">
-                                <div className="mb-4 mt-2 mt-md-0 d-grid">
-                                  <Button
-                                    color="danger"
-                                    className="inner"
-                                    onClick={() => {
-                                      handleRemoveFields(key)
-                                    }}
-                                    block
-                                  >
-                                    Delete
-                                  </Button>
-                                </div>
-                              </Col>
-                               }
+
+                                <Col md="1">
+                                  <div className="mb-4 mt-2 mt-md-0 d-grid">
+                                    <Button
+                                      color="danger"
+                                      className="inner"
+                                      onClick={() => {
+                                        handleRemoveFields(field.id)
+                                      }}
+                                      block
+                                    >
+                                      Delete
+                                    </Button>
+                                  </div>
+                                </Col>
+                              }
                             </div>
                           ))}
                         </div>
@@ -228,28 +264,28 @@ const Createdaybook = () => {
 
                     <Col lg={12}>
                       <div className="text-right d-flex col-md-12">
-                      <div className="col-md-6">
-                        <button type="button" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createDaybook()}>
-                          Save Day Book
-                        </button>
+                        <div className="col-md-6">
+                          <button type="button" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createDaybook()}>
+                            Save Day Book
+                          </button>
 
-                        <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
-                          Back
-                        </button>
+                          <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
+                            Back
+                          </button>
                         </div>
 
                         <div className="col-md-4">
-                        <button type="button" style={{ marginLeft: "50px"}} className="btn btn-info">
-                          Total Hours:  {totalHours}
-                        </button>
-                          </div>
+                          <button type="button" style={{ marginLeft: "50px" }} className="btn btn-info">
+                            Total Hours:  {totalHours}
+                          </button>
+                        </div>
 
                       </div>
                     </Col>
 
                   </Row>
 
-                </form>
+                </AvForm>
               </CardBody>
             </Card>
           </Col>

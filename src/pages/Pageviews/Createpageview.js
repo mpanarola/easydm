@@ -21,6 +21,8 @@ import { webpages_payload } from './Constants'
 const Createpageview = () => {
 
   const [webpage, setwebpage] = useState();
+  const [webpage_err, setwebpage_err] = useState(false);
+
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState(null);
   const [total_pageviews, settotal_pageviews] = useState();
@@ -52,23 +54,34 @@ const Createpageview = () => {
       contentScore: content_score_semrush
     }
 
-    addPageView(pageview_data).then(resp => {
-      if (resp.status == true) {
-        alert.success('Pageview Created Successfully');
-        history.push('/page_views')
-      }
-      else if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
-        alert.error('Session timeout');
-      }
-      else {
-        alert.error('Month-Year already added for this page.');
-      }
+    if(webpage == null){
+      alert.error('Please select webpage');
+      setwebpage_err(true)
+    }
+    else{
+
+      addPageView(pageview_data).then(resp => {
+        if (resp.status == true) {
+          alert.success('Pageview Created Successfully');
+          history.push('/page_views')
+        }
+        else if (resp?.message == 'Unauthorized User!!') {
+          history.push('/logout')
+          alert.error('Session timeout');
+        }
+        else {
+          alert.error('Month-Year already added for this page.');
+        }
+  
+  
+      }).catch(err => {
+        alert.error('Backend server not responding, Please try again....');
+      })
+
+    }
 
 
-    }).catch(err => {
-      alert.error('Backend server not responding, Please try again....');
-    })
+
 
   }
 
@@ -84,6 +97,7 @@ const Createpageview = () => {
       setwebpage(e.value);
       setcategory(e.category);
       setpublished_on(e.publishedOn);
+      setwebpage_err(false)
     }
 
   }
@@ -117,8 +131,8 @@ const Createpageview = () => {
                 }}>
                   <Row>
                     <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="webpage">Web Page</label>
+                      <div className='mb-3' >
+                        <label htmlFor="webpage" className= {webpage_err ? ' text-danger': ''}>Web Page</label>
                         <Select
                           id="webpage"
                           options={
@@ -131,6 +145,7 @@ const Createpageview = () => {
                           classNamePrefix="select2-selection"
                           onChange={e => handleWebpage(e)}
                         />
+                       {webpage_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
                       </div>
                     </Col>
                     <Col lg={6}>

@@ -58,7 +58,7 @@ const HistoryTimeline = (props) => {
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
-                    <h5 className="font-size-14">{Moment(activity.time).format('DD-MMM-YY HH:mm')} <i
+                    <h5 className="font-size-14">{Moment(activity.updatedAt).format('DD-MMM-YY HH:mm')} <i
                       className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
                     </h5>
                   </div>
@@ -70,14 +70,14 @@ const HistoryTimeline = (props) => {
                           activity.newData ?
                             Object.keys(activity.newData).map(key => (
                               <li key={key} className="mt-2 mb-2">
-                                {insertSpaces(key) + ' To : '}
+                                {insertSpaces(key) && insertSpaces(key) =='Webpage' || insertSpaces(key) == 'Assigned By' || insertSpaces(key) == 'Written By' ? insertSpaces(key) + ' : ' : insertSpaces(key) + ' To : '}
                                 {
                                   <b>{ key=='submitedOn' || key=='assignedOn' || key=='submitedOn' ? Moment(activity.newData[key]).format('DD-MMM-YY') :
                                   key=='refereceLinks' ? activity.newData[key] && activity.newData[key].map(link => (
                                     <li style={{ listStyle: 'inside'}}>{link}</li>
                                   )
                                   ):
-                                  key =='assignedBy' || key == 'writtenBy' ? 'Member Changed' : key =='webpage' ? 'Webpage Changed' : activity.newData[key]}</b>
+                                  key =='assignedBy' || key == 'writtenBy' ? ' Member Changed' : key =='webpage' ? ' Webpage Changed' : activity.newData[key]}</b>
                                 }
 
                               </li>

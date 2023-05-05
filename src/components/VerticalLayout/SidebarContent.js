@@ -118,7 +118,7 @@ const SidebarContent = props => {
             <li>
               <Link to="/content_schedulers" className=" waves-effect">
                 <i className="mdi mdi-calendar-text"></i>
-                <span>{props.t("Content Scheduler")}</span>
+                <span>{props.t("Content Schedulers")}</span>
               </Link>
             </li>
 
