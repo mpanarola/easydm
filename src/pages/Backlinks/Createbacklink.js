@@ -199,6 +199,7 @@ const Createbacklink = () => {
                             label="Number of Backlinks"
                             className="form-control"
                             id="total_backlinks"
+                            min={1}
                             required
                             onChange={e => settotal_backlinks(e.target.value)}
                           // value={total_backlinks}

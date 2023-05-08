@@ -202,6 +202,7 @@ const Updatebacklink = (props) => {
                             label="Number of Back Links"
                             className="form-control"
                             id="total_backlinks"
+                            min={1}
                             onChange={e => settotal_backlinks(e.target.value)}
                             defaultValue={total_backlinks}
                             required

@@ -6,8 +6,10 @@ import { Link } from "react-router-dom"
 import LineChart from "./line-chart"
 import RevenueChart from "./revenue-chart"
 import SalesAnalytics from "./sales-analytics"
+import Top3Pageviews from "./top_3_pageviews"
+
 import ScatterChart from "./scatter-analytics"
-import LatestTransaction from "./latest-transaction"
+import Top3BackLinks from "./top_3_backlinks"
 
 //Import Image
 import widgetImage from "../../assets/images/widget-img.png"
@@ -37,7 +39,7 @@ const Dashboard = () => {
           </div>
         </Row>
 
-        <Row>
+        {/* <Row>
           <Col lg={3}>
             <Card>
               <CardBody>
@@ -100,6 +102,7 @@ const Dashboard = () => {
               </CardBody>
             </Card>
           </Col>
+
           <Col lg={6}>
             <LineChart />
 
@@ -107,17 +110,18 @@ const Dashboard = () => {
           <Col lg={3}>
             <RevenueChart />
           </Col>
-        </Row>
+        </Row> */}
 
         <Row>
-          <Col lg={5}>
+          <Col lg={12}>
             <SalesAnalytics />
           </Col>
-          <Col lg={4}>
-            <ScatterChart />
-          </Col>
 
-          <Col lg={3}>
+          {/* <Col lg={4}>
+            <ScatterChart />
+          </Col> */}
+
+          {/* <Col lg={3}>
             <Card className="bg-primary">
               <CardBody>
                 <div className="text-white">
@@ -137,18 +141,25 @@ const Dashboard = () => {
                 </Row>
               </CardBody>
             </Card>
-          </Col>
+          </Col> */}
         </Row>
         
-        <Row>
+        {/* <Row>
           <Overview />
           <Reviews />
           <Revenue />
-        </Row>
+        </Row> */}
 
         <Row>
-          <Inbox />
-          <LatestTransaction />
+          {/* <Inbox /> */}
+          <Col lg={6}>
+          <Top3BackLinks />
+          </Col>
+          <Col lg={6}>
+          <Top3Pageviews />
+          </Col>
+
+
         </Row>
 
       </div>

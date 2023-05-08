@@ -83,11 +83,11 @@ const Updatedaybook = (props) => {
   }
 
 
-  // Function for Create Input Fields
-  function handleAddFields() {
-    const item1 = { webpageId: '', dayBookCategory: '', dayBookHour: '', dayBookDetails: '', dayBookCreationDate: today_date }
-    setinputFields([...inputFields, item1])
-  }
+  // // Function for Create Input Fields
+  // function handleAddFields() {
+  //   const item1 = { webpageId: '', dayBookCategory: '', dayBookHour: '', dayBookDetails: '', dayBookCreationDate: today_date }
+  //   setinputFields([...inputFields, item1])
+  // }
 
   const confirmDelete = (id) => {
     setconfirm_both(true)
@@ -283,6 +283,7 @@ const Updatedaybook = (props) => {
                                         defaultValue={field.hours}
                                         placeholder="Enter Hours"
                                         maxLength="3"
+                                        min={1}
                                         onChange={e => handleInput(key, "hours", e.target.value)}
                                       />
                                     </div>

@@ -36,13 +36,20 @@ const Login = (props) => {
       password: values.password,
     }).then(resp => {
       if (resp.status == true) {
-        alert.success('Login Successfully');
-        dispatch(loginUser(resp?.data))
 
-        let auth_data = { name: resp?.data[0].name, email: resp?.data[0].email, avatar: resp?.data[0].avatar, token: resp?.data[0].token, userRole: resp?.data[0].userRole, user_id: resp?.data[0]._id }
+     
+        if(resp?.data[0].isActive == true && resp?.data[0].isDeleted == false){
+          let auth_data = { name: resp?.data[0].name, email: resp?.data[0].email, avatar: resp?.data[0].avatar, token: resp?.data[0].token, userRole: resp?.data[0].userRole, user_id: resp?.data[0]._id }
         localStorage.setItem("authUser", JSON.stringify(auth_data))
         // history.push("/dashboard")
+        alert.success('Login Successfully');
+        dispatch(loginUser(resp?.data))
         window.location.replace("/dashboard");
+        }
+        else{
+          alert.error('Your Account Is Not Activated.');
+        }
+        
 
       } else {
         alert.error('Invalid Credentials');

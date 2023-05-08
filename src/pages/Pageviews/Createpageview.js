@@ -22,19 +22,15 @@ const Createpageview = () => {
 
   const [webpage, setwebpage] = useState();
   const [webpage_err, setwebpage_err] = useState(false);
-
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState(null);
   const [total_pageviews, settotal_pageviews] = useState();
   const [published_on, setpublished_on] = useState(null);
-
   const [readability_semrush, setreadability_semrush] = useState();
   const [seo_semrush, setseo_semrush] = useState();
   const [ton_voice_semrush, setton_voice_semrush] = useState();
   const [originality_semrush, setoriginality_semrush] = useState();
   const [content_score_semrush, setcontent_score_semrush] = useState();
-
-
   const [webpages_list, setwebpages_list] = useState([]);
   const history = useHistory();
   const alert = useAlert();
@@ -79,10 +75,6 @@ const Createpageview = () => {
       })
 
     }
-
-
-
-
   }
 
   const allWebpages = () => {
@@ -208,6 +200,7 @@ const Createpageview = () => {
                             label="Number of Page Views"
                             className="form-control"
                             id="total_pageviews"
+                            min={1}
                             required
                             onChange={e => settotal_pageviews(e.target.value)}
                           // value={total_pageviews}

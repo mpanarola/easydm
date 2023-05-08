@@ -18,7 +18,7 @@ import { useAlert } from "react-alert";
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import Moment from 'moment';
 
-import { addDaybook, getWebsites } from '../../helpers/backend_helper'
+import { addDaybook, getWebsites, deleteDaybook } from '../../helpers/backend_helper'
 
 const Createdaybook = () => {
   let today = new Date(); //Current Date
@@ -95,7 +95,7 @@ const Createdaybook = () => {
           alert.error('Session timeout');
         }
         else {
-          alert.error('Already added daybook for the day.');
+          alert.error(resp.message);
         }
 
       }).catch(err => {
@@ -220,6 +220,7 @@ const Createdaybook = () => {
                                     defaultValue={field.hours}
                                     placeholder="Enter Hours"
                                     maxLength="3"
+                                    min={1}
                                     // onChange={e => settotalHours(e.target.value)}
                                     onChange={e => handleInput(key, "hours", e.target.value) }
                                   />
@@ -293,11 +294,11 @@ const Createdaybook = () => {
                           </button>
                         </div>
 
-                        <div className="col-md-4">
+                        {/* <div className="col-md-4">
                           <button type="button" style={{ marginLeft: "50px" }} className="btn btn-info">
                             Total Hours:  {totalHours}
                           </button>
-                        </div>
+                        </div> */}
 
                       </div>
                     </Col>

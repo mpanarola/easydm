@@ -15,8 +15,7 @@ const Performance = (props) => {
 
     const history = useHistory();
     const alert = useAlert();
-    
-      const [activity_list, setactivity_list] = useState([]);
+    const [activity_list, setactivity_list] = useState([]);
     
     const getallPerformanceBacklink = () => {
         performanceBackLink(props.id).then(resp=>{

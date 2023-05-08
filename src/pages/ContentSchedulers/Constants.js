@@ -26,7 +26,7 @@ export const columns = [
       label: "ID",
       field: "id",
       sort: "asc",
-      width: 50,
+      width: 10,
     },
     {
       label: "Content Type",
@@ -63,13 +63,13 @@ export const columns = [
       label: "Expected Words",
       field: "expected_words",
       sort: "asc",
-      width: 50,
+      width: 10,
     },
     {
       label: "Actual Words",
       field: "actual_words",
       sort: "asc",
-      width: 50,
+      width: 10,
     },
     {
       label: "Assigned On",

@@ -98,7 +98,7 @@ const AddSchedular = () => {
   const handleWebpage = (e) => {
     setwebpage(e.value);
     setwebpageurl(e.url);
-    webpage == null &&   setwebpage_err(false)
+    webpage == null && setwebpage_err(false)
   }
 
   const handleChange = (index, evnt) => {
@@ -144,16 +144,16 @@ const AddSchedular = () => {
       contentScore: content_score_semrush
     }
 
-    if(webpage == null || written_by == null || assigned_by == null ){
+    if (webpage == null || written_by == null || assigned_by == null) {
       alert.error('Please select required fields');
       webpage == null && setwebpage_err(true)
       assigned_by == null && setassigned_by_err(true)
-      written_by  == null && setwritten_by_err(true)
+      written_by == null && setwritten_by_err(true)
 
     }
-    else{
+    else {
       addNewSchedular(schedular_data).then(resp => {
-        if(resp?.status == true){
+        if (resp?.status == true) {
           alert.success('Content Schedular Created Successfully');
           history.push('/content_schedulers')
         }
@@ -161,7 +161,7 @@ const AddSchedular = () => {
           history.push('/logout')
           alert.error('Session timeout');
         }
-        else{
+        else {
           alert.error('Something Went Wrong!!');
         }
       }).catch(err => {
@@ -214,7 +214,7 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                      <label htmlFor="webpage" className= {webpage_err ? ' text-danger': ''}>Web Page</label>
+                        <label htmlFor="webpage" className={webpage_err ? ' text-danger' : ''}>Web Page</label>
                         {webpage_url !== null && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <Select
                           id="web_page"
@@ -228,7 +228,7 @@ const AddSchedular = () => {
                           classNamePrefix="select2-selection"
                           onChange={e => handleWebpage(e)}
                         />
-                        {webpage_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+                        {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
                       </div>
                     </Col>
 
@@ -251,6 +251,7 @@ const AddSchedular = () => {
                                   <AvField
                                     type="url"
                                     name="url"
+                                    required
                                     className="inner form-control"
                                     defaultValue={field.name}
                                     placeholder="Enter Referece Link"
@@ -341,6 +342,7 @@ const AddSchedular = () => {
                           label="Expected Words"
                           className="form-control"
                           id="expected_words"
+                          min={1}
                           placeholder="Enter Expected Words"
                           required
                           onChange={e => setexpected_words(e.target.value)}
@@ -357,13 +359,14 @@ const AddSchedular = () => {
                           label="Actual Words"
                           className="form-control"
                           id="actual_words"
+                          min={1}
                           placeholder="Enter Actual Words"
                           onChange={e => setactual_words(e.target.value)}
                           required
-                          // validate={{
-                          //   required: {value: true},
-                          //   maxLength: {value: 5}
-                          // }}
+                        // validate={{
+                        //   required: {value: true},
+                        //   maxLength: {value: 5}
+                        // }}
                         />
                       </div>
                     </Col>
@@ -386,7 +389,7 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                         <label htmlFor="assigned_by" className= {assigned_by_err ? ' text-danger': ''}>Assigned By</label>
+                        <label htmlFor="assigned_by" className={assigned_by_err ? ' text-danger' : ''}>Assigned By</label>
                         <Select
                           id="assigned_by"
                           isMulti={false}
@@ -395,7 +398,7 @@ const AddSchedular = () => {
                             setassigned_by(e.value)
                           }}
                           options={
-                            members_list && members_list.map( (user)  => (
+                            members_list && members_list.map((user) => (
                               { label: user.name, value: user._id, id: user._id }
                             )
                             )
@@ -403,7 +406,7 @@ const AddSchedular = () => {
 
                           classNamePrefix="select2-selection"
                         />
-                          {assigned_by_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+                        {assigned_by_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
                       </div>
                     </Col>
 
@@ -425,7 +428,7 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="written_by" className= {written_by_err ? ' text-danger': ''}>Written By</label>
+                        <label htmlFor="written_by" className={written_by_err ? ' text-danger' : ''}>Written By</label>
                         <Select
                           id="written_by"
                           isMulti={false}
@@ -441,7 +444,7 @@ const AddSchedular = () => {
                           }
                           classNamePrefix="select2-selection"
                         />
-                          {written_by_err ?  <div style={{marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+                        {written_by_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
                       </div>
                     </Col>
 
@@ -474,6 +477,7 @@ const AddSchedular = () => {
                           name="readability_semrush"
                           label="Readability (SEMRush)"
                           type="number"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setreadability_semrush(e.target.value)}
                         />
@@ -488,6 +492,7 @@ const AddSchedular = () => {
                           id="SEO_semrush"
                           name="SEO_semrush"
                           type="number"
+                          min={1}
                           label="SEO (SEMRush)"
                           classNamePrefix="form-control"
                           onChange={e => setseo_semrush(e.target.value)}
@@ -504,6 +509,7 @@ const AddSchedular = () => {
                           name="ton_voice_semrush"
                           label="Tone of Voice (SEMRush)"
                           type="number"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setton_voice_semrush(e.target.value)}
                         />
@@ -515,9 +521,11 @@ const AddSchedular = () => {
                       <div className="mb-3">
                         {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
                         <AvField
+                          type="number"
                           id="originality_semrush"
                           name="originality_semrush"
                           label="Originality (SEMRush)"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setoriginality_semrush(e.target.value)}
                         />
@@ -532,6 +540,7 @@ const AddSchedular = () => {
                           name="content_score_semrush"
                           label="Content Score (Surfer SEO)"
                           type="number"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setcontent_score_semrush(e.target.value)}
                         />

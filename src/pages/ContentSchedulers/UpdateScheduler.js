@@ -135,18 +135,18 @@ const UpdateSchedular = (props) => {
     // console.log('webpage_id ',webpage_id)
     const schedularData = {
       contentType: schedular_data && schedular_data.contentType !== topic_type ? topic_type : undefined,
-      webpage: schedular_data && schedular_data.webpage && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage? webpage_id : webpage_id : webpage_id == '' ? webpage_id : schedular_data.webpage == null ? webpage : undefined,
+      webpage: schedular_data && schedular_data.webpage && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage ? webpage_id : webpage_id : webpage_id == '' ? webpage_id : schedular_data.webpage == null ? webpage : undefined,
       refereceLinks: schedular_data && !is_assigned_equal ? referece_links : undefined,
       topicTitle: schedular_data && schedular_data.topicTitle !== topic_title ? topic_title : undefined,
       docLink: schedular_data && schedular_data.docLink !== doc_link ? doc_link : undefined,
       expectedWords: schedular_data && schedular_data.expectedWords !== expected_words ? expected_words : undefined,
       actualWords: schedular_data && schedular_data.actualWords !== actual_words ? actual_words : undefined,
       assignedOn: schedular_data && schedular_data.assignedOn !== assigned_on ? assigned_on : undefined,
-      assignedBy: schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id !== assigned_by ? !schedular_data.assignedBy? assigned_by : assigned_by : schedular_data.assignedBy == null ? assigned_by : undefined,
+      assignedBy: schedular_data && schedular_data.assignedBy && schedular_data.assignedBy._id !== assigned_by ? !schedular_data.assignedBy ? assigned_by : assigned_by : schedular_data.assignedBy == null ? assigned_by : undefined,
       submitedOn: schedular_data && schedular_data.submitedOn !== submited_on ? submited_on : undefined,
 
-      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by ? !schedular_data.writtenBy? written_by : written_by : schedular_data.writtenBy == null ? written_by : undefined,
-      
+      writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by ? !schedular_data.writtenBy ? written_by : written_by : schedular_data.writtenBy == null ? written_by : undefined,
+
       // writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by && schedular_data.written_by == null ? written_by : undefined,
       contentStatus: schedular_data && schedular_data.contentStatus !== content_status ? content_status : undefined,
       readability: schedular_data && schedular_data.readability !== readability_semrush ? readability_semrush : undefined,
@@ -159,7 +159,7 @@ const UpdateSchedular = (props) => {
     // console.log('schedularData ', schedularData)
 
     updateSchedular(schedularData, id).then(resp => {
-      if(resp?.status == true){
+      if (resp?.status == true) {
         alert.success('Content Schedular Updated Successfully');
         history.push('/content_schedulers')
       }
@@ -167,7 +167,7 @@ const UpdateSchedular = (props) => {
         history.push('/logout')
         alert.error('Session timeout');
       }
-      else{
+      else {
         alert.error('Something Went Wrong!!');
       }
     }).catch(err => {
@@ -188,7 +188,7 @@ const UpdateSchedular = (props) => {
         <Breadcrumbs title="Content Schedulers" breadcrumbItem="Update Content Scheduler" />
 
         <Row>
-        <Card>
+          <Card>
             <CardBody>
               <h4 className="me-4"> ID:  {id}</h4>
               <label htmlFor="created_on">Submiited On :  {head_published_on}</label>
@@ -263,6 +263,7 @@ const UpdateSchedular = (props) => {
                                     type="url"
                                     name="url"
                                     className="inner form-control"
+                                    required
                                     defaultValue={typeof field !== 'object' ? field : ''}
                                     placeholder="Enter Referece Link"
                                     onChange={(evnt) => handleChange(key, evnt)}
@@ -336,6 +337,7 @@ const UpdateSchedular = (props) => {
                           label="Doc Link"
                           className="form-control"
                           id="doc_link"
+                          required
                           placeholder="Enter Doc Link"
                           onChange={e => setdoc_link(e.target.value)}
                           defaultValue={doc_link}
@@ -353,6 +355,7 @@ const UpdateSchedular = (props) => {
                           label="Expected Words"
                           className="form-control"
                           id="expected_words"
+                          min={1}
                           placeholder="Enter Expected Words"
                           onChange={e => setexpected_words(e.target.value)}
                           defaultValue={expected_words}
@@ -369,6 +372,7 @@ const UpdateSchedular = (props) => {
                           label="Actual Words"
                           className="form-control"
                           id="actual_words"
+                          min={1}
                           placeholder="Enter Actual Words"
                           onChange={e => setactual_words(e.target.value)}
                           defaultValue={actual_words}
@@ -481,6 +485,7 @@ const UpdateSchedular = (props) => {
                           name="readability_semrush"
                           label="Readability (SEMRush)"
                           type="number"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setreadability_semrush(e.target.value)}
                           defaultValue={readability_semrush}
@@ -497,6 +502,7 @@ const UpdateSchedular = (props) => {
                           name="SEO_semrush"
                           type="number"
                           label="SEO (SEMRush)"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setseo_semrush(e.target.value)}
                           defaultValue={seo_semrush}
@@ -513,6 +519,7 @@ const UpdateSchedular = (props) => {
                           name="ton_voice_semrush"
                           label="Tone of Voice (SEMRush)"
                           type="number"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setton_voice_semrush(e.target.value)}
                           defaultValue={ton_voice_semrush}
@@ -525,6 +532,8 @@ const UpdateSchedular = (props) => {
                       <div className="mb-3">
                         {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
                         <AvField
+                          type="number"
+                          min={1}
                           id="originality_semrush"
                           name="originality_semrush"
                           label="Originality (SEMRush)"
@@ -543,6 +552,7 @@ const UpdateSchedular = (props) => {
                           name="content_score_semrush"
                           label="Content Score (Surfer SEO)"
                           type="number"
+                          min={1}
                           classNamePrefix="form-control"
                           onChange={e => setcontent_score_semrush(e.target.value)}
                           defaultValue={content_score_semrush}

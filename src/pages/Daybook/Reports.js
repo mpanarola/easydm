@@ -24,24 +24,30 @@ const Reports = () => {
 
     const [category_id, set_category] = useState()
     const [webpage_id, set_webpage] = useState()
-
     const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
     const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
-
-    const [member_id, setassigned_to] = useState([])
-
+    const [member_id, setassigned_to] = useState()
     const [members_list, setmembers_list] = useState([])
+    const [default_members_list, setdefault_members_list] = useState()
+
     const [webpages_list, setwebpages_list] = useState([])
 
     const [daybooks_list, setdaybooks_list] = useState([])
     const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
     const [is_loading, setloading] = useState(true)
-
+    const [total_hours, settotal_hours] = useState([])
 
 
     const allMembers = () => {
         getAllMembers(memberPayload).then(resp => {
-            setmembers_list(resp?.data[0]?.list)
+            setmembers_list(
+                    resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
+                        { label: user.name, value: user._id }
+                    )
+                    )
+            )
+
+            
 
         }).catch(err => {
         })
@@ -58,36 +64,36 @@ const Reports = () => {
 
     const dayBookPayload = {
         "search": {
-          "dateFrom": start_date,
-          "dateTo": end_date,
-            // "member":members_list && members_list.map(i => i.value ? i.value : i._id),
+            "dateFrom": start_date,
+            "dateTo": end_date,
+            "member": member_id, //members_list && members_list.map(i => i.value ? i.value : i._id),
             "category": category_id,
             "webpage": webpage_id
         }
-      }
-      const getDaybooks = () => {
+    }
+    const getDaybooks = () => {
         getAlldaybooks(dayBookPayload).then(resp => {
-          console.log('rowssss ',resp?.data[0])
-          setdaybooks_list(resp?.data[0])
-          setloading(false)
-          if (resp?.message == 'Unauthorized User!!') {
-            history.push('/logout')
-            alert.error('Session timeout');
-          }
-    
+            // console.log('rowssss ', resp?.data[0])
+            setdaybooks_list(resp?.data[0])
+            setloading(false)
+            if (resp?.message == 'Unauthorized User!!') {
+                history.push('/logout')
+                alert.error('Session timeout');
+            }
+
         }).catch(err => {
-          alert.error('Backend server not responding, Please try again....');
+            alert.error('Backend server not responding, Please try again....');
         })
-    
-      }
-    
-      const resetSearch = () =>{
+
+    }
+
+    const resetSearch = () => {
         set_end_date('')
         set_start_date('')
         set_category('')
         set_webpage('')
         getDaybooks()
-      }
+    }
 
 
     useEffect(() => {
@@ -100,37 +106,36 @@ const Reports = () => {
 
     }, []);
 
-
-
-
     const rows = useMemo(() =>
-    daybooks_list && daybooks_list.map((row, order) => (
-      {
-      ...row,
-      id: order + 1,
-      photo: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
-          </div>
-        </div>
-      ),
-      name: row['info'][0].userName,
-      hours: (
-        <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
-      ),
-    })), [daybooks_list])
+        daybooks_list && daybooks_list.map((row, order) => (
+            {
+                ...row,
+                id: order + 1,
+                photo: (
+                    <div className="d-flex align-items-start">
+                        <div className="me-3 align-self-center">
+                            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+                        </div>
+                    </div>
+                ),
+                name: row['info'][0].userName,
+                hours: (
+                    // hours_arr.push(row.totalHours),
+                    total_hours.push(row.totalHours),
+                    <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+                ),
+            })), [daybooks_list])
 
 
+            console.log('members_list ', members_list)
     return (
         <React.Fragment>
             <div className="page-content">
-
                 <Breadcrumbs title="Pages" breadcrumbItem="Daybooks Summary" />
                 <Row>
                     <Card >
                         <CardBody >
-                            {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
+                            <CardTitle className="mb-4 ">Search Filter</CardTitle>
                             <Col lg={12}>
                                 <Row>
                                     <Col lg={6}>
@@ -145,6 +150,8 @@ const Reports = () => {
                                                 options={
                                                     optionGroupCategory
                                                 }
+
+
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
@@ -164,7 +171,6 @@ const Reports = () => {
                                                     )
                                                     )
                                                 }
-
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
@@ -179,21 +185,12 @@ const Reports = () => {
                                             <Select
                                                 id="webpage"
                                                 isMulti={true}
-                                                onChange={setassigned_to}
-                                                options={
-                                                    members_list && members_list.map((user) => (
-                                                        { label: user.name, value: user._id, id: user._id }
-                                                    )
-                                                    )
-                                                }
-                                                value={
-                                                    members_list && members_list.map((user) => (
-                                                        { label: user.name, value: user._id, id: user._id }
-                                                    )
-                                                    )
-                                                }
+                                                onChange={setmembers_list}
+                                                // onChange={e => console.log(e.target.value)}
 
-                                                selected='selected'
+                                                options={members_list}
+                                                
+                                                value={members_list}
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
@@ -201,7 +198,7 @@ const Reports = () => {
 
                                     <Col lg={6}>
                                         <div className="float-start">
-                                            <div> <div class="card-title">Date Filter</div> </div>
+                                            <div> <div className="card-title">Date Filter</div> </div>
                                             <div className="float-start  d-flex ">
 
                                                 <input type="date" name="start_date" className="form-control" value={start_date} onChange={(e) => {
@@ -224,11 +221,11 @@ const Reports = () => {
                                 </button>
 
                                 {
-                  start_date !== '' && end_date !=='' && 
-                  <button type="button" className="btn btn-danger" onClick={resetSearch} >
-                  clear
-                </button>
-                } 
+                                    start_date !== '' && end_date !== '' &&
+                                    <button type="button" className="btn btn-danger" onClick={resetSearch} >
+                                        clear
+                                    </button>
+                                }
 
                             </Col>
                         </CardBody>
@@ -239,19 +236,27 @@ const Reports = () => {
                     <Col className="col-12">
                         <Card>
                             <CardBody>
-                                {/* <MDBDataTable responsive bordered data={report_data} /> */}
                                 {
-                  is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
-
-                    <MDBDataTable responsive bordered data={{ rows, columns }} />
-                }
+                                    is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+                                        <>
+                                          <CardTitle>Members List</CardTitle>
+                                            <MDBDataTable responsive bordered data={{ rows, columns }} />
+                                            <div className="col-md-4" style={{ float: "right", marginLeft: "50px", marginTop: "-50px", marginRight: "-40px" }}>
+                                                <button type="button" className="btn btn-info">
+                                                    Total Hours:  {
+                                                 total_hours.reduce((a, v) => a = a + v, 0)
+                                                    }
+                                                </button>
+                                            </div>
+                                        </>
+                                }
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
 
-                <Performance  category={category_id} webpage={category_id} members={member_id} start_date={start_date} end_date={end_date} />
-                
+                <Performance category={category_id} webpage={category_id} members={member_id} start_date={start_date} end_date={end_date} />
+
             </div>
 
         </React.Fragment>

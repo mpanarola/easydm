@@ -211,6 +211,7 @@ const Updatepageview = (props) => {
                             label="Number of Page Views"
                             className="form-control"
                             id="total_pageviews"
+                            min={1}
                             onChange={e => settotal_pageviews(e.target.value)}
                             defaultValue={total_pageviews}
                             required
@@ -231,6 +232,7 @@ const Updatepageview = (props) => {
                             label="Readability (SEMRush)"
                             type="number"
                             classNamePrefix="form-control"
+                            min={1}
                             onChange={e => setreadability_semrush(e.target.value)}
                             defaultValue={readability_semrush}
                           />
@@ -247,6 +249,7 @@ const Updatepageview = (props) => {
                             type="number"
                             label="SEO (SEMRush)"
                             classNamePrefix="form-control"
+                            min={1}
                             onChange={e => setseo_semrush(e.target.value)}
                             defaultValue={seo_semrush}
                           />
@@ -263,6 +266,7 @@ const Updatepageview = (props) => {
                             label="Tone of Voice (SEMRush)"
                             type="number"
                             classNamePrefix="form-control"
+                            min={1}
                             onChange={e => setton_voice_semrush(e.target.value)}
                             defaultValue={ton_voice_semrush}
                           />
@@ -274,10 +278,12 @@ const Updatepageview = (props) => {
                         <div className="mb-3">
                           {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
                           <AvField
+                          type="number"
                             id="originality_semrush"
                             name="originality_semrush"
                             label="Originality (SEMRush)"
                             classNamePrefix="form-control"
+                            min={1}
                             onChange={e => setoriginality_semrush(e.target.value)}
                             defaultValue={originality_semrush}
                           />
@@ -293,6 +299,7 @@ const Updatepageview = (props) => {
                             label="Content Score (Surfer SEO)"
                             type="number"
                             classNamePrefix="form-control"
+                            min={1}
                             defaultValue={content_score_semrush}
                             onChange={e => setcontent_score_semrush(e.target.value)}
                           />

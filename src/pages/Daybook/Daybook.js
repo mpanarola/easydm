@@ -107,7 +107,7 @@ const Daybook = () => {
       name: row['info'][0].userName,
       date: start_date!== '' ||  end_date !=='' ? Moment(start_date).format('DD-MMM-YY') + ' - ' + Moment(end_date).format('DD-MMM-YY') : Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
       hours: (
-        <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+        <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
       ),
       action: (
         <div className="d-flex">
@@ -166,7 +166,7 @@ const Daybook = () => {
             {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
 
             <div className="col-md-8 float-start">
-              <div> <div class="card-title">Date Filter</div> </div>
+              <div> <div className="card-title">Date Filter</div> </div>
               <div className="float-start  d-flex ">
 
                 <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value) } value={start_date} />
