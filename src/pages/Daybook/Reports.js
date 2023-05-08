@@ -72,6 +72,7 @@ const Reports = () => {
         }
     }
     const getDaybooks = () => {
+        settotal_hours([])
         getAlldaybooks(dayBookPayload).then(resp => {
             // console.log('rowssss ', resp?.data[0])
             setdaybooks_list(resp?.data[0])
@@ -88,8 +89,8 @@ const Reports = () => {
     }
 
     const resetSearch = () => {
-        set_end_date('')
-        set_start_date('')
+        set_end_date(Moment().format('YYYY-MM-DD'))
+        set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
         set_category('')
         set_webpage('')
         getDaybooks()
@@ -150,8 +151,7 @@ const Reports = () => {
                                                 options={
                                                     optionGroupCategory
                                                 }
-
-
+                                                defaultValue={category_id}
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
@@ -223,7 +223,7 @@ const Reports = () => {
                                 {
                                     start_date !== '' && end_date !== '' &&
                                     <button type="button" className="btn btn-danger" onClick={resetSearch} >
-                                        clear
+                                        Reset
                                     </button>
                                 }
 

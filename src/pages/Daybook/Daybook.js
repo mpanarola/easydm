@@ -86,8 +86,8 @@ const Daybook = () => {
   }
 
   const resetSearch = () =>{
-    set_end_date('')
-    set_start_date('')
+    set_end_date(Moment().format('YYYY-MM-DD'))
+    set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
     getDaybooks()
   }
 
@@ -179,7 +179,7 @@ const Daybook = () => {
                 {
                   start_date !== '' && end_date !=='' && 
                   <button type="button" className="btn btn-danger" onClick={resetSearch} >
-                  clear
+                  Reset
                 </button>
                 } 
               </div>
