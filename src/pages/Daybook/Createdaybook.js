@@ -26,6 +26,10 @@ const Createdaybook = () => {
   const alert = useAlert();
   const history = useHistory();
 
+  const [webpage_err, setwebpage_err] = useState(false);
+  const [category_err, setcategory_err] = useState(false);
+  const [hours_err, sethours_err] = useState(false);
+
 
   const inpRow = [{ webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }]
   const [inputFields, setinputFields] = useState(inpRow)
@@ -68,12 +72,15 @@ const Createdaybook = () => {
     const result =  {
       data : inputFields
     }
-  
-
-
     
-    if(inputFields == null){
-      alert.error('Please input or select some values..');
+    console.log('inputFields.length ', inputFields)
+
+   
+    if(inputFields[0].category =='' || inputFields[0].webpage =='' || inputFields[0].hours ==''){
+
+      inputFields[0].category.length == 0 && setcategory_err(true)
+      inputFields[0].hours.length == 0 && sethours_err(true)
+      inputFields[0].webpage.length == 0 && setwebpage_err(true)
     }
     else{
 
@@ -101,7 +108,11 @@ const Createdaybook = () => {
 
 
   const handleInput = (index, name, value) => {
-    
+
+    name == 'category' && value !=='' && setcategory_err(false)
+    name == 'hours' && value !=='' && sethours_err(false)
+    name == 'webpage' && value !=='' && setwebpage_err(false)
+
      setinputFields(prev => prev.map((item, idx) => {
       if(index === idx && item.hasOwnProperty(name))  item[name] = value
       return item
@@ -150,11 +161,12 @@ const Createdaybook = () => {
                                 <div className="mb-4 mt-md-0">
                                 <AvField
                                     type="date"
-                                    name="date"
+                                    name="creationDate"
                                     className="inner form-control"
                                     defaultValue={field.creationDate}
                                     // onChange={e => [...inputFields, item1] }
-                                    onChange={e => handleInput(key, "date", e.target.value) }
+                                    max={today_date}
+                                    onChange={e => handleInput(key, "creationDate", e.target.value) }
                                   />
                                 </div>
                               </Col>
@@ -171,6 +183,7 @@ const Createdaybook = () => {
                                     defaultValue={field.category}
                                     onChange={e => handleInput(key, "category", e.value) }
                                   />
+                                    {category_err ?  <p style={{ fontSize: '0.875em', color: '#ff715b'}}>This field is required</p> : '' }
                                 </div>
                               </Col>
 
@@ -191,6 +204,8 @@ const Createdaybook = () => {
                                     // onChange={e => setwebpage(e.value)}
                                     onChange={e => handleInput(key, "webpage", e.value) }
                                   />
+                                    {webpage_err ?  <div style={{ fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+
                                   {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
                                 </div>
 
@@ -208,6 +223,8 @@ const Createdaybook = () => {
                                     // onChange={e => settotalHours(e.target.value)}
                                     onChange={e => handleInput(key, "hours", e.target.value) }
                                   />
+                                    {hours_err ?  <div style={{ fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+
                                 </div>
                               </Col>
 
@@ -219,7 +236,6 @@ const Createdaybook = () => {
                                     className="inner form-control"
                                     defaultValue={field.details}
                                     placeholder="Enter Details"
-                                    // onChange={e => setdetails(e.target.value)}
                                     onChange={e => handleInput(key, "details", e.target.value) }
                                   />
                                 </div>

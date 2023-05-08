@@ -7,24 +7,28 @@ import Moment from 'moment';
 import Select from "react-select";
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
+import { reportDaybookcolumns as columns } from './Constants';
+
 import { useHistory } from 'react-router-dom';
 import { useAlert } from "react-alert";
-import { getAlldaybooks, getAllMembers, getWebsites } from '../../helpers/backend_helper'
+import { getAlldaybooks, getAllMembers, getWebsites, activityDaybook } from '../../helpers/backend_helper'
 import { memberPayload, optionGroupCategory, webpagePayload } from './Constants';
-import ReactApexChart from "react-apexcharts";
+
+import Performance from "./Performance"
+
 
 const Reports = () => {
 
     const history = useHistory();
     const alert = useAlert();
 
-    const [category, set_category] = useState()
-    const [webpage, set_webpage] = useState()
+    const [category_id, set_category] = useState()
+    const [webpage_id, set_webpage] = useState()
 
     const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
     const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
 
-    const [assigned_to, setassigned_to] = useState([])
+    const [member_id, setassigned_to] = useState([])
 
     const [members_list, setmembers_list] = useState([])
     const [webpages_list, setwebpages_list] = useState([])
@@ -34,20 +38,6 @@ const Reports = () => {
     const [is_loading, setloading] = useState(true)
 
 
-    const getDaybooks = (event, values) => {
-        getAlldaybooks().then(resp => {
-            setdaybooks_list(resp?.data[0]?.list)
-            setloading(false)
-            if (resp?.message == 'Unauthorized User!!') {
-                history.push('/logout')
-                alert.error('Session timeout');
-            }
-
-        }).catch(err => {
-            alert.error('Backend server not responding, Please try again....');
-        })
-
-    }
 
     const allMembers = () => {
         getAllMembers(memberPayload).then(resp => {
@@ -66,36 +56,43 @@ const Reports = () => {
 
     }
 
-    const searchReport = () => {
-
-        const dayBookPayload = {
-            "search": {
-                "dateFrom": start_date,
-                "dateTo": end_date,
-                "category": category,
-                "webpage": webpage,
-                "members": members_list && members_list.map(i => i.value ? i.value : i._id)
-            }
-        };
-
+    const dayBookPayload = {
+        "search": {
+          "dateFrom": start_date,
+          "dateTo": end_date,
+            // "member":members_list && members_list.map(i => i.value ? i.value : i._id),
+            "category": category_id,
+            "webpage": webpage_id
+        }
+      }
+      const getDaybooks = () => {
         getAlldaybooks(dayBookPayload).then(resp => {
-
-            if (resp?.message == 'Unauthorized User!!') {
-                history.push('/logout')
-                alert.error('Session timeout');
-            }
-
-            setdaybooks_list(resp?.data[0]?.list)
-
-
+          console.log('rowssss ',resp?.data[0])
+          setdaybooks_list(resp?.data[0])
+          setloading(false)
+          if (resp?.message == 'Unauthorized User!!') {
+            history.push('/logout')
+            alert.error('Session timeout');
+          }
+    
         }).catch(err => {
-            alert.error('Backend server not responding, Please try again....');
+          alert.error('Backend server not responding, Please try again....');
         })
+    
+      }
+    
+      const resetSearch = () =>{
+        set_end_date('')
+        set_start_date('')
+        set_category('')
+        set_webpage('')
+        getDaybooks()
+      }
 
-    }
 
     useEffect(() => {
         setTimeout(function () {
+            getDaybooks()
             allMembers()
             allWebpages()
             setloading(false)
@@ -104,128 +101,26 @@ const Reports = () => {
     }, []);
 
 
-    const series = [
 
-        {
-            name: "Total Back Links",
-            data: [10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
-            type: 'area',
-        }]
 
-    const options = {
-        chart: {
-            toolbar: {
-                show: true
-            },
-            zoom: {
-                enabled: true
-            }
-        },
-        colors: ['#3b5de7', '#3b5de7'],
-        dataLabels: {
-            enabled: false,
-        },
-        stroke: {
-            curve: 'smooth',
-            width: '3',
-            dashArray: [4, 0],
-        },
+    const rows = useMemo(() =>
+    daybooks_list && daybooks_list.map((row, order) => (
+      {
+      ...row,
+      id: order + 1,
+      photo: (
+        <div className="d-flex align-items-start">
+          <div className="me-3 align-self-center">
+            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+          </div>
+        </div>
+      ),
+      name: row['info'][0].userName,
+      hours: (
+        <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+      ),
+    })), [daybooks_list])
 
-        markers: {
-            size: 3
-        },
-        xaxis: {
-            categories: ['Apr - 22', 'May - 22', 'Jun - 22', 'Jul - 22', 'Aug - 22', 'Sept - 22', 'Oct - 22', 'Nov - 22', 'Dec - 22', 'Jan - 23', 'Fab - 23', 'Mar - 23'],
-            title: {
-                text: 'Month'
-            }
-        },
-
-        fill: {
-            type: 'solid',
-            opacity: [1, 0.1],
-        },
-
-        legend: {
-            position: 'top',
-            horizontalAlign: 'right',
-        }
-    }
-
-    const report_data = {
-        columns: [
-            {
-                label: "ID",
-                field: "id",
-                sort: "asc",
-                width: 150,
-            },
-            {
-                label: "Photo",
-                field: "photo",
-                sort: "asc",
-                width: 150,
-            },
-            {
-                label: "Name",
-                field: "name",
-                sort: "asc",
-                width: 270,
-            },
-            {
-                label: "Hours",
-                field: "hours",
-                sort: "asc",
-                width: 270,
-            }
-        ],
-        rows: [
-            {
-                id: "1",
-                photo: (
-                    <div className="d-flex align-items-start">
-                        <div className="me-3 align-self-center">
-                            <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
-                        </div>
-                    </div>
-                ),
-                // webpage_url: "",
-                name: "Ashish",
-                hours: (
-                    <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>8</span>
-                )
-            },
-            {
-                id: "2",
-                photo: (
-                    <div className="d-flex align-items-start">
-                        <div className="me-3 align-self-center">
-                            <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
-                        </div>
-                    </div>
-                ),
-                name: "Nilesh",
-                hours: (
-                    <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>10</span>
-                )
-            },
-            {
-                id: "3",
-                photo: (
-                    <div className="d-flex align-items-start">
-                        <div className="me-3 align-self-center">
-                            <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
-                        </div>
-                    </div>
-                ),
-                name: "Milan",
-                hours: (
-                    <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>2</span>
-                )
-            }
-
-        ],
-    }
 
     return (
         <React.Fragment>
@@ -291,7 +186,12 @@ const Reports = () => {
                                                     )
                                                     )
                                                 }
-                                                defaultValue={members_list[1]}
+                                                value={
+                                                    members_list && members_list.map((user) => (
+                                                        { label: user.name, value: user._id, id: user._id }
+                                                    )
+                                                    )
+                                                }
 
                                                 selected='selected'
                                                 classNamePrefix="select2-selection"
@@ -316,12 +216,20 @@ const Reports = () => {
                                     </Col>
 
                                 </Row>
-                                <button type="button" className="btn btn-secondary w-auto"
+                                <button type="button" className="btn btn-secondary w-auto mx-2"
                                     onClick={() => {
-                                        searchReport()
+                                        getDaybooks()
                                     }} >
                                     Search
                                 </button>
+
+                                {
+                  start_date !== '' && end_date !=='' && 
+                  <button type="button" className="btn btn-danger" onClick={resetSearch} >
+                  clear
+                </button>
+                } 
+
                             </Col>
                         </CardBody>
                     </Card>
@@ -331,35 +239,19 @@ const Reports = () => {
                     <Col className="col-12">
                         <Card>
                             <CardBody>
-                                <MDBDataTable responsive bordered data={report_data} />
+                                {/* <MDBDataTable responsive bordered data={report_data} /> */}
+                                {
+                  is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+
+                    <MDBDataTable responsive bordered data={{ rows, columns }} />
+                }
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
 
-                <Row>
-                    <Col className="col-12">
-                        <Card>
-                            <CardBody>
-                                {
-                                    is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
-                                        <Card>
-                                            <CardBody >
-                                                <h4 className="card-title mb-4">Logged Hours During Past 12 months</h4>
-                                                <ReactApexChart
-                                                    options={options}
-                                                    series={series}
-                                                    height="260"
-                                                    type="line"
-                                                    className="apex-charts"
-                                                />
-                                            </CardBody>
-                                        </Card>
-                                }
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
+                <Performance  category={category_id} webpage={category_id} members={member_id} start_date={start_date} end_date={end_date} />
+                
             </div>
 
         </React.Fragment>

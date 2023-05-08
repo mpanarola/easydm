@@ -1,72 +1,138 @@
-import React, { Component } from "react"
-import { Button, Card, CardBody, CardTitle, Input } from "reactstrap"
+import React, { useState, useEffect } from "react"
+import { Card, CardBody, CardTitle, Col, Row } from "reactstrap"
+import ReactApexChart from "react-apexcharts"
 
-class Performance extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { }
-  }
+import {activityDaybook } from '../../helpers/backend_helper'
+import Moment from 'moment';
+import { useHistory } from 'react-router-dom';
+import { useAlert } from "react-alert";
 
-  render() {
-    return (
-      <React.Fragment>
-      <Card>
-          <CardBody>
-              <div className="float-end">
-                  <div className="input-group input-group">
-                      <Input type="select" className="form-select form-select-sm">
-                          <option>Jan</option>
-                          <option value="1" selected>Dec</option>
-                          <option value="2">Nov</option>
-                          <option value="3">Oct</option>
-                          <option value="4">Sept</option>
-                          <option value="5">Aug</option>
-                          <option value="6">Jul</option>
-                          <option value="7">Jun</option>
-                          <option value="8">May</option>
-                          <option value="9">Apr</option>
-                          <option value="10">Mar</option>
-                          <option value="11">Feb</option>
-                          <option value="12">Jan</option>
+const Performance = (props) => {
+    // constructor(props) {
+    //     super(props)
+    //     this.state = {}
+    // }
 
-                      </Input>
-                      <label className="input-group-text">Month</label>
-                  </div>
-              </div>
-              <CardTitle className="h4 mb-4">Past 12 months performance</CardTitle>
+    const [is_loading, setloading] = useState(true)
 
-              <div className="align-items-start d-flex">
-                  <div className="flex-1">
-                      <p className="mb-2">Total Links</p>
-                      <h4>2,500</h4>
-                      <p className="mb-0"><span className="badge badge-soft-success me-2"> 0.6% <i
-                          className="mdi mdi-arrow-up"></i> </span> From previous period</p>
-                  </div>
-              </div>
 
-              {/* <div className="mt-3 social-source">
-                  <div className="d-flex align-items-center social-source-list">
-                      <div className="avatar-xs me-4">
-                          <span className="avatar-title rounded-circle">
-                        
-                          </span>
-                      </div>
-                      <div className="flex-1">
-                          <p className="mb-1">Home page</p>
-                          <h5 className="mb-0">2,352</h5>
-                      </div>
-                      <div className="ms-auto">
-                          2.06 % <i className="mdi mdi-arrow-up text-success ms-1"></i>
-                      </div>
-                  </div>
+    if(props){
 
-              </div> */}
+        const start_date = props.start_date
+        const end_date = props.end_date
+        const category = props.category
+        const webpage = props.webpage
+        const members = props.member_id
 
-          </CardBody>
-      </Card>
-  </React.Fragment>
-    )
-  }
-}
+    }
+   
+    const history = useHistory();
+    const alert = useAlert();
+    const [activity_list, setactivity_list] = useState([]);
+    
+    const gethoursReports = () => {
+        activityDaybook(props.id).then(resp=>{
+        // console.log('datass ', resp?.data[0])
+        setactivity_list(resp?.data)
+        setloading(false)
+        if(resp?.message == 'Unauthorized User!!')
+        {          
+            history.push('/logout')
+            alert.error('Session timeout');
+        }
+      }).catch(err=>{
+        
+      })
+      
+    }
+    
+    // console.log('activity ', activity_list)
+    
+    useEffect(()=>{
+    
+      setTimeout(function() {
+        gethoursReports()
+    }, 1000);    
+    },[]);
+
+
+    const series = [
+
+        {
+            name: "Total Hours",
+            data: [10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
+            type: 'area',
+        }]
+
+    const options = {
+        chart: {
+            toolbar: {
+                show: true
+            },
+            zoom: {
+                enabled: true
+            }
+        },
+        colors: ['#3b5de7', '#3b5de7'],
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            curve: 'smooth',
+            width: '3',
+            dashArray: [4, 0],
+        },
+
+        markers: {
+            size: 3
+        },
+        xaxis: {
+            categories: ['Apr - 22', 'May - 22', 'Jun - 22', 'Jul - 22', 'Aug - 22', 'Sept - 22', 'Oct - 22', 'Nov - 22', 'Dec - 22', 'Jan - 23', 'Fab - 23', 'Mar - 23'],
+            title: {
+                text: 'Month'
+            }
+        },
+
+        fill: {
+            type: 'solid',
+            opacity: [1, 0.1],
+        },
+
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+        }
+    }
+
+
+        return (
+            <React.Fragment>
+                <Row>
+                    <Col className="col-12">
+                        <Card>
+                            <CardBody>
+                                {
+                                    is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+                                        <Card>
+                                            <CardBody >
+                                                <h4 className="card-title mb-4">Logged Hours During Past 12 months</h4>
+                                                <ReactApexChart
+                                                    options={options}
+                                                    series={series}
+                                                    height="260"
+                                                    type="line"
+                                                    className="apex-charts"
+                                                />
+                                            </CardBody>
+                                        </Card>
+                                }
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+        </React.Fragment>
+        )
+    }
+
 
 export default Performance

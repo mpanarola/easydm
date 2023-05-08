@@ -22,6 +22,10 @@ const Daybook = () => {
   const [daybooks_list, setdaybooks_list] = useState([])
   const [record_id, set_id] = useState()
 
+  const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
+  const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
+
+
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
   const [is_loading, setloading] = useState(true)
 
@@ -61,13 +65,12 @@ const Daybook = () => {
 
   const dayBookPayload = {
     "search": {
-      "dateFrom": "",
-      "dateTo": ""
+      "dateFrom": start_date,
+      "dateTo": end_date
     }
   }
-
   const getDaybooks = (event, values) => {
-    getAlldaybooks().then(resp => {
+    getAlldaybooks(dayBookPayload).then(resp => {
       console.log('row ',resp?.data[0])
       setdaybooks_list(resp?.data[0])
       setloading(false)
@@ -82,10 +85,14 @@ const Daybook = () => {
 
   }
 
+  const resetSearch = () =>{
+    set_end_date('')
+    set_start_date('')
+    getDaybooks()
+  }
 
   const rows = useMemo(() =>
     daybooks_list && daybooks_list.map((row, order) => (
-    
       {
       ...row,
       id: order + 1,
@@ -98,7 +105,7 @@ const Daybook = () => {
       ),
       // webpage_url: "",
       name: row['info'][0].userName,
-      date: Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
+      date: start_date!== '' ||  end_date !=='' ? Moment(start_date).format('DD-MMM-YY') + ' - ' + Moment(end_date).format('DD-MMM-YY') : Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
       hours: (
         <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
       ),
@@ -115,12 +122,12 @@ const Daybook = () => {
             View
           </div>
 
-          <div
+          {/* <div
             className="btn btn-danger"
             onClick={() => confirmDelete()}
           >
             Delete
-          </div>
+          </div> */}
 
         </div>
       )
@@ -135,126 +142,6 @@ const Daybook = () => {
     }, 1000);
 
   }, []);
-
-
-  // const data = {
-
-  //   rows: [
-  //     {
-  //       id: "1",
-  //       photo: (
-  //         <div className="d-flex align-items-start">
-  //         <div className="me-3 align-self-center">
-  //           <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" />
-  //         </div>
-  //       </div>
-  //       ),
-  //       // webpage_url: "",
-  //       name: "Ashish",
-  //       date: "27-Mar-2023",
-  //       hours: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>8</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_daybook') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteDaybook()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "2",
-  //       photo: (
-  //         <div className="d-flex align-items-start">
-  //         <div className="me-3 align-self-center">
-  //         <img src="/static/media/avatar-5.a5c59cee.jpg" alt="" className="avatar-sm rounded-circle" />
-  //         </div>
-  //       </div>
-  //       ),
-  //       name: "Nilesh",
-  //       date: "27-Mar-2023",
-  //       hours: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_daybook') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteDaybook()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "3",
-  //       photo: (
-  //         <div className="d-flex align-items-start">
-  //         <div className="me-3 align-self-center">
-  //         <img src="/static/media/avatar-2.feb0f89d.jpg" alt="" className="avatar-sm rounded-circle" />
-  //         </div>
-  //       </div>
-  //       ),
-  //       name: "Milan",
-  //       date: "27-Mar-2023",
-  //       hours: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>2</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_daybook') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteDaybook()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     }
-
-  //   ],
-  // }
 
   return (
     <React.Fragment>
@@ -282,12 +169,19 @@ const Daybook = () => {
               <div> <div class="card-title">Date Filter</div> </div>
               <div className="float-start  d-flex ">
 
-                <input type="date" name="start_date" className="form-control" />
+                <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value) } value={start_date} />
                 {/* <span>Start</span> */}
-                <input type="date" name="end_date" className="form-control mx-2" />
-                <button type="button" className="btn btn-secondary" >
+                <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value) }
+                 value={end_date} />
+                <button type="button" className="btn btn-secondary  mx-2" onClick={getDaybooks} >
                   Search
                 </button>
+                {
+                  start_date !== '' && end_date !=='' && 
+                  <button type="button" className="btn btn-danger" onClick={resetSearch} >
+                  clear
+                </button>
+                } 
               </div>
             </div>
 
