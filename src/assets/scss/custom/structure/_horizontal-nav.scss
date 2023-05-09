@@ -316,6 +316,9 @@ body[data-layout="horizontal"][data-topbar="dark"] {
   }
 
   @media (min-width: 992px) {
+    .page-content {
+      padding-right: 0 !important;
+  }
     .topnav {
       .navbar-nav {
         .nav-link {

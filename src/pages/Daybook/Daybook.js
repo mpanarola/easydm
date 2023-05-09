@@ -21,14 +21,9 @@ const Daybook = () => {
 
   const [daybooks_list, setdaybooks_list] = useState([])
   const [record_id, set_id] = useState()
-
   const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
   const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
-
-
-  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
   const [is_loading, setloading] = useState(true)
-
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
@@ -40,7 +35,6 @@ const Daybook = () => {
     setconfirm_both(true)
     set_id(id)
   };
-
 
   const removeDaybook = () => {
     if (record_id !== '') {
@@ -62,18 +56,31 @@ const Daybook = () => {
     })
   };
 
-
-  const dayBookPayload = {
-    "search": {
-      "dateFrom": start_date,
-      "dateTo": end_date
-    }
+  const resetSearch = () =>{
+    setloading(true)
+    set_end_date(Moment().format('YYYY-MM-DD'))
+    set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
+    getDaybooks(true)
   }
-  const getDaybooks = (event, values) => {
+
+  const getDaybooks = (is_reset_search) => {
+    const dayBookPayload = {
+      "search": {
+        "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
+        "dateTo":  is_reset_search  == true ?  Moment().format('YYYY-MM-DD') : end_date,
+        "sort": {
+          "createdAt": [1/-1]
+      }
+      }
+    }
+    setloading(true)
     getAlldaybooks(dayBookPayload).then(resp => {
-      console.log('row ',resp?.data[0])
-      setdaybooks_list(resp?.data[0])
-      setloading(false)
+      if(resp?.status){
+        console.log('success', resp?.status )
+        setdaybooks_list(resp?.data[0])
+        setloading(false)
+      }
+
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
@@ -83,12 +90,6 @@ const Daybook = () => {
       alert.error('Backend server not responding, Please try again....');
     })
 
-  }
-
-  const resetSearch = () =>{
-    set_end_date(Moment().format('YYYY-MM-DD'))
-    set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
-    getDaybooks()
   }
 
   const rows = useMemo(() =>
@@ -112,14 +113,15 @@ const Daybook = () => {
       action: (
         <div className="d-flex">
           <div
-            className="btn btn-primary"
+            className="btn btn-primary fas fa-edit"
             style={{
               cursor: "pointer",
               marginRight: "10px"
             }}
             onClick={() => updateDaybook(row)}
+            title="View Day Book"
           >
-            View
+            
           </div>
 
           {/* <div
@@ -135,7 +137,6 @@ const Daybook = () => {
 
     })), [daybooks_list])
 
-
   useEffect(() => {
     setTimeout(function () {
       getDaybooks()
@@ -146,7 +147,6 @@ const Daybook = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-
         <Breadcrumbs title="Pages" breadcrumbItem="Day Books" />
 
         {success_dlg ? (
@@ -172,7 +172,7 @@ const Daybook = () => {
                 <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value) } value={start_date} />
                 {/* <span>Start</span> */}
                 <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value) }
-                 value={end_date} />
+                 value={end_date} max={Moment().format('YYYY-MM-DD')} />
                 <button type="button" className="btn btn-secondary  mx-2" onClick={getDaybooks} >
                   Search
                 </button>
@@ -192,9 +192,9 @@ const Daybook = () => {
                     history.push("/create_daybook")
                   }}
                   to="#"
-                  className="btn btn-primary"
+                  className="btn btn-primary fas fa-plus"
+                  title="Add New"
                 >
-                  Add Day Book
                 </Link>
               </div>
             </div>
@@ -208,7 +208,6 @@ const Daybook = () => {
                 <CardTitle>Day Books List</CardTitle>
                 {
                   is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
-
                     <MDBDataTable responsive bordered data={{ rows, columns }} />
                 }
               </CardBody>
@@ -217,7 +216,6 @@ const Daybook = () => {
 
           {/* Delete popup */}
           <Col xl="3" lg="4" sm="6" className="mb-2">
-
             {confirm_both ? (
               <SweetAlert
                 title="Are you sure?"

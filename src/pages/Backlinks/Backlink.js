@@ -39,7 +39,6 @@ const Backlink = () => {
 
   };
 
-
   const removeBacklink = () => {
     if (record_id !== '') {
       deleteBackLink(record_id).then(resp => {
@@ -60,18 +59,6 @@ const Backlink = () => {
     })
   };
 
-
-  //  const payload =  {
-  //   "options": {
-  //     "populate": [
-  //       {
-  //         "path": "webpage",
-  //         "select": ["webpage","webpageUrl"]
-  //       }
-  //     ]
-  //   }
-  // }
-
   const getAllBacklinks = (event, values) => {
     getBackLinks(webpage_payload).then(resp => {
       setbacklinks_list(resp?.data[0]?.list)
@@ -87,7 +74,6 @@ const Backlink = () => {
 
   }
 
-
   const rows = useMemo(() =>
     backlinks_list && backlinks_list.map((row, order) => ({
       ...row,
@@ -102,34 +88,29 @@ const Backlink = () => {
       total_backlinks: (
         <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.numberOfBacklinks}</span>
       ),
-
       action: (
         <div className="d-flex" >
           <div
-            className="btn btn-primary"
+            className="btn btn-primary fas fa-edit"
             style={{
               cursor: "pointer",
               marginRight: "10px"
             }}
             onClick={() => updateBacklink(row)}
           >
-            View
           </div>
 
           { get_auth_user.userRole == 1 &&
               <div
-                className="btn btn-danger"
+                className="btn btn-danger fas fa-trash"
                 onClick={() => confirmDelete(row._id)}
               >
-                Delete
               </div>
           }
-
         </div>
       )
 
     })), [backlinks_list])
-
 
   useEffect(() => {
     setTimeout(function () {
@@ -138,157 +119,10 @@ const Backlink = () => {
 
   }, []);
 
-  // const data = {
-
-  //   rows: [
-  //     ,
-  //     {
-  //       id: "2",
-  //       webpage: (
-  //         <a href="https://www.about.com" target="_blank">About</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Industry",
-  //       month_year: "Mar-23",
-  //       total_backlinks:(
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>50 +</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_backlink') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "3",
-  //       webpage: (
-  //         <a href="https://www.contact.com" target="_blank">Contact</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Career",
-  //       month_year: "Mar-23",
-  //       total_backlinks: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>25 +</span>
-  //       ),
-
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_backlink') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "4",
-  //       webpage: (
-  //         <a href="https://www.blogs.com" target="_blank">Blogs</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Blogs",
-  //       month_year: "Mar-23",
-  //       total_backlinks: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>20 +</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_backlink') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "5",
-  //       webpage: (
-  //         <a href="https://www.events.com" target="_blank">Events</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Services",
-  //       month_year: "Mar-23",
-  //       total_backlinks: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>10 +</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_backlink') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-
-  //   ],
-  // }
-
   return (
     <React.Fragment>
       <div className="page-content">
-
         <Breadcrumbs title="Pages" breadcrumbItem="Back Links" />
-
         {success_dlg ? (
           <SweetAlert
             success
@@ -310,9 +144,9 @@ const Backlink = () => {
                   history.push("/create_backlink")
                 }}
                 to="#"
-                className="btn btn-primary"
+                className="btn btn-primary fas fa-plus"
+                title="Add New"
               >
-                Add Back Link
               </Link>
             </div>
           </CardBody>
@@ -331,9 +165,6 @@ const Backlink = () => {
               </CardBody>
             </Card>
           </Col>
-
-
-
 
           {/* Delete popup */}
           <Col xl="3" lg="4" sm="6" className="mb-2">

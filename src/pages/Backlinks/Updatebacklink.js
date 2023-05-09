@@ -8,15 +8,11 @@ import {
 } from "reactstrap"
 import Select from "react-select";
 import { useHistory } from 'react-router-dom';
-
 import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
 import Moment from 'moment';
-
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
-
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import { getWebsite, updateBackLink } from '../../helpers/backend_helper'
@@ -28,15 +24,9 @@ const Updatebacklink = (props) => {
   const alert = useAlert();
 
   const data = props.location && props.location.state;
-  console.log('data ', data)
-  //   var today = new Date(); //Current Date
-  //   let today_date = Moment(today).format('YYYY-MM-DD');
-
   let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
-
   const [webpage, setwebpage] = useState(data && data.data.webpage.webpage);
   const [webpage_id, setwebpage_id] = useState(data && data.data.webpage._id);
-
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState();
   const [total_backlinks, settotal_backlinks] = useState(data && data.data.numberOfBacklinks);
@@ -47,10 +37,7 @@ const Updatebacklink = (props) => {
 
   const updateBacklink = (event, values) => {
     const backlink_data = {
-      // monthYear: Moment(monthyear).format('YYYY-MM-DD'),
-      // category: category,
       numberOfBacklinks: data && data.data.numberOfBacklinks !== total_backlinks ? total_backlinks : undefined,
-      // publishedOn: published_on
     }
 
     updateBackLink(backlink_data, id).then(resp => {
@@ -106,9 +93,7 @@ const Updatebacklink = (props) => {
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
-        {console.log('webpages_list ', webpages_list)}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
 
         <Row>

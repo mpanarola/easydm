@@ -19,13 +19,11 @@ const Backlink = () => {
 
   const history = useHistory();
   const alert = useAlert();
-  const [selectedMulti, setselectedMulti] = useState(null);
+
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
-  const [confirm_alert, setconfirm_alert] = useState(false)
-
   const [pageviews_list, setpageviews_list] = useState([])
   const [record_id, set_id] = useState()
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
@@ -37,7 +35,6 @@ const Backlink = () => {
     set_id(id)
 
   };
-
 
   const removePageview = () => {
     if (record_id !== '') {
@@ -90,28 +87,25 @@ const Backlink = () => {
       action: (
         <div className="d-flex" >
           <div
-            className="btn btn-primary"
+            className="btn btn-primary fas fa-edit"
             style={{
               cursor: "pointer",
               marginRight: "10px"
             }}
             onClick={() => updatePageview(row)}
           >
-            View
           </div>
 
           { get_auth_user.userRole == 1 &&
               <div
-                className="btn btn-danger"
+                className="btn btn-danger fas fa-trash"
                 onClick={() => confirmDelete(row._id)}
               >
-                Delete
               </div>
           }
 
         </div>
       )
-
     })), [pageviews_list])
 
 
@@ -121,154 +115,6 @@ const Backlink = () => {
     }, 1000);
 
   }, []);
-
-  // const data = {
-
-  //   rows: [
-  //     ,
-  //     {
-  //       id: "2",
-  //       webpage: (
-  //         <a href="https://www.about.com" target="_blank">About</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Industry",
-  //       month_year: "Mar-23",
-  //       total_pageviews: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>1450 +</span>
-  //       ),
-      
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_page_view') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "3",
-  //       webpage: (
-  //         <a href="https://www.contact.com" target="_blank">Contact</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Career",
-  //       month_year: "Mar-23",
-  //       total_pageviews: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>650 +</span>
-  //       ),
-        
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_page_view') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "4",
-  //       webpage: (
-  //         <a href="https://www.blogs.com" target="_blank">Blogs</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Blogs",
-  //       month_year: "Mar-23",
-  //       total_pageviews: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>200 +</span>
-  //       ),
-        
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_page_view') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-  //     {
-  //       id: "5",
-  //       webpage: (
-  //         <a href="https://www.events.com" target="_blank">Events</a>
-  //       ),
-  //       date: "27-Mar-2023",
-  //       category: "Services",
-  //       month_year: "Mar-23",
-  //       total_pageviews: (
-  //         <span class="bg-info badge badge-secondary" style={{fontSize: "14px"}}>500 +</span>
-  //       ),
-        
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => { history.push('/update_page_view') }}
-  //           >
-  //             View
-  //           </div>
-
-  //           <div
-  //             className="btn btn-danger"
-  //             onClick={() => deleteBacklink()}
-  //           >
-  //             Delete
-  //           </div>
-
-  //         </div>
-  //       )
-  //     },
-
-  //   ],
-  // }
 
   return (
     <React.Fragment>
@@ -297,9 +143,9 @@ const Backlink = () => {
                   history.push("/create_page_view")
                 }}
                 to="#"
-                className="btn btn-primary"
+                className="btn btn-primary fas fa-plus"
+                title="Add New"
               >
-                Add Page View
               </Link>
             </div>
           </CardBody>

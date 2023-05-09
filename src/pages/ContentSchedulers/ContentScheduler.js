@@ -26,10 +26,8 @@ const ContentScheduler = () => {
   const [record_id, set_id] = useState()
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
-  const [sweet_timer, setSweet_timer] = useState(false)
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
-  const [confirm_alert, setconfirm_alert] = useState(false)
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
   const [is_loading, setloading] = useState(true)
 
@@ -41,7 +39,6 @@ const ContentScheduler = () => {
 
   };
 
-
   const confirmDelete = (id) => {
     setconfirm_both(true)
     set_id(id)
@@ -49,8 +46,6 @@ const ContentScheduler = () => {
   };
 
   const deleteContentScheduler = (e) => {
-    // setconfirm_both(true)
-
     if (record_id !== '') {
       deleteSchedular(record_id).then(resp => {
         setconfirm_both(false)
@@ -63,9 +58,7 @@ const ContentScheduler = () => {
       }).catch(err => {
         alert.error('Please try again...');
       })
-
     }
-
   };
 
   const getAllSchedulars = (event, values) => {
@@ -90,14 +83,15 @@ const ContentScheduler = () => {
 
   }, []);
 
-
   const rows = useMemo(() =>
     schedulars_list && schedulars_list.map((row, order) => ({
       ...row,
       id: order + 1,
       content_type: row.contentType,
       web_page: (<a href={row.webpage && row.webpage.webpageUrl} target="_blank"> {row.webpage && row.webpage.webpage} </a>),
-      topic_title: (<a href={row.docLink} target="_blank"> {row.topicTitle} </a>),
+      topic_title: ( <div  style={{
+        width: "150px"
+      }}> <a href={row.docLink} target="_blank"> {row.topicTitle} </a></div>) ,
       expected_words: (
         <span class="bg-primary badge badge-secondary" style={{ fontSize: "14px" }}>{row.expectedWords}</span>
       ),
@@ -121,34 +115,26 @@ const ContentScheduler = () => {
       ),
 
       action: (
-        <div className="d-flex" style={{
-          width: "150px"
-        }}>
-
+        <div className="d-flex">
           <div
-            className="btn btn-primary"
+            className="btn btn-primary fas fa-edit"
             style={{
               cursor: "pointer",
               marginRight: "10px"
             }}
             onClick={() => updateContentScheduler(row)}
           >
-            View
           </div>
 
           { get_auth_user.userRole == 1 &&
               <div
-                className="btn btn-danger"
+                className="btn btn-danger fas fa-trash"
                 onClick={() => confirmDelete(row._id)}
-              >
-                Delete
+              >     
               </div>
           }
-
         </div>
       )
-
-
     })), [schedulars_list])
 
   return (
@@ -176,9 +162,9 @@ const ContentScheduler = () => {
               <Link
 
                 to="/create_scheduler"
-                className="popup-form btn btn-primary"
+                className="popup-form btn btn-primary fas fa-plus"
+                title="Add New"
               >
-                Add Content Scheduler
               </Link>
             </div>
           </CardBody>
@@ -215,9 +201,6 @@ const ContentScheduler = () => {
               }}
               onCancel={() => {
                 setconfirm_both(false)
-                // setsuccess_dlg(true)
-                // setdynamic_title("Cancelled")
-                // setdynamic_description("Your content schedular is safe :)")
               }}
             >
               You won't be able to revert this!

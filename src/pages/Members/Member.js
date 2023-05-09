@@ -14,22 +14,14 @@ import { useDispatch } from "react-redux"
 import Moment from 'moment';
 import { deleteMember, getMembers } from "../../store/actions"
 import { memberDelete, getAllMembers } from '../../helpers/backend_helper'
-import { columns } from './Constants'
+import { columns, payload } from './Constants'
 
 const Member = () => {
-  const [modal, setmodal] = useState(false)
-
-
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
-  const [sweet_timer, setSweet_timer] = useState(false)
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
-  const [confirm_alert, setconfirm_alert] = useState(false)
-
   const [is_loading, setloading] = useState(true)
-
-
   const [members_list, setcmembers_list] = useState([])
   const [record_id, set_id] = useState()
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
@@ -46,14 +38,6 @@ const Member = () => {
     })
   };
 
-
-  useEffect(() => {
-    setTimeout(function () {
-      allMembers()
-    }, 1000);
-
-  }, []);
-
   const confirmDelete = (id) => {
     setconfirm_both(true)
     set_id(id)
@@ -63,28 +47,25 @@ const Member = () => {
   const deleteMember = () => {
     if (record_id !== '') {
       memberDelete(record_id).then(resp => {
+        if(resp?.status){
         setconfirm_both(false)
         alert.success('Your member has been deleted.');
         allMembers()
-        if (resp?.message == 'Unauthorized User!!') {
-          history.push('/logout')
-          alert.error('Session timeout');
-        }
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
+      }
+      else{
+        alert.error('Please try again...');
+      }
+        
       }).catch(err => {
         alert.error('Please try again...');
       })
 
     }
   };
-
-
-   const payload =  {
-    "options": {
-      "sort": {
-        "createdAt": [1/-1]
-    }
-    }
-  }
 
   const allMembers = (event, values) => {
     getAllMembers(payload).then(resp => {
@@ -104,6 +85,13 @@ const Member = () => {
 
   }
 
+  useEffect(() => {
+    setTimeout(function () {
+      allMembers()
+    }, 1000);
+
+  }, []);
+
   const rows = useMemo(() =>
     members_list && members_list.map((row, order) => ({
       ...row,
@@ -116,7 +104,7 @@ const Member = () => {
           </div>
         </div>
       ),
-      email: row.email,
+      email: <a href={`mailto:${row.email}`}>{row.email}</a>,
       userType: row.userType,
       isActive: (
         row.isActive ?
@@ -127,7 +115,7 @@ const Member = () => {
       action: (
         <div className="d-flex">
           <div
-            className="btn btn-primary"
+            className="btn btn-primary fas fa-edit"
             style={{
               cursor: "pointer",
               marginRight: "10px"
@@ -135,14 +123,13 @@ const Member = () => {
 
             onClick={() => updateMember(row)}
           >
-            Update
+            
           </div>
           { get_auth_user.userRole == 1 &&
               <div
-                className="btn btn-danger"
+                className="btn btn-danger fas fa-trash"
                 onClick={() => confirmDelete(row._id)}
               >
-                Delete
               </div>
           }
 
@@ -155,9 +142,7 @@ const Member = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-
         <Breadcrumbs title="Pages" breadcrumbItem="Members" />
-        
         {success_dlg ? (
           <SweetAlert
             success
@@ -177,13 +162,11 @@ const Member = () => {
               <Link
                 // onClick={()=>{history.push('/create_member')}}
                 to="/create_member"
-                className="popup-form btn btn-primary"
+                className="popup-form btn btn-primary fas fa-plus"
+                title="Add New"
               >
-                Add Member
               </Link>
             </div>
-
-
           </CardBody>
         </Card>
 
@@ -204,7 +187,6 @@ const Member = () => {
 
         {/* Delete popup */}
         <Col xl="3" lg="4" sm="6" className="mb-2">
-
           {confirm_both ? (
             <SweetAlert
               title="Are you sure?"
@@ -215,23 +197,15 @@ const Member = () => {
               onConfirm={() => {
                 deleteMember()
                 setconfirm_both(false)
-                // setsuccess_dlg(true)
-                // setdynamic_title("Deleted")
-                // setdynamic_description("Your member has been deleted.")
               }}
               onCancel={() => {
                 setconfirm_both(false)
-                // setsuccess_dlg(true)
-                // setdynamic_title("Cancelled")
-                // setdynamic_description("Your member is safe :)")
               }}
             >
               You won't be able to revert this!
             </SweetAlert>
           ) : null}
         </Col>
-
-
       </div>
 
     </React.Fragment>

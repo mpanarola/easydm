@@ -37,7 +37,7 @@ class SalesAnalytics extends Component {
                   options={this.state.options}
                   series={this.state.series}
                   type="donut"
-                  height={400}
+                  height={350}
                   className="apex-charts"
                 />
               </Col>

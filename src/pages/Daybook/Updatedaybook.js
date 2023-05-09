@@ -27,16 +27,13 @@ const Updatedaybook = (props) => {
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
-
   const [confirm_id, setconfirm_id] = useState("")
-
-  const [userdaybooks, setuserdaybooks] = useState("")
   const [is_loading, setloading] = useState(true)
   const data = props.location && props.location.state;
   // console.log('datassss ', data.data._id)
   const daybooks_data = data['data'];
-  const day_book_user_id = data && data.data._id
-  const daybooks = data['data']['info'];
+  // const day_book_user_id = data && data.data._id
+  // const daybooks = data['data']['info'];
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
 
@@ -44,9 +41,7 @@ const Updatedaybook = (props) => {
   const [webpages_list, setwebpages_list] = useState([]);
   const [daybook_id, setdaybook_id] = useState(daybooks_data._id);
   const [member_id, set_member_id] = useState();
-
   const [total_hours, settotal_hours] = useState([]);
-
   const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
   const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
 
@@ -61,33 +56,24 @@ const Updatedaybook = (props) => {
     }
   }
 
-
-
   const getDaybookById = (event, values) => {
     setloading(true)
     getAlldaybooks(page_payload).then(resp => {
-      console.log('infos' , resp?.data[0][0]['info'])
-      setinputFields(resp?.data[0][0]['info'] )
-      settotal_hours(resp?.data[0][0].totalHours )
-      set_member_id(resp?.data[0][0]._id)
-      setloading(false)
+      if(resp?.data[0]){
+        setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [] )
+      settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours: 0 )
+      set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : '')
+      }
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       }
-
+      setloading(false)
     }).catch(err => {
-      alert.error('Backend server not responding, Please try again....');
+      alert.error(err);
     })
 
   }
-
-
-  // // Function for Create Input Fields
-  // function handleAddFields() {
-  //   const item1 = { webpageId: '', dayBookCategory: '', dayBookHour: '', dayBookDetails: '', dayBookCreationDate: today_date }
-  //   setinputFields([...inputFields, item1])
-  // }
 
   const confirmDelete = (id) => {
     setconfirm_both(true)
@@ -104,11 +90,7 @@ const Updatedaybook = (props) => {
       else{
         alert.error(resp.message);
       }
-
-
-      // setinputFields(prev => prev.filter((item) => item._id == confirm_id));
       getDaybookById();
-
     }).catch(err => {
       alert.error('Please try again...');
     })
@@ -140,13 +122,10 @@ const Updatedaybook = (props) => {
   const updateDayBook = (data, id) => {
     setloading(true)
     const daybook_updated_data = inputFields.filter(x => x.dayBookId === id);
-    console.log('daybook_updated_data ', daybook_updated_data)
     if (daybook_updated_data[0]) {
-
       updateDaybook(daybook_updated_data && daybook_updated_data[0], id).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Updated Successfully');
-          // history.push('/daybooks')
           getDaybookById();
         }
         else if (resp?.message == 'Unauthorized User!!') {
@@ -169,13 +148,11 @@ const Updatedaybook = (props) => {
     history.push('/daybooks');
   };
 
-  // console.log('inputFields ', inputFields)
   return (
     <>
       <div className="page-content">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Update Day Book" />
-
         <Row>
           <Col lg="12">
             <Card>
@@ -187,7 +164,7 @@ const Updatedaybook = (props) => {
                     <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value)} defaultValue={start_date} />
                     {/* <span>Start</span> */}
                     <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value)}
-                      defaultValue={end_date} />
+                      defaultValue={end_date} max={Moment().format('YYYY-MM-DD')} />
                     <button type="button" className="btn btn-secondary" onClick={getDaybookById} >
                       Search
                     </button>
@@ -215,6 +192,7 @@ const Updatedaybook = (props) => {
                               className="inner col-lg-12 ml-md-auto"
                               id="repeater"
                             >
+                              
                               {inputFields && inputFields.map((field, key) => (
                                 field.webpage &&
                                 <div
@@ -335,6 +313,8 @@ const Updatedaybook = (props) => {
 
                                 </div>
                               ))}
+
+                              {inputFields.length == 0 && <h5 className="text-center">Sorry, No records found....</h5>}
                             </div>
                           </div>
                         </div>
@@ -382,13 +362,14 @@ const Updatedaybook = (props) => {
 
                             </div>
 
+                          { total_hours !== '' || total_hours !== 0 &&
                             <div className="col-md-4">
                               <button type="button" style={{ marginLeft: "50px" }} className="btn btn-info">
                                 Total Hours:  {total_hours}
                               </button>
                             </div>
-
-
+                          }
+                          
                           </div>
 
                         </Col>

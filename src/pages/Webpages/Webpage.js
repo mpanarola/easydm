@@ -13,7 +13,6 @@ import SweetAlert from "react-bootstrap-sweetalert"
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
-import { connect } from "react-redux"
 import { useHistory } from 'react-router-dom';
 import { getWebsites, deleteWebsite } from '../../helpers/backend_helper'
 
@@ -27,11 +26,9 @@ const Webpage = props => {
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
-  const [confirm_alert, setconfirm_alert] = useState(false)
   const [websites_list, setWebsites_list] = useState([])
   const [record_id, set_id] = useState()
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
-
   const [is_loading, setloading] = useState(true)
 
   const confirmDelete = (id) => {
@@ -39,7 +36,6 @@ const Webpage = props => {
     set_id(id)
 
   };
-
 
   const deleteWebpage = () => {
     if (record_id !== '') {
@@ -54,14 +50,12 @@ const Webpage = props => {
     }
   };
 
-
   const updateWebsite = (data) => {
     history.push({
       pathname: '/update_website',
       state: { data: data },
     })
   };
-
 
   const rows = useMemo(() =>
     websites_list && websites_list.map((row, order) => ({
@@ -83,35 +77,29 @@ const Webpage = props => {
               ))
           }
         </div>
-
-
       ),
       effective_from: Moment(row.effectiveFrom).format('DD-MMM-YY'),
       date: Moment(row.publishedOn).format('DD-MMM-YY'),
       action: (
         <div className="d-flex">
           <div
-            className="btn btn-primary"
+            className="btn btn-primary fas fa-edit"
             style={{
               cursor: "pointer",
               marginRight: "10px"
             }}
             onClick={() => updateWebsite(row)}
           >
-            View
           </div>
           { get_auth_user.userRole == 1 &&
               <div
-                className="btn btn-danger"
+                className="btn btn-danger fas fa-trash"
                 onClick={() => confirmDelete(row._id)}
               >
-                Delete
               </div>
           }
         </div>
       )
-
-
     })), [websites_list])
 
   const getAllWebsites = (event, values) => {
@@ -130,7 +118,6 @@ const Webpage = props => {
     })
 
   }
-
 
   useEffect(() => {
     setTimeout(function () {
@@ -166,9 +153,9 @@ const Webpage = props => {
                   history.push("/create_website")
                 }}
                 to="#"
-                className="btn btn-primary"
+                className="btn btn-primary fas fa-plus"
+                title="Add New"
               >
-                Add Website
               </Link>
             </div>
           </CardBody>

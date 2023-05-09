@@ -95,7 +95,7 @@ body[data-layout="detached"]{
         .page-content{
             margin-top: 16px;
             padding-bottom: 0px;
-            
+            padding-right: 0;
         }
 
         .main-content{
@@ -119,6 +119,7 @@ body[data-layout="detached"]{
         }
 
         .page-content{
+            padding-right: 0;
             padding: calc(#{$header-height} + 0px) $grid-gutter-width $footer-height $grid-gutter-width;
         }
     }
