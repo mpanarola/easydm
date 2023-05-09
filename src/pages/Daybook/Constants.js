@@ -41,11 +41,11 @@ export const optionGroupCategory = [
   {
     label: "Category",
     options: [
-      { label: "Blog", value: "Blog" },
-      { label: "Article", value: "Article" },
-      { label: "eBook", value: "eBook" },
-      { label: "Infographics", value: "Infographics" },
-      { label: "PPT", value: "PPT" },
+      { label: "Services", value: "Services" },
+      { label: "Industry", value: "Industry" },
+      { label: "Technologies", value: "Technologies" },
+      { label: "Career", value: "Career" },
+      { label: "Blogs", value: "Blogs" }
     ],
   },
 

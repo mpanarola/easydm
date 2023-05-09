@@ -218,7 +218,7 @@ export const addDaybook = daybook => post(url.ADD_DAY_BOOK, daybook)
 export const updateDaybook = (daybook, id) => put(`${url.UPDATE_DAY_BOOK}/${id}`, daybook)
 export const deleteDaybook = id =>
   del(`${url.DELETE_DAY_BOOK}/${id}`, { headers: { id } })
-export const activityDaybook = (id) => get(`${url.VIEW_DAY_BOOK_ACTIVITY}/${id}`)
+export const activityDaybook = (daybook) => post(`${url.VIEW_DAY_BOOK_ACTIVITY}`, daybook)
 
 
 export {

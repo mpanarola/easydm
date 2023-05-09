@@ -55,7 +55,6 @@ const Createpageview = () => {
       setwebpage_err(true)
     }
     else{
-
       addPageView(pageview_data).then(resp => {
         if (resp.status == true) {
           alert.success('Pageview Created Successfully');

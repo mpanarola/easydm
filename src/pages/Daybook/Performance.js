@@ -8,19 +8,24 @@ import { useAlert } from "react-alert";
 
 const Performance = (props) => {
     const [is_loading, setloading] = useState(true)
-    const start_date = props.start_date
-    const end_date = props.end_date
-    const category = props.category
-    const webpage = props.webpage
-    const members = props.member_id
-    const [activity_list, setactivity_list] = useState([]);
+    const dayBookPayload = props.dayBookPayload.member
+    const [activity_list, setactivity_list] = useState();
+    const [activity_month, setactivity_month] = useState();
+    const [activity_hours, setactivity_hours] = useState();
+
+
 
     const history = useHistory();
     const alert = useAlert();
 
     const gethoursReports = () => {
-        activityDaybook(props.id).then(resp => {
-            setactivity_list(resp?.data)
+        activityDaybook(dayBookPayload).then(resp => {
+            console.log('resp?.data ', resp?.data[0])
+            // setactivity_list(resp?.data)
+            setactivity_hours(resp?.data[0].length !== 0 && resp?.data[0].map(i => i.totalHours ? i.totalHours : i.totalHours).join(", ").split(','))  
+            setactivity_month(resp?.data[0].length !== 0 && resp?.data[0].map(i => i.month ? i.month : i.month).join(", ").split(','))  
+
+
             setloading(false)
             if (resp?.message == 'Unauthorized User!!') {
                 history.push('/logout')
@@ -36,12 +41,13 @@ const Performance = (props) => {
         }, 1000);
     }, []);
 
+    // console.log('activity_list ', activity_list)
 
     const series = [
 
         {
             name: "Total Hours",
-            data: [10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
+            data: activity_hours, //[10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
             type: 'area',
         }]
 
@@ -68,7 +74,7 @@ const Performance = (props) => {
             size: 3
         },
         xaxis: {
-            categories: ['Apr - 22', 'May - 22', 'Jun - 22', 'Jul - 22', 'Aug - 22', 'Sept - 22', 'Oct - 22', 'Nov - 22', 'Dec - 22', 'Jan - 23', 'Fab - 23', 'Mar - 23'],
+            categories: activity_month, //['Apr - 22', 'May - 22', 'Jun - 22', 'Jul - 22', 'Aug - 22', 'Sept - 22', 'Oct - 22', 'Nov - 22', 'Dec - 22', 'Jan - 23', 'Fab - 23', 'Mar - 23'],
             title: {
                 text: 'Month'
             }

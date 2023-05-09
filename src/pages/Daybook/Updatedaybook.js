@@ -40,7 +40,7 @@ const Updatedaybook = (props) => {
   const [date, setdate] = useState(today_date);
   const [webpages_list, setwebpages_list] = useState([]);
   const [daybook_id, setdaybook_id] = useState(daybooks_data._id);
-  const [member_id, set_member_id] = useState();
+  const [member_id, set_member_id] = useState([]);
   const [total_hours, settotal_hours] = useState([]);
   const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
   const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
@@ -52,7 +52,7 @@ const Updatedaybook = (props) => {
     "search": {
       "dateFrom": start_date,
       "dateTo": end_date,
-      "member": data.data && data.data._id
+      "member": [data.data && data.data._id]
     }
   }
 
@@ -62,7 +62,8 @@ const Updatedaybook = (props) => {
       if(resp?.data[0]){
         setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [] )
       settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours: 0 )
-      set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : '')
+      set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
+      // member_id.push(resp?.data[0][0] ? resp?.data[0][0]._id : [])
       }
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')

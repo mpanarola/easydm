@@ -87,7 +87,7 @@ export const GET_DAY_BOOK_CURRENT_USER = "/usersdaybooks"
 export const ADD_DAY_BOOK = "create_daybook"
 export const UPDATE_DAY_BOOK = "/update_daybook"
 export const DELETE_DAY_BOOK = "/delete_daybook"
-export const VIEW_DAY_BOOK_ACTIVITY = "/activity_daybook"
+export const VIEW_DAY_BOOK_ACTIVITY = "/userDayBookActivity"
 
 
 //CONTACTS

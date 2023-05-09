@@ -48,6 +48,10 @@ const Reports = () => {
                     )
                     )
             )
+            // setdefault_members_list(
+            //     resp?.data[0]?.list.length !== 0 && resp?.data[0]?.list.map(i => i.value ? i.value : i.value).join(", ").split(',')
+            // )
+
         }).catch(err => {
         })
 
@@ -60,8 +64,8 @@ const Reports = () => {
         })
 
     }
-    const member_lists_comma_sep = members_list && members_list.map(i => i.value ? i.value : i.value).join(", ").split(',');
 
+const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i => i.value ? i.value : i.value).join(", ").split(',');
     const dayBookPayload = {
         "search": {
             "dateFrom": start_date,
@@ -71,10 +75,11 @@ const Reports = () => {
             "webpage": webpage_id
         }
     }
+    
     const getDaybooks = () => {
+        setloading(true)
         settotal_hours([])
         getAlldaybooks(dayBookPayload).then(resp => {
-            // console.log('rowssss ', resp?.data[0])
             setdaybooks_list(resp?.data[0])
             setloading(false)
             if (resp?.message == 'Unauthorized User!!') {
@@ -103,12 +108,12 @@ const Reports = () => {
       }
 
     useEffect(() => {
+        allMembers()
+        allWebpages()
         setTimeout(function () {
-            getDaybooks()
-            allMembers()
-            allWebpages()
+            // getDaybooks()
             setloading(false)
-        }, 1000);
+        }, 2000);
 
     }, []);
 
@@ -232,7 +237,8 @@ const Reports = () => {
                         </CardBody>
                     </Card>
                 </Row>
-
+        { daybooks_list.length > 0 &&
+            <>
                 <Row>
                     <Col className="col-12">
                         <Card>
@@ -242,7 +248,7 @@ const Reports = () => {
                                         <>
                                           <CardTitle>Members List</CardTitle>
                                             <MDBDataTable responsive bordered data={{ rows, columns }} />
-                                            { total_hours !== '' || total_hours !== 0 &&
+                                            { total_hours !== 0 &&
                                             <div className="col-md-4" style={{ float: "right", marginLeft: "50px", marginTop: "-50px", marginRight: "-40px" }}>
                                                 <button type="button" className="btn btn-info">
                                                     Total Hours:  {
@@ -258,8 +264,9 @@ const Reports = () => {
                     </Col>
                 </Row>
 
-                <Performance category={category_id} webpage={category_id} members={member_id} start_date={start_date} end_date={end_date} />
-
+                <Performance dayBookPayload={dayBookPayload} />
+            </>
+            }
             </div>
 
         </React.Fragment>
