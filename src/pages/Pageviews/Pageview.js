@@ -78,7 +78,7 @@ const Backlink = () => {
       webpage: (
         <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
       ),
-      date: Moment(row.publishedOn).format('DD-MMM-YY'),
+      date: row.webpage && Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
       category: row.webpage && row.webpage.category,
       month_year: Moment(row.monthYear).format('MMM-YY'),
       total_pageviews: (

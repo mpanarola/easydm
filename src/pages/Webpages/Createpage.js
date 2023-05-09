@@ -11,14 +11,12 @@ import { useHistory } from 'react-router-dom';
 import Moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
 import { optionGroupCategory } from './Constants'
 import { getAllMembers, addNewWebsite } from '../../helpers/backend_helper'
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 
 const Createpage = () => {
-
   const [webpage, setwebpage] = useState(null);
   const [webpage_url, setwebpage_url] = useState(null);
   const [category, setcategory] = useState('Services');
@@ -43,7 +41,6 @@ const Createpage = () => {
       setmembers_list(resp?.data[0].list)
     }).catch(err => {
     })
-
   }
 
   useEffect(() => {
@@ -53,8 +50,6 @@ const Createpage = () => {
     }, 1000);
 
   }, []);
-
-
 
   const addWebsite = (event, values) => {
 
@@ -67,9 +62,7 @@ const Createpage = () => {
       publishedOn: published_on
     }
 
-    // console.log('update website ', website_id)
     addNewWebsite(website_data).then(resp => {
-
       if (resp?.status == true) {
         alert.success('Website Created Successfully');
         history.push('/webpages')
@@ -81,11 +74,9 @@ const Createpage = () => {
       else {
         alert.error('Webpage name already exists.');
       }
-
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
-
   }
 
   const goBack = (e) => {
@@ -93,14 +84,11 @@ const Createpage = () => {
     history.push('/webpages');
   };
 
-
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Websites" breadcrumbItem="Create Website" />
-
         <Row>
           <Col lg="12">
             <Card>
@@ -110,7 +98,6 @@ const Createpage = () => {
                   addWebsite(e, v)
                 }}>
                   <Row>
-
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
@@ -153,7 +140,6 @@ const Createpage = () => {
                           id="webpage_url"
                           placeholder="Enter Web Page URL"
                           onChange={e => setwebpage_url(e.target.value)}
-                          // value={webpage_url}
                           required
                         />
                       </div>
@@ -173,37 +159,8 @@ const Createpage = () => {
                           defaultValue={published_on}
                           required
                         />
-
                       </div>
                     </Col>
-
-                    {/* <Col lg={6}>
-                      <div className="mb-3">
-                        <label htmlFor="assigned_to">Assigned To</label>
-                        <Select
-                      // value={selectedMulti}
-                      // defaultValue={label: user.name, value: user._id, id: user._id}
-                      id="assigned_to"
-                      isMulti={true}
-                      onChange={(e, val) => {
-                        setassigned_to( prev =>  ([...prev, val.option.value ]))
-                      }}
-
-                      options=
-                      {
-                        members_list && members_list.map( user => ( 
-      
-                          { label: user.name, value: user._id, id: user._id }
-                        )
-                        )
-
-                      }
-
-                      classNamePrefix="select2-selection"
-                    />
-                      </div>
-                    </Col>
-                     */}
 
                     <Col lg={6}>
                       <div className="mb-3">
@@ -218,7 +175,6 @@ const Createpage = () => {
                             )
                             )
                           }
-
                           classNamePrefix="select2-selection"
                         />
                       </div>
@@ -240,21 +196,18 @@ const Createpage = () => {
                       </div>
                     </Col>
 
-
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }}>
                           Create Website
                         </button>
-
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>
-
                       </div>
                     </Col>
-
                   </Row>
+
                 </AvForm>
               </CardBody>
             </Card>

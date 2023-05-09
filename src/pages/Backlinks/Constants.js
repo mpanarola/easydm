@@ -1,46 +1,44 @@
 
-export const webpage_payload =  {
+export const webpage_payload = {
   "options": {
     "populate": [
       {
         "path": "webpage",
-        "select": ["webpage","webpageUrl", "category", "publishedOn"]
+        "select": ["webpage", "webpageUrl", "category", "publishedOn"]
       }
     ]
   }
 }
 
-    // Webpages
-   export const optionGroupWebPage = [
-      {
-        label: "Web Pages",
-        options: [
-          { label: "Home", value: "Home" },
-          { label: "About", value: "About" },
-          { label: "Contact", value: "Contact" },
-          { label: "Blogs", value: "Blogs" },
-          { label: "Events", value: "Events" },
-        ],
-      },
-  
-    ];
+export const optionGroupWebPage = [
+  {
+    label: "Web Pages",
+    options: [
+      { label: "Home", value: "Home" },
+      { label: "About", value: "About" },
+      { label: "Contact", value: "Contact" },
+      { label: "Blogs", value: "Blogs" },
+      { label: "Events", value: "Events" },
+    ],
+  },
 
+];
 
-    export const optionGroupCategory = [
-    {
-      label: "Category",
-      options: [
-        { label: "Services", value: "Services" },
-        { label: "Industry", value: "Industry" },
-        { label: "Technologies", value: "Technologies" },
-        { label: "Career", value: "Career" },
-        { label: "Blogs", value: "Blogs" }
-      ],
-    },
-   
-  ];
+export const optionGroupCategory = [
+  {
+    label: "Category",
+    options: [
+      { label: "Services", value: "Services" },
+      { label: "Industry", value: "Industry" },
+      { label: "Technologies", value: "Technologies" },
+      { label: "Career", value: "Career" },
+      { label: "Blogs", value: "Blogs" }
+    ],
+  },
 
-  export const columns = [
+];
+
+export const columns = [
   {
     label: "ID",
     field: "id",

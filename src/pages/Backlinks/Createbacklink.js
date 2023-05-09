@@ -22,7 +22,6 @@ const Createbacklink = () => {
   const [webpage, setwebpage] = useState();
   const [webpage_err, setwebpage_err] = useState(false);
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
-
   const [category, setcategory] = useState(null);
   const [total_backlinks, settotal_backlinks] = useState();
   const [published_on, setpublished_on] = useState(null);
@@ -31,7 +30,6 @@ const Createbacklink = () => {
   const alert = useAlert();
 
   const insertBackLink = (event, values) => {
-
     const backlink_data = {
       webpage: webpage,
       monthYear: Moment(monthyear).startOf('month').format("YYYY-MM-DD"),
@@ -104,14 +102,10 @@ const Createbacklink = () => {
   };
 
   return (
-
     <>
-      {console.log('category ', category)}
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Back Links" breadcrumbItem="Create Back Link" />
-
         <Row>
           <Col lg="12">
             <Card>
@@ -173,7 +167,6 @@ const Createbacklink = () => {
                     </Col>
 
                     <Row className="mt-4">
-
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="month_year">Month-Year</label> */}

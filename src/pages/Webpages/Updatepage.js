@@ -23,7 +23,6 @@ import { getAllMembers } from '../../helpers/backend_helper'
 const Updatepage = (props) => {
 
   const data = props.location && props.location.state;
-
   let published_on_format = Moment(data && data.data.publishedOn).format('YYYY-MM-DD')
   let effective_from_format = Moment(data && data.data.effectiveFrom).format('YYYY-MM-DD')
   let head_published_on = Moment(data && data.data.publishedOn).format('DD-MMM-YY');
@@ -37,7 +36,6 @@ const Updatepage = (props) => {
   const [id, setwebsite_id] = useState(data && data.data._id);
   const [members_list, setmembers_list] = useState([])
 
-  // console.log('assigned_user ',data.data.assignedTo)
   const member_payload = {
     "options": {
       "select": ['name']
@@ -49,7 +47,6 @@ const Updatepage = (props) => {
       setmembers_list(resp?.data[0].list)
     }).catch(err => {
     })
-
   }
 
   useEffect(() => {
@@ -63,7 +60,6 @@ const Updatepage = (props) => {
   const alert = useAlert();
 
   const updateWebsite = (event, values) => {
-
     const is_assigned_equal = isArrayEquals(assigned_to , data.data.assignedTo);
 
     const website_data = {
@@ -75,21 +71,21 @@ const Updatepage = (props) => {
       assignedTo: !is_assigned_equal ? assigned_to.map(i => i.value ? i.value : i._id) : undefined,
     }
 
-    // console.log('update website ', website_data)
     websiteUpdate(website_data, id).then(resp => {
-
-      if (resp?.message == 'Unauthorized User!!') {
+      if (resp?.status == true) {
+        alert.success('Webpage Updated Successfully');
+        history.push('/webpages')
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
       } 
-
-      alert.success('Webpage Updated Successfully');
-      history.push('/webpages')
-
+      else{
+        alert.error('Please Try Again...');
+      }
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
-
   }
 
   const goBack = (e) => {
@@ -99,7 +95,6 @@ const Updatepage = (props) => {
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Websites" breadcrumbItem="Update Website" />
         <Row>
@@ -119,7 +114,6 @@ const Updatepage = (props) => {
                 }}>
 
                   <Row>
-
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="category">Category</label>
@@ -187,7 +181,6 @@ const Updatepage = (props) => {
                   </Row>
 
                   <Row className="mt-4">
-
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="assigned_to">Assigned To</label>
@@ -234,7 +227,6 @@ const Updatepage = (props) => {
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
                           Update Website
                         </button>
-
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>

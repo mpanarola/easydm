@@ -50,7 +50,6 @@ const HistoryTimeline = (props) => {
         <CardBody>
           <CardTitle className="h4 mb-5 font-size-18">Activities</CardTitle>
           <ul className="list-unstyled activity-wid">
-
             {is_loading ? <span className="spinner-grow spinner-grow-sm"></span> : activity_list && activity_list.length == 0 ? <h5>Sorry, No Activities Found....</h5> : ''}
 
             {activity_list && activity_list.map(activity => (
@@ -64,7 +63,7 @@ const HistoryTimeline = (props) => {
                   </div>
                   <div className="flex-1">
                     <div className="font-size-15">
-                      <b>{activity.addedBy.name}</b> {activity.activityName +" Following Field's : "} 
+                    <b>{activity.addedBy.name}</b> {activity.activityName == 'Updated' ? " Updated Following Field's : " : 'Created'}
                       <ul>
                         {
                           activity.newData ?
@@ -81,7 +80,7 @@ const HistoryTimeline = (props) => {
                                 }
 
                               </li>
-                            )) : activity.activityName == 'Created' ? <li>This Back Link</li> : ''}
+                            )) : activity.activityName == 'Created' ? <li>This Scheduler</li> : ''}
                       </ul>
                     </div>
                   </div>

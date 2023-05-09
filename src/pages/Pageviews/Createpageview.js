@@ -109,10 +109,8 @@ const Createpageview = () => {
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Page Views" breadcrumbItem="Create Page View" />
-
         <Row>
           <Col lg="12">
             <Card>
@@ -164,17 +162,14 @@ const Createpageview = () => {
                           id="category"
                           name="category"
                           label="Category"
-                          // options={optionGroupCategory}
                           classNamePrefix="select2-selection"
                           onChange={e => setcategory(e.value)}
-                          // value = {category}
                           value={{ label: category, value: category }}
                         />
                       </div>
                     </Col>
 
                     <Row className="mt-4">
-
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="month_year">Month-Year</label> */}
@@ -203,7 +198,6 @@ const Createpageview = () => {
                             min={1}
                             required
                             onChange={e => settotal_pageviews(e.target.value)}
-                          // value={total_pageviews}
                           />
                         </div>
                       </Col>
@@ -291,7 +285,6 @@ const Createpageview = () => {
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
                           Create Page View
                         </button>
-
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>

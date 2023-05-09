@@ -61,7 +61,7 @@ const HistoryTimeline = (props) => {
                   </div>
                   <div className="flex-1">
                     <div className="font-size-15">
-                      <b>{activity.addedBy.name}</b> {activity.activityName}
+                    <b>{activity.addedBy.name}</b> {activity.activityName == 'Updated' ? " Updated Updated Following Field's : " : 'Created'}
                       <ul>
                         {
                           activity.newData ?
@@ -73,7 +73,7 @@ const HistoryTimeline = (props) => {
                                 }
 
                               </li>
-                            )) : activity.activityName == 'Created' ? <li>This Back Link</li> : ''}
+                            )) : activity.activityName == 'Created' ? <li>This Page View</li> : ''}
                       </ul>
                     </div>
                   </div>

@@ -79,11 +79,11 @@ const Backlink = () => {
       ...row,
       id: order + 1,
       webpage: (
-        <a href={row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage.webpage}</a>
+        <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
       ),
-      date: Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
+      date: row.webpage && Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
       // webpage_url: "",
-      category: row.webpage.category,
+      category: row.webpage && row.webpage.category,
       month_year: Moment(row.monthYear).format('MMM-YY'),
       total_backlinks: (
         <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.numberOfBacklinks}</span>

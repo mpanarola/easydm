@@ -25,9 +25,23 @@ import { loginUser } from '../../store/actions';
 
 const Profile = props => {
 
-  // const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
-
+  const alert = useAlert();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const {userDetail} = useSelector((state)=> state?.Login);
+  const [avatar, setavatar] = useState();
+  const [updateAvatar, setupdateAvatar] = useState();
+  const [avatarURL, setAvtarURL] = useState(null);
+  const [name, setname] = useState(null);
+  const [email, setemail] = useState(null);
+  const [password, setspassword] = useState(null);
+  const [passwordType, setPasswordType] = useState("password");
+  const [profile_id, set_profile_id] = useState([]);
+  const [updateName, setupdatename] = useState(null);
+  const [updateEmail, setupdateemail] = useState(null);
+  const [updatePassword, setupdatespassword] = useState(null);
+
+  
   const togglePassword = () => {
     if (passwordType === "password") {
       setPasswordType("text")
@@ -36,40 +50,14 @@ const Profile = props => {
     setPasswordType("password")
   }
 
-
-  const alert = useAlert();
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const [avatar, setavatar] = useState();
-  const [updateAvatar, setupdateAvatar] = useState();
-
-  const [avatarURL, setAvtarURL] = useState(null);
-
-  const [name, setname] = useState(null);
-  const [email, setemail] = useState(null);
-  const [password, setspassword] = useState(null);
-  const [passwordType, setPasswordType] = useState("password");
-  const [profile_id, set_profile_id] = useState([]);
-
-
-  const [updateName, setupdatename] = useState(null);
-  const [updateEmail, setupdateemail] = useState(null);
-  const [updatePassword, setupdatespassword] = useState(null);
-
-  
-  
   useEffect(()=>{
     if(userDetail){
       setupdateAvatar(userDetail[0]?.avatar)
-
     }
   },[userDetail])
 
-
   useEffect(() => {
     getUserProfile().then(resp => {
-      // console.log('user_data ', resp?.data[0])
       if (resp?.data[0] !== null) {
         setname(resp?.data[0].name)
         setemail(resp?.data[0].email)
@@ -83,8 +71,6 @@ const Profile = props => {
     })
   }, []);
 
-  // console.log('get_user_profile ', get_user_profile)
-
   const handleFileChange = (file) => {
     setavatar(file);
     const reader = new FileReader();
@@ -93,7 +79,6 @@ const Profile = props => {
     }
     reader.readAsDataURL(file);
   }
-
 
   const updateMember = (event, values) => {
     const formData = new FormData();
@@ -106,17 +91,15 @@ const Profile = props => {
 
     memberUpdate(formData, profile_id).then(resp => {
       if (resp.status == true) {
-
         dispatch(loginUser(resp?.data))
-        if (resp?.message == 'Unauthorized User!!') {
-          history.push('/logout')
-          alert.error('Session timeout');
-        }
-
         alert.success('Profile Updated Successfully');
         history.push('/profile')
 
-      } else {
+      } else if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
+      }
+      else {
         alert.error('Please Try Again...');
       }
 
@@ -128,18 +111,13 @@ const Profile = props => {
 
   }
 
-
-
   return (
     <React.Fragment>
       <div className="page-content">
-
         {/* Render Breadcrumb */}
         <Breadcrumb title="EasyDM" breadcrumbItem="Profile" />
-
         <Row>
           <Col lg="12">
-
             <Card>
               <CardBody>
                 <div className="d-flex">
@@ -150,24 +128,20 @@ const Profile = props => {
                       className="avatar-md rounded-circle img-thumbnail"
                     />
                   </div>
-
                 </div>
               </CardBody>
             </Card>
           </Col>
 
-
           <Col lg="12">
             <Card>
               <CardBody>
                 <CardTitle className="mb-4 font-size-18">Update Profile</CardTitle>
-
                 {/* <form encType="multipart/form-data" method="post"> */}
                 <AvForm onValidSubmit={(e, v) => {
                   updateMember(e, v)
                 }}>
                   <Row>
-
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="member_name">{name}</label> */}
@@ -183,8 +157,6 @@ const Profile = props => {
                           defaultValue={name}
                           // value = {name}
                           key={name}
-
-
                         />
                       </div>
                     </Col>
@@ -192,7 +164,6 @@ const Profile = props => {
                     <Col lg={6}>
                       <div className="mb-3 ">
                         {/* <label htmlFor="profile_pic">Photo</label> */}
-
                         <AvField
                           type="file"
                           label="Update Photo"
@@ -201,14 +172,12 @@ const Profile = props => {
                           id="profile_pic"
                           onChange={e => handleFileChange(e.target.files[0])}
                         />
-
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="member_email">Email</label> */}
-
                         <AvField
                           type="email"
                           label="Email"
@@ -223,17 +192,13 @@ const Profile = props => {
                           autoComplete="off"
                           key={`${Math.floor((Math.random() * 1000))}-min`}
                         />
-
                       </div>
                     </Col>
-
 
                     <Col lg={6}>
                       <div className="mb-3 ">
                         <label htmlFor="Password">Update Password </label>
-                      
                         <div className="d-flex">
-
                           <div className="col-md-11">
                             <AvField
                               type={passwordType}
@@ -244,9 +209,7 @@ const Profile = props => {
                               autoComplete="new-password"
                               onChange={e => setupdatespassword(e.target.value)}
                             />
-                             {/* <p><b> </b></p> */}
                           </div>
-
 
                           <button type="button" className="btn btn-outline-primary"
                             style={{ marginLeft: "10px" }}
@@ -323,19 +286,5 @@ const Profile = props => {
   )
 }
 
-// Profile.propTypes = {
-//   editProfile: PropTypes.func,
-//   error: PropTypes.any,
-//   success: PropTypes.any
-// }
-
-// const mapStatetoProps = state => {
-//   const { error, success } = state.Profile
-//   return { error, success }
-// }
-
-// export default withRouter(
-//   connect(mapStatetoProps, { editProfile , resetProfileFlag})(Profile)
-// )
 
 export default withRouter(Profile)

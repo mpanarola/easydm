@@ -8,49 +8,37 @@ import {
 } from "reactstrap"
 import Select from "react-select";
 import { useHistory } from 'react-router-dom';
-
 import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
 import Moment from 'moment';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
-
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import { getWebsite, updatePageView as updatePageview } from '../../helpers/backend_helper'
 import { optionGroupCategory, optionGroupWebPage } from './Constants'
 
 const Updatepageview = (props) => {
-
   const history = useHistory();
   const alert = useAlert();
-
   const data = props.location && props.location.state;
   let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
 
-  // console.log('data ',data)
   const [webpage, setwebpage] = useState(data.data.webpage && data.data.webpage.webpage);
   const [webpage_id, setwebpage_id] = useState(data.data.webpage && data.data.webpage._id);
-
   const [monthyear, setmonthyear] = useState(Moment(data && data.data.monthYear).format("YYYY-MM"));
-
   const [monthyear_full, setmonthyear_full] = useState(Moment(data && data.data.monthYear).startOf('month').format("YYYY-MM-DD"));
-
   const [category, setcategory] = useState();
   const [total_pageviews, settotal_pageviews] = useState(data && data.data.numberOfPageviews);
   const [published_on, setpublished_on] = useState(Moment(data && data.data.publishedOn).format('YYYY-MM-DD'));
   const [webpages_list, setwebpages_list] = useState([]);
-
   const [readability_semrush, setreadability_semrush] = useState(data && data.data.readability);
   const [seo_semrush, setseo_semrush] = useState(data && data.data.seo);
   const [ton_voice_semrush, setton_voice_semrush] = useState(data && data.data.toneOfVoice);
   const [originality_semrush, setoriginality_semrush] = useState(data && data.data.originality);
   const [content_score_semrush, setcontent_score_semrush] = useState(data && data.data.contentScore);
-
   const [is_set_webpage_required, setis_set_webpage_required] = useState(false);
-
   const [id, setid] = useState(data && data.data._id);
 
   const updatePageView = (event, values) => {
@@ -77,15 +65,7 @@ const Updatepageview = (props) => {
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
-
-
   }
-
-  // const webpages_payload =  {
-  //   "options": {
-  //     "select": ['webpage', 'webpageUrl', 'category']
-  //   }
-  // }
 
   const allWebpages = () => {
 
@@ -119,10 +99,8 @@ const Updatepageview = (props) => {
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
-
         <Row>
           <Card>
             <CardBody>
@@ -134,7 +112,6 @@ const Updatepageview = (props) => {
           <Col lg="12">
             <Card>
               <CardBody>
-
                 <CardTitle className="mb-4 font-size-18">Update Page View</CardTitle>
                 <AvForm onValidSubmit={(e, v) => {
                   updatePageView(e, v)
@@ -148,7 +125,6 @@ const Updatepageview = (props) => {
                           classNamePrefix="select2-selection"
                           defaultValue={{ label: webpage, value: webpage }}
                           readOnly
-
                         />
                         {is_set_webpage_required == true &&
                           <div class="d-block">This field is required</div>
@@ -184,7 +160,6 @@ const Updatepageview = (props) => {
                     </Col>
 
                     <Row className="mt-4">
-
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="month_year">Month-Year</label> */}
@@ -218,11 +193,9 @@ const Updatepageview = (props) => {
                           />
                         </div>
                       </Col>
-
                     </Row>
 
                     <Row className="mt-4">
-
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
@@ -305,7 +278,6 @@ const Updatepageview = (props) => {
                           />
                         </div>
                       </Col>
-
                     </Row>
 
                     <Col lg={12}>
@@ -313,11 +285,9 @@ const Updatepageview = (props) => {
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
                           Update Back Link
                         </button>
-
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back
                         </button>
-
                       </div>
                     </Col>
 

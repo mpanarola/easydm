@@ -25,12 +25,9 @@ const Createdaybook = () => {
   let today_date = Moment(today).format('YYYY-MM-DD');
   const alert = useAlert();
   const history = useHistory();
-
   const [webpage_err, setwebpage_err] = useState(false);
   const [category_err, setcategory_err] = useState(false);
   const [hours_err, sethours_err] = useState(false);
-
-
   const inpRow = [{ webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }]
   const [inputFields, setinputFields] = useState(inpRow)
   const [webpages_list, setwebpages_list] = useState([]);
@@ -40,8 +37,6 @@ const Createdaybook = () => {
   const [hours, setHours] = useState(null);
   const [details, setdetails] = useState(null);
   const [totalHours, settotalHours] = useState(0);
-
-
 
   const allWebpages = () => {
     getWebsites(webpagesPayload).then(resp => {
@@ -65,26 +60,21 @@ const Createdaybook = () => {
 
   // Function for Remove Input Fields
   function handleRemoveFields(id) {
-    setinputFields(prev => prev.filter((item) => item.id!==id) );
+    setinputFields(prev => prev.filter((item) => item.id !== id));
   }
 
   const createDaybook = (e) => {
-    const result =  {
-      data : inputFields
+    const result = {
+      data: inputFields
     }
-    
-    console.log('inputFields.length ', inputFields)
 
-   
-    if(inputFields[0].category =='' || inputFields[0].webpage =='' || inputFields[0].hours ==''){
+    if (inputFields[0].category == '' || inputFields[0].webpage == '' || inputFields[0].hours == '') {
 
       inputFields[0].category.length == 0 && setcategory_err(true)
       inputFields[0].hours.length == 0 && sethours_err(true)
       inputFields[0].webpage.length == 0 && setwebpage_err(true)
     }
-    else{
-
-      // console.log('result ',result[0])
+    else {
       addDaybook(result).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Added Successfully');
@@ -97,26 +87,22 @@ const Createdaybook = () => {
         else {
           alert.error(resp.message);
         }
-
       }).catch(err => {
         alert.error('Backend server not responding, Please try again....');
       })
-
     }
-
   };
 
 
   const handleInput = (index, name, value) => {
+    name == 'category' && value !== '' && setcategory_err(false)
+    name == 'hours' && value !== '' && sethours_err(false)
+    name == 'webpage' && value !== '' && setwebpage_err(false)
 
-    name == 'category' && value !=='' && setcategory_err(false)
-    name == 'hours' && value !=='' && sethours_err(false)
-    name == 'webpage' && value !=='' && setwebpage_err(false)
-
-     setinputFields(prev => prev.map((item, idx) => {
-      if(index === idx && item.hasOwnProperty(name))  item[name] = value
+    setinputFields(prev => prev.map((item, idx) => {
+      if (index === idx && item.hasOwnProperty(name)) item[name] = value
       return item
-     }))
+    }))
 
   }
 
@@ -127,10 +113,8 @@ const Createdaybook = () => {
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Add Day Book" />
-
         <Row>
           <Col lg="12">
             <Card>
@@ -142,9 +126,6 @@ const Createdaybook = () => {
                   <Row>
                     <div className="inner-repeater mb-5">
                       <div className="inner form-group mb-0 row">
-                        {/* <Label className="col-form-label col-lg-2">
-                          Add Day Book
-                        </Label> */}
                         <div
                           className="inner col-lg-12 ml-md-auto"
                           id="repeater"
@@ -155,35 +136,31 @@ const Createdaybook = () => {
                               id={"nested" + key}
                               className="mb-1 row align-items-center"
                             >
-                              {/* webpage: "", category: "", hours: "", details: "" */}
-
                               <Col md="2">
                                 <div className="mb-4 mt-md-0">
-                                <AvField
+                                  <AvField
                                     type="date"
                                     name="creationDate"
                                     className="inner form-control"
                                     defaultValue={field.creationDate}
-                                    // onChange={e => [...inputFields, item1] }
                                     max={today_date}
-                                    onChange={e => handleInput(key, "creationDate", e.target.value) }
+                                    onChange={e => handleInput(key, "creationDate", e.target.value)}
                                   />
                                 </div>
                               </Col>
 
                               <Col md="2">
-                                <div className="mb-4 mt-md-0">        
+                                <div className="mb-4 mt-md-0">
                                   <Select
                                     id="category"
                                     name="category"
                                     options={optionCategory}
                                     classNamePrefix="select2-selection"
                                     placeholder={<div>Category</div>}
-                                    // onChange={e => setcategory(e.value)}
                                     defaultValue={field.category}
-                                    onChange={e => handleInput(key, "category", e.value) }
+                                    onChange={e => handleInput(key, "category", e.value)}
                                   />
-                                    {category_err ?  <p style={{ fontSize: '0.875em', color: '#ff715b'}}>This field is required</p> : '' }
+                                  {category_err ? <p style={{ fontSize: '0.875em', color: '#ff715b' }}>This field is required</p> : ''}
                                 </div>
                               </Col>
 
@@ -201,10 +178,9 @@ const Createdaybook = () => {
                                     classNamePrefix="select2-selection"
                                     defaultValue={field.webpage}
                                     placeholder={<div>Web Page</div>}
-                                    // onChange={e => setwebpage(e.value)}
-                                    onChange={e => handleInput(key, "webpage", e.value) }
+                                    onChange={e => handleInput(key, "webpage", e.value)}
                                   />
-                                    {webpage_err ?  <div style={{ fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+                                  {webpage_err ? <div style={{ fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
 
                                   {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
                                 </div>
@@ -222,9 +198,9 @@ const Createdaybook = () => {
                                     maxLength="3"
                                     min={1}
                                     // onChange={e => settotalHours(e.target.value)}
-                                    onChange={e => handleInput(key, "hours", e.target.value) }
+                                    onChange={e => handleInput(key, "hours", e.target.value)}
                                   />
-                                    {hours_err ?  <div style={{ fontSize: '0.875em', color: '#ff715b'}}>This field is required</div> : '' }
+                                  {hours_err ? <div style={{ fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
 
                                 </div>
                               </Col>
@@ -237,13 +213,10 @@ const Createdaybook = () => {
                                     className="inner form-control"
                                     defaultValue={field.details}
                                     placeholder="Enter Details"
-                                    onChange={e => handleInput(key, "details", e.target.value) }
+                                    onChange={e => handleInput(key, "details", e.target.value)}
                                   />
                                 </div>
                               </Col>
-
-
-
                               {
                                 key !== 0 &&
 
@@ -280,31 +253,24 @@ const Createdaybook = () => {
                         </Col>
                       </Row>
                     </div>
-
-
                     <Col lg={12}>
                       <div className="text-right d-flex col-md-12">
                         <div className="col-md-6">
                           <button type="button" className="btn btn-primary" style={{ marginRight: "30px" }} onClick={() => createDaybook()}>
                             Save Day Book
                           </button>
-
                           <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                             Back
                           </button>
                         </div>
-
                         {/* <div className="col-md-4">
                           <button type="button" style={{ marginLeft: "50px" }} className="btn btn-info">
                             Total Hours:  {totalHours}
                           </button>
                         </div> */}
-
                       </div>
                     </Col>
-
                   </Row>
-
                 </AvForm>
               </CardBody>
             </Card>

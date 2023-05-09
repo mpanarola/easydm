@@ -37,13 +37,13 @@ const HistoryTimeline = (props) => {
     }, 1000);
 
   }, []);
-  
+
   function insertSpaces(string) {
     string = string.replace(/([a-z])([A-Z])/g, '$1 $2');
     string = string.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
-  
+
   return (
     <React.Fragment>
       <Card>
@@ -51,10 +51,9 @@ const HistoryTimeline = (props) => {
           <CardTitle className="h4 mb-5 font-size-18">Activities</CardTitle>
           <ul className="list-unstyled activity-wid">
 
-            {is_loading ? <span className="spinner-grow spinner-grow-sm"></span> : activity_list && activity_list.length == 0 ? <h5>Sorry, No Activities Found....</h5> : '' }
+            {is_loading ? <span className="spinner-grow spinner-grow-sm"></span> : activity_list && activity_list.length == 0 ? <h5>Sorry, No Activities Found....</h5> : ''}
 
             {activity_list && activity_list.map(activity => (
-
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
@@ -64,13 +63,13 @@ const HistoryTimeline = (props) => {
                   </div>
                   <div className="flex-1">
                     <div className="font-size-15">
-                      <b>{activity.addedBy.name}</b> {activity.activityName}
+                      <b>{activity.addedBy.name}</b> {activity.activityName == 'Updated' ? " Updated Following Field's : " : 'Created'}
                       <ul>
                         {
                           activity.newData ?
                             Object.keys(activity.newData).map(key => (
                               <li key={key} className="mt-2 mb-2">
-                                {insertSpaces(key) + ' To : ' }
+                                {insertSpaces(key) + ' To : '}
                                 {
                                   <b>{activity.newData[key]}</b>
                                 }
@@ -90,7 +89,6 @@ const HistoryTimeline = (props) => {
                 </div>
 
               </li>
-
             )
             )
             }
