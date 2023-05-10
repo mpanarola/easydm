@@ -155,7 +155,6 @@ const Profile = props => {
                           onChange={e => setupdatename(e.target.value)}
                           required
                           defaultValue={name}
-                          // value = {name}
                           key={name}
                         />
                       </div>
@@ -171,6 +170,7 @@ const Profile = props => {
                           className="form-control"
                           id="profile_pic"
                           onChange={e => handleFileChange(e.target.files[0])}
+                          accept="image/png, image/gif, image/jpeg"
                         />
                       </div>
                     </Col>

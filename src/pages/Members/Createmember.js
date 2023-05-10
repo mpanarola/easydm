@@ -10,15 +10,11 @@ import Select from "react-select";
 import { useAlert } from "react-alert";
 import { connect, useDispatch } from "react-redux"
 import { useHistory, withRouter } from 'react-router-dom';
-
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
 import { registerUser } from "../../store/actions"
 import { addMember } from '../../helpers/backend_helper'
-
 import { optionGroupStaus, optionGroupType } from './Constants'
-
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
 const Createmember = () => {
@@ -32,7 +28,7 @@ const Createmember = () => {
   const [name, setname] = useState(null);
   const [email, setemail] = useState(null);
   const [type, settype] = useState('DM Executive');
-  const [status, setstatus] = useState('Active');
+  const [status, setstatus] = useState(true);
   const [password, setspassword] = useState(null);
   const [passwordType, setPasswordType] = useState("password");
 
@@ -61,7 +57,7 @@ const Createmember = () => {
     formData.append("email", email);
     formData.append("password", password);
     formData.append("userType", type);
-    formData.append("status", status);
+    formData.append("isActive", status);
 
     addMember(formData).then(resp => {
       if (resp.status == true) {
@@ -74,7 +70,7 @@ const Createmember = () => {
         alert.error('Session timeout');
       }
       else {
-        alert.error('Month-Year already added for this page.');
+        alert.error('Email already exists...');
       }
 
     }).catch(err => {
@@ -123,6 +119,7 @@ const Createmember = () => {
                           id="profile_pic"
                           name="avatar"
                           onChange={e => handleFileChange(e.target.files[0])}
+                          accept="image/png, image/gif, image/jpeg"
                         />
 
                       </div>
@@ -185,7 +182,7 @@ const Createmember = () => {
                       </div>
                     </Col>
 
-                    <Col lg={6}>
+                    <Col lg={6} >
                       <div className="mb-3">
                         <label htmlFor="user_status">Status</label>
                         <Select
@@ -194,7 +191,8 @@ const Createmember = () => {
                           options={optionGroupStaus}
                           classNamePrefix="select2-selection"
                           onChange={e => setstatus(e.value)}
-                          defaultValue={{ label: status }}
+                          defaultValue={{ value: status, label: status ? 'Active': 'InActive' }}
+                          readonly
                         />
                       </div>
                     </Col>

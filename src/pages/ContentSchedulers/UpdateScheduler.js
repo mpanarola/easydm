@@ -66,9 +66,7 @@ const UpdateSchedular = (props) => {
 
   const allMembers = () => {
     getAllMembers(member_payload).then(resp => {
-
       setmembers_list(resp?.data[0]?.list)
-
     }).catch(err => {
     })
 
@@ -124,7 +122,7 @@ const UpdateSchedular = (props) => {
 
   // Function for Remove Input Fields
   function handleRemoveFields(e, idx) {
-    document.getElementById("nested" + idx).style.display = "none"
+    // document.getElementById(idx).style.display = "none"
     const rows = [...referece_links];
     rows.splice(idx, 1);
     setreferece_links(rows);
@@ -254,14 +252,15 @@ const UpdateSchedular = (props) => {
 
                               <div
                                 key={key}
-                                id={"nested" + key}
+                                id={key}
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
 
                                   <AvField
                                     type="url"
-                                    name="url"
+                                    name={"url" + key}
+                                    id={key}
                                     className="inner form-control"
                                     required
                                     defaultValue={typeof field !== 'object' ? field : ''}

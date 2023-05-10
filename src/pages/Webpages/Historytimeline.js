@@ -71,7 +71,9 @@ const HistoryTimeline = (props) => {
                                  {insertSpaces(key) && insertSpaces(key) == 'Assigned To' ? insertSpaces(key)  + ' : ' : insertSpaces(key) + ' To : '}
                                 {/* {insertSpaces(key)+ ' To : ' } */}
                                 {
-                                  <b>{key =='assignedTo' ? 'Members Changed. '  : key=='publishedOn' || key=='effectiveFrom' ? Moment(activity.newData[key]).format('DD-MMM-YY') : activity.newData[key]}</b>
+                                  <b>{key =='assignedTo' ? 'Members Changed. '  : key=='publishedOn' || key=='effectiveFrom' ? Moment(activity.newData[key]).format('DD-MMM-YY') : 
+                                  activity.newData[key] == '' ? 'Null'  : activity.newData[key]
+                                  }</b>
                                 }
 
                               </li>

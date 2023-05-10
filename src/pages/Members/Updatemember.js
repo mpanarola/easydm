@@ -11,11 +11,9 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-
 import { useAlert } from "react-alert";
 import { connect, useDispatch } from "react-redux"
 import { AvForm, AvField } from "availity-reactstrap-validation"
-
 import { updateMember as UpdateMember } from "../../store/actions"
 import { memberUpdate } from '../../helpers/backend_helper'
 import { optionGroupStaus, optionGroupType } from './Constants'
@@ -24,17 +22,14 @@ import { optionGroupStaus, optionGroupType } from './Constants'
 const Updatemember = (props) => {
 
   const member_data = props.location && props.location.state;
-
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
-
 
   const alert = useAlert();
   const dispatch = useDispatch();
   const history = useHistory();
 
   const [avatar, setprofile_pic] = useState(member_data && member_data.data.avatar);
-  const [avatarURL, setAvtarURL] = useState(null);
-
+  const [avatarURL, setAvtarURL] = useState('');
   const [name, setname] = useState(member_data && member_data.data.name);
   const [email, setemail] = useState(member_data && member_data.data.email);
   const [type, settype] = useState(member_data && member_data.data.userType);
@@ -54,7 +49,7 @@ const Updatemember = (props) => {
     }
     reader.readAsDataURL(file);
   }
-  
+  // console.log('avatarURL ', avatarURL)
   const togglePassword = () => {
     if (passwordType === "password") {
       setPasswordType("text")
@@ -100,10 +95,8 @@ const Updatemember = (props) => {
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Members" breadcrumbItem="Update Member" />
-
         <Row>
           <Card>
             <CardBody>
@@ -114,7 +107,12 @@ const Updatemember = (props) => {
                 </div>
     
                 <div className="col-md-1" style={{ float: "right" }}>
-                  <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name} width="90px" />
+                  {
+                    avatarURL == '' ?    <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name} width="90px" />
+                    :
+                    <img src={avatarURL} alt={name} width="90px" className="avatar" />
+                  }
+                 
                 </div>
               </div>
             </CardBody>
@@ -152,7 +150,6 @@ const Updatemember = (props) => {
                     <Col lg={6}>
                       <div className="mb-3 ">
                         {/* <label htmlFor="profile_pic">Photo</label> */}
-
                         <AvField
                           type="file"
                           label="Update Photo"
@@ -160,15 +157,14 @@ const Updatemember = (props) => {
                           className="form-control"
                           id="profile_pic"
                           onChange={e => handleFileChange(e.target.files[0])}
+                          accept="image/png, image/gif, image/jpeg"
                         />
-
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="member_email">Email</label> */}
-
                         <AvField
                           type="email"
                           label="Email"
@@ -181,7 +177,6 @@ const Updatemember = (props) => {
                           readOnly
                           required
                         />
-
                       </div>
                     </Col>
 
@@ -194,18 +189,14 @@ const Updatemember = (props) => {
                             <div className="col-md-11">
                               <AvField
                                 type={passwordType}
-                                // label="Password"
                                 className="form-control"
                                 id="member_password"
                                 name="member_password"
                                 placeholder="Keep blank if you dont want to update existing password."
-                                // required
                                 autoComplete="new-password"
                                 onChange={e => setspassword(e.target.value)}
                               />
-
                             </div>
-
 
                             <button type="button" className="btn btn-outline-primary"
                               style={{ marginLeft: "10px" }}

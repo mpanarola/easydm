@@ -69,13 +69,18 @@ const Member = () => {
 
   const allMembers = (event, values) => {
     getAllMembers(payload).then(resp => {
-      setcmembers_list(resp?.data[0]?.list)
       // console.log('resp?.data ', resp?.data[0]?.list)
-      setloading(false)
-      dispatch(getMembers(resp?.data))
-      if (resp?.message == 'Unauthorized User!!') {
+      if(resp.status){
+        setloading(false)
+        setcmembers_list(resp?.data[0]?.list)
+        dispatch(getMembers(resp?.data))
+      }
+      else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
+      }
+      else{
+        alert.error('Please try again..');
       }
 
     }).catch(err => {

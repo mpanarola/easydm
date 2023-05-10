@@ -7,17 +7,17 @@ import { getTasksSuccess, getTasksFail } from "./actions"
 //Include Both Helper File with needed methods
 import { getTasks } from "../../helpers/backend_helper"
 
-function* fetchTasks() {
-  try {
-    const response = yield call(getTasks)
-    yield put(getTasksSuccess(response))
-  } catch (error) {
-    yield put(getTasksFail(error))
-  }
-}
+// function* fetchTasks() {
+//   try {
+//     const response = yield call(getTasks)
+//     yield put(getTasksSuccess(response))
+//   } catch (error) {
+//     yield put(getTasksFail(error))
+//   }
+// }
 
 function* tasksSaga() {
-  yield takeEvery(GET_TASKS, fetchTasks)
+  // yield takeEvery(GET_TASKS, fetchTasks)
 }
 
 export default tasksSaga

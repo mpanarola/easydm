@@ -69,7 +69,7 @@ const HistoryTimeline = (props) => {
                               <li key={key} className="mt-2 mb-2" >
                                 {insertSpaces(key)+ ' To : '}
                                 {
-                                  <b>{activity.newData[key]}</b>
+                                  <b>{activity.newData[key] == '' ? 'Null'  : activity.newData[key] }</b>
                                 }
 
                               </li>

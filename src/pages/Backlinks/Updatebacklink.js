@@ -55,12 +55,6 @@ const Updatebacklink = (props) => {
 
   }
 
-  // const webpages_payload =  {
-  //   "options": {
-  //     "select": ['webpage', 'webpageUrl', 'category']
-  //   }
-  // }
-
   const allWebpages = () => {
     getWebsite(webpage_id).then(resp => {
       const data = resp?.data[0];

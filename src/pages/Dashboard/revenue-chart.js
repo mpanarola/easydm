@@ -10,7 +10,6 @@ const RevenueChart = (props) => {
 
     const series = [{
         name: 'Series A',
-
         data: [11, 17, 15, 15, 21, 14]
     }, {
         name: 'Series B',

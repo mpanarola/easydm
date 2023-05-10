@@ -45,12 +45,12 @@ const Updatepageview = (props) => {
     const pageview_data = {
       // monthYear: monthyear_full,
       // category: category,
-      numberOfPageviews: total_pageviews,
-      readability: readability_semrush,
-      seo: seo_semrush,
-      toneOfVoice: ton_voice_semrush,
-      originality: originality_semrush,
-      contentScore: content_score_semrush
+      numberOfPageviews: data && data.data.numberOfPageviews !== total_pageviews ? total_pageviews : undefined,
+      readability: data && data.data.readability !== readability_semrush ? readability_semrush : undefined,
+      seo: data && data.data.seo !== seo_semrush ? seo_semrush : undefined,
+      toneOfVoice: data && data.data.toneOfVoice !== ton_voice_semrush ? ton_voice_semrush : undefined,
+      originality: data && data.data.originality !== originality_semrush ? originality_semrush : undefined,
+      contentScore: data && data.data.contentScore !== content_score_semrush ? content_score_semrush : undefined,
       // publishedOn: published_on
     }
 

@@ -7,7 +7,6 @@ import { Row, Col, Alert, Container } from "reactstrap"
 // Redux
 import { connect, useDispatch } from "react-redux"
 import { withRouter, Link, useHistory } from "react-router-dom"
-
 // availity-reactstrap-validation
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
@@ -37,26 +36,19 @@ const Login = (props) => {
     }).then(resp => {
       if (resp.status == true) {
 
-     
-        if(resp?.data[0].isActive == true && resp?.data[0].isDeleted == false){
           let auth_data = { name: resp?.data[0].name, email: resp?.data[0].email, avatar: resp?.data[0].avatar, token: resp?.data[0].token, userRole: resp?.data[0].userRole, user_id: resp?.data[0]._id }
         localStorage.setItem("authUser", JSON.stringify(auth_data))
         // history.push("/dashboard")
         alert.success('Login Successfully');
         dispatch(loginUser(resp?.data))
         window.location.replace("/dashboard");
-        }
-        else{
-          alert.error('Your Account Is Not Activated.');
-        }
         
-
       } else {
-        alert.error('Invalid Credentials');
+        alert.error('Your account is deactivated!!');
       }
 
     }).catch(err => {
-      alert.error('Invalid Credentials');
+      alert.error(err.response);
       dispatch(loginUser(err.response))
     })
 
@@ -167,11 +159,6 @@ const Login = (props) => {
   )
 }
 
-
-
-// export default withRouter(
-//   connect(mapStateToProps, { loginUser, apiError, socialLogin })(Login)
-// )
 
 export default withRouter(Login)
 

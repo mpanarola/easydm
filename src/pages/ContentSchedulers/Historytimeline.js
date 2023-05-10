@@ -76,7 +76,7 @@ const HistoryTimeline = (props) => {
                                     <li style={{ listStyle: 'inside'}}>{link}</li>
                                   )
                                   ):
-                                  key =='assignedBy' || key == 'writtenBy' ? ' Member Changed' : key =='webpage' ? ' Webpage Changed' : activity.newData[key]}</b>
+                                  key =='assignedBy' || key == 'writtenBy' ? ' Member Changed' : key =='webpage' ? ' Webpage Changed' : activity.newData[key] == '' ? 'Null'  : activity.newData[key]}</b>
                                 }
 
                               </li>

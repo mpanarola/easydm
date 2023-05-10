@@ -7,7 +7,7 @@ import { profileSuccess, profileError } from "./actions"
 //Include Both Helper File with needed methods
 import { getFirebaseBackend } from "../../../helpers/firebase_helper"
 import {
-  postFakeProfile,
+  // postFakeProfile,
   postJwtProfile,
 } from "../../../helpers/backend_helper"
 
@@ -29,11 +29,11 @@ function* editProfile({ payload: { user } }) {
       })
       yield put(profileSuccess(response))
     } else if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-      const response = yield call(postFakeProfile, {
-        username: user.username,
-        idx: user.idx,
-      })
-      yield put(profileSuccess(response))
+      // const response = yield call(postFakeProfile, {
+      //   username: user.username,
+      //   idx: user.idx,
+      // })
+      // yield put(profileSuccess(response))
     }
   } catch (error) {
     yield put(profileError(error))

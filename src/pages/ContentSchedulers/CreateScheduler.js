@@ -43,15 +43,11 @@ const AddSchedular = () => {
   const [written_by, setwritten_by] = useState();
   const [assigned_on, setassigned_on] = useState(Moment().format('YYYY-MM-DD'));
   const [submited_on, setsubmited_on] = useState(Moment().format('YYYY-MM-DD'));
-
-
   const [readability_semrush, setreadability_semrush] = useState();
   const [seo_semrush, setseo_semrush] = useState();
   const [ton_voice_semrush, setton_voice_semrush] = useState();
   const [originality_semrush, setoriginality_semrush] = useState();
   const [content_score_semrush, setcontent_score_semrush] = useState();
-
-
   const [members_list, setmembers_list] = useState([])
   const [webpages_list, setwebpages_list] = useState([])
 
@@ -110,7 +106,7 @@ const AddSchedular = () => {
 
   // Function for Create Input Fields
   function handleAddFields() {
-    const item1 = { ref_link: "", id: Date.now() }
+    const item1 = { ref_link: "" }
     setreferece_links([...referece_links, item1])
   }
 
@@ -179,11 +175,9 @@ const AddSchedular = () => {
   };
 
 
-  // console.log(' members_list ', members_list[0].name)
   return (
     <>
       <div className="page-content">
-
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Content Schedulers" breadcrumbItem="Create Content Scheduler" />
 
@@ -250,7 +244,9 @@ const AddSchedular = () => {
                                 <Col md="11">
                                   <AvField
                                     type="url"
-                                    name="url"
+                                    name={"url"+key}
+                                    id={key}
+                                   
                                     required
                                     className="inner form-control"
                                     defaultValue={field.name}
