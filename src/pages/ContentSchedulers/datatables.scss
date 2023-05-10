@@ -1,3 +1,12 @@
+.schedular_table .dataTables_wrapper tr td:nth-child(4), 
+.schedular_table .dataTables_wrapper th:nth-child(4),
+.schedular_table .dataTables_wrapper tr td:nth-child(5), 
+.schedular_table .dataTables_wrapper th:nth-child(5)
+ {
+    display: none  !important;
+}
+
+
 table.dataTable thead > tr > th.sorting_asc,
 table.dataTable thead > tr > th.sorting_desc,
 table.dataTable thead > tr > th.sorting,

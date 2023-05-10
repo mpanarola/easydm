@@ -10,7 +10,7 @@ const Footer = () => {
             <Col md={6}>{new Date().getFullYear()} © EasyDM.</Col>
             <Col md={6}>
               <div className="text-sm-end d-none d-sm-block">
-              All Rights Reserved - <a href="https://www.narolainfotech.com/" target="_blank">Narola Infotech</a> 
+              All Rights Reserved By - <a href="https://www.narolainfotech.com/" target="_blank">Narola Infotech</a> 
               </div>
             </Col>
           </Row>

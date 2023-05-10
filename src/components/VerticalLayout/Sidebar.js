@@ -2,7 +2,6 @@ import PropTypes from "prop-types"
 import React, { useState, useEffect } from "react"
 import { connect, useSelector } from "react-redux"
 import { withRouter, Link } from "react-router-dom"
-
 //i18n
 import { withTranslation } from "react-i18next"
 import SidebarContent from "./SidebarContent"

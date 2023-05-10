@@ -32,8 +32,7 @@ const Updatedaybook = (props) => {
   const data = props.location && props.location.state;
   // console.log('datassss ', data.data._id)
   const daybooks_data = data['data'];
-  // const day_book_user_id = data && data.data._id
-  // const daybooks = data['data']['info'];
+  console.log('daybooks_data ', daybooks_data)
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
 
@@ -48,16 +47,20 @@ const Updatedaybook = (props) => {
   const alert = useAlert();
   const history = useHistory();
 
-  const page_payload = {
-    "search": {
-      "dateFrom": start_date,
-      "dateTo": end_date,
-      "member": [data.data && data.data._id]
-    }
-  }
 
-  const getDaybookById = (event, values) => {
+
+  const getDaybookById = (is_reset_search) => {
     setloading(true)
+
+    const page_payload = {
+      "search": {
+        "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
+        "dateTo":  is_reset_search  == true ?  Moment().format('YYYY-MM-DD') : end_date,
+        "member": [data.data && data.data._id]
+      }
+    }
+
+
     getAlldaybooks(page_payload).then(resp => {
       if(resp?.data[0]){
         setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [] )
@@ -145,6 +148,13 @@ const Updatedaybook = (props) => {
 
   };
 
+  const resetSearch = () =>{
+    setloading(true)
+    set_end_date(Moment().format('YYYY-MM-DD'))
+    set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
+    getDaybookById(true)
+  }
+
   const goBack = (e) => {
     history.push('/daybooks');
   };
@@ -166,9 +176,19 @@ const Updatedaybook = (props) => {
                     {/* <span>Start</span> */}
                     <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value)}
                       defaultValue={end_date} max={Moment().format('YYYY-MM-DD')} />
-                    <button type="button" className="btn btn-secondary" onClick={getDaybookById} >
+                    
+
+                      <button type="button" className="btn btn-secondary mx-2" onClick={getDaybookById} >
                       Search
                     </button>
+                    <button type="button" className="btn btn-danger" onClick={resetSearch} >
+                      Reset
+                    </button>
+
+                      
+                   
+                
+
                   </div>
                 </div>
               </CardBody>

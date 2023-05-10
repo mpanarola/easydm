@@ -41,6 +41,18 @@ export const columns = [
       width: 200,
     },
     {
+      label: "Web Page Search",
+      field: "webpage_dummy",
+      sort: "asc",
+      width: 150,
+    },
+    {
+      label: "Web Page Search",
+      field: "webpage_url_search",
+      sort: "asc",
+      width: 150,
+    },
+    {
       label: "Topic Title",
       field: "topic_title",
       sort: "asc",
@@ -125,7 +137,6 @@ export const optionGroupType = [
     },
   
   ];
-
 
   // Status
 export const optionGroupStaus = [

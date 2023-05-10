@@ -18,7 +18,7 @@ export const columns = [
     width: 270,
   },
   {
-    label: "Date",
+    label: "Dates",
     field: "date",
     sort: "asc",
     width: 200,

@@ -52,6 +52,18 @@ export const columns = [
     width: 150,
   },
   {
+    label: "Web Page Search",
+    field: "webpage_dummy",
+    sort: "asc",
+    width: 150,
+  },
+  {
+    label: "Web Page Search",
+    field: "webpage_url_search",
+    sort: "asc",
+    width: 150,
+  },
+  {
     label: "Published On",
     field: "date",
     sort: "asc",

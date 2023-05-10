@@ -81,6 +81,8 @@ const Backlink = () => {
       webpage: (
         <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
       ),
+      webpage_search: row.webpage && row.webpage.webpage,
+      webpage_url_search: row.webpage && row.webpage.webpageUrl,
       date: row.webpage && Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
       // webpage_url: "",
       category: row.webpage && row.webpage.category,
@@ -155,7 +157,7 @@ const Backlink = () => {
         <Row>
           <Col className="col-12">
             <Card>
-              <CardBody>
+              <CardBody className="backlink_table">
                 <CardTitle>Back Links List</CardTitle>
                 {
                   is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :

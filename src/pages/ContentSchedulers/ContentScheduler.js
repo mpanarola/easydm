@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react"
 import { MDBDataTable } from "mdbreact"
 import {
-  Row, Col, Card, CardBody, CardTitle, Button, UncontrolledPopover,
-  PopoverBody, Modal, ModalHeader, ModalBody
+  Row, Col, Card, CardBody, CardTitle
 } from "reactstrap"
-import Select from "react-select";
 import { Link } from "react-router-dom"
-import AddSchedular from "./CreateScheduler"
 import { useAlert } from "react-alert";
 //Import Breadcrumb
+import "./datatables.scss"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
 import SweetAlert from "react-bootstrap-sweetalert"
@@ -89,9 +87,11 @@ const ContentScheduler = () => {
       id: order + 1,
       content_type: row.contentType,
       web_page: (<a href={row.webpage && row.webpage.webpageUrl} target="_blank"> {row.webpage && row.webpage.webpage} </a>),
-      topic_title: ( <div  style={{
+      webpage_search: row.webpage && row.webpage.webpage,
+      webpage_url_search: row.webpage && row.webpage.webpageUrl,
+      topic_title: (<div style={{
         width: "150px"
-      }}> <a href={row.docLink} target="_blank"> {row.topicTitle} </a></div>) ,
+      }}> <a href={row.docLink} target="_blank"> {row.topicTitle} </a></div>),
       expected_words: (
         <span class="bg-primary badge badge-secondary" style={{ fontSize: "14px" }}>{row.expectedWords}</span>
       ),
@@ -108,10 +108,10 @@ const ContentScheduler = () => {
           :
           row.contentStatus == "Input-missing" ?
             <span class="bg-danger badge badge-danger font-size-13">{row.contentStatus}</span>
-            : row.contentStatus == "In-review" ? 
-            <span class="bg-info badge badge-info font-size-13">{row.contentStatus}</span>
-            :
-             <span class="bg-warning badge badge-secondary font-size-13">{row.contentStatus}</span>
+            : row.contentStatus == "In-review" ?
+              <span class="bg-info badge badge-info font-size-13">{row.contentStatus}</span>
+              :
+              <span class="bg-warning badge badge-secondary font-size-13">{row.contentStatus}</span>
       ),
 
       action: (
@@ -126,12 +126,12 @@ const ContentScheduler = () => {
           >
           </div>
 
-          { get_auth_user.userRole == 1 &&
-              <div
-                className="btn btn-danger fas fa-trash"
-                onClick={() => confirmDelete(row._id)}
-              >     
-              </div>
+          {get_auth_user.userRole == 1 &&
+            <div
+              className="btn btn-danger fas fa-trash"
+              onClick={() => confirmDelete(row._id)}
+            >
+            </div>
           }
         </div>
       )
@@ -140,7 +140,6 @@ const ContentScheduler = () => {
   return (
     <React.Fragment>
       <div className="page-content">
-
         <Breadcrumbs title="Pages" breadcrumbItem="Content Schedulers" />
 
         {success_dlg ? (
@@ -173,13 +172,13 @@ const ContentScheduler = () => {
         <Row>
           <Col className="col-12">
             <Card>
-              <CardBody>
+              <CardBody className="schedular_table">
                 <CardTitle>Content Schedulers List </CardTitle>
                 {
-                  is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :
-                
-                <MDBDataTable responsive bordered data={{ rows, columns }} />
-              }
+                  is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+
+                    <MDBDataTable responsive bordered data={{ rows, columns }} />
+                }
               </CardBody>
             </Card>
           </Col>

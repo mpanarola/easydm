@@ -26,6 +26,8 @@ const Backlink = () => {
   const [confirm_both, setconfirm_both] = useState(false)
   const [pageviews_list, setpageviews_list] = useState([])
   const [record_id, set_id] = useState()
+  const [search, set_search] = useState()
+
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
 
   const [is_loading, setloading] = useState(true)
@@ -56,7 +58,9 @@ const Backlink = () => {
     })
   };
 
-  const getAllPageViews = (event, values) => {
+
+  const getAllPageViews = (value) => {
+
     getPageViews(pageviews_payload).then(resp => {
       setpageviews_list(resp?.data[0]?.list)
       setloading(false)
@@ -76,8 +80,10 @@ const Backlink = () => {
       ...row,
       id: order + 1,
       webpage: (
-        <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
+        <a href={row.webpage && row.webpage.webpageUrl}  target="_blank" >{row.webpage && row.webpage.webpage}</a>
       ),
+      webpage_search: row.webpage && row.webpage.webpage,
+      webpage_url_search: row.webpage && row.webpage.webpageUrl,
       date: row.webpage && Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
       category: row.webpage && row.webpage.category,
       month_year: Moment(row.monthYear).format('MMM-YY'),
@@ -154,12 +160,12 @@ const Backlink = () => {
         <Row>
           <Col className="col-12">
             <Card>
-              <CardBody>
+              <CardBody className="pageviews_table">
                 <CardTitle>Page Views List</CardTitle>
                 {
                   is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :
                 
-                <MDBDataTable responsive bordered data={{ rows, columns }} />
+                <MDBDataTable responsive bordered data={{ rows, columns }} onSearch={(value) => getAllPageViews(value) }  />
               }
               </CardBody>
             </Card>

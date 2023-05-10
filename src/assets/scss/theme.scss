@@ -92,6 +92,9 @@
 .pagination .pagination {
   margin-bottom: 0px;
 }
+a.page-link.page-link {
+  cursor: pointer !important;
+}
 
 // kanban board
 .react-kanban-column {

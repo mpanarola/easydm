@@ -1,9 +1,8 @@
 import PropTypes from "prop-types"
-import React, { useEffect, useRef , useCallback} from "react"
+import React, { useEffect, useRef, useCallback } from "react"
 
 // //Import Scrollbar
 import SimpleBar from "simplebar-react"
-
 // MetisMenu
 import MetisMenu from "metismenujs"
 import { withRouter } from "react-router-dom"
@@ -79,7 +78,6 @@ const SidebarContent = props => {
     }
   }
 
-  
 
   return (
     <React.Fragment>
@@ -89,7 +87,7 @@ const SidebarContent = props => {
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
               <Link to="/#" className="waves-effect">
-                <i className="mdi mdi-airplay"></i><span className="badge rounded-pill bg-info float-end">2</span>
+                <i className="mdi mdi-airplay"></i><span className="badge rounded-pill bg-info float-end"></span>
                 <span>{props.t("Dashboard")}</span>
               </Link>
               <ul className="sub-menu">
@@ -98,15 +96,12 @@ const SidebarContent = props => {
               </ul>
             </li>
 
-
-            
             <li>
               <Link to="/webpages" className=" waves-effect">
                 <i className="mdi mdi-web"></i>
                 <span>{props.t("Websites")}</span>
               </Link>
             </li>
-
 
             <li>
               <Link to="/members" className=" waves-effect">

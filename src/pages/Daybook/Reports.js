@@ -25,32 +25,37 @@ const Reports = () => {
     const [category_id, set_category] = useState()
     const [webpage_id, set_webpage] = useState()
     const [webpage_name, set_webpagename] = useState()
-
     const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
     const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
     const [member_id, setassigned_to] = useState()
     const [members_list, setmembers_list] = useState([])
     const [default_members_list, setdefault_members_list] = useState()
-
     const [webpages_list, setwebpages_list] = useState([])
-
     const [daybooks_list, setdaybooks_list] = useState([])
     const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
     const [is_loading, setloading] = useState(true)
+
     const [total_hours, settotal_hours] = useState([])
+    const [is_search, setis_search] = useState(false)
+    const [activity_month, setactivity_month] = useState();
+    const [activity_hours, setactivity_hours] = useState();
 
 
     const allMembers = () => {
         getAllMembers(memberPayload).then(resp => {
             setmembers_list(
-                    resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
-                        { label: user.name, value: user._id }
-                    )
-                    )
+                resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
+                    { label: user.name, value: user._id }
+                )
+                )
             )
-            // setdefault_members_list(
-            //     resp?.data[0]?.list.length !== 0 && resp?.data[0]?.list.map(i => i.value ? i.value : i.value).join(", ").split(',')
-            // )
+
+            setdefault_members_list(
+                resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
+                    { label: user.name, value: user._id }
+                )
+                )
+            )
 
         }).catch(err => {
         })
@@ -65,20 +70,20 @@ const Reports = () => {
 
     }
 
-const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i => i.value ? i.value : i.value).join(", ").split(',');
-    const dayBookPayload = {
-        "search": {
-            "dateFrom": start_date,
-            "dateTo": end_date,
-            "member": member_lists_comma_sep,
-            "category": category_id,
-            "webpage": webpage_id
+    const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i => i.value ? i.value : i.value).join(",").split(',');
+
+
+    const getDaybooks = (reset_filter) => {
+        const dayBookPayload = {
+            "search": {
+                "dateFrom": reset_filter == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
+                "dateTo": reset_filter  == true  ? Moment().format('YYYY-MM-DD') : end_date,
+                "member": member_lists_comma_sep,
+                "category": reset_filter == true  ? undefined : category_id,
+                "webpage": reset_filter == true  ? undefined : webpage_id
+            }
         }
-    }
-    
-    const getDaybooks = () => {
-        setloading(true)
-        settotal_hours([])
+
         getAlldaybooks(dayBookPayload).then(resp => {
             setdaybooks_list(resp?.data[0])
             setloading(false)
@@ -93,29 +98,48 @@ const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i =
 
     }
 
+    const reportSearch = () => {
+        setloading(true)
+        settotal_hours([])
+        getDaybooks()
+        gethoursReports()
+    }
+
     const resetSearch = () => {
-        set_end_date(Moment().format('YYYY-MM-DD'))
-        set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
+        setloading(true)
+        settotal_hours([])
         set_category('')
         set_webpage('')
         set_webpagename('')
-        getDaybooks()
+        set_end_date(Moment().format('YYYY-MM-DD'))
+        set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
+        getDaybooks(true)
+
     }
 
     const handleWebpage = (e) => {
         set_webpage(e.value);
         set_webpagename(e.label);
-      }
+    }
 
-    useEffect(() => {
-        allMembers()
-        allWebpages()
-        setTimeout(function () {
-            // getDaybooks()
+    const dayBookReportsPayload = {
+        "search": {
+            "member": member_lists_comma_sep,
+        }
+    }
+    const gethoursReports = () => {
+        activityDaybook(dayBookReportsPayload).then(resp => {
+            // setactivity_list(resp?.data)
+            setactivity_hours(resp?.data[0].length !== 0 && resp?.data[0].map(i => i.totalHours ? i.totalHours : i.totalHours).join(", ").split(','))
+            setactivity_month(resp?.data[0].length !== 0 && resp?.data[0].map(i => i.month ? i.month : i.month).join(", ").split(','))
             setloading(false)
-        }, 2000);
-
-    }, []);
+            if (resp?.message == 'Unauthorized User!!') {
+                history.push('/logout')
+                alert.error('Session timeout');
+            }
+        }).catch(err => {
+        })
+    }
 
     const rows = useMemo(() =>
         daybooks_list && daybooks_list.map((row, order) => (
@@ -137,6 +161,13 @@ const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i =
                 ),
             })), [daybooks_list])
 
+    useEffect(() => {
+        reportSearch()
+        allMembers()
+        allWebpages()
+        setloading(true)
+    }, []);
+
     return (
         <React.Fragment>
             <div className="page-content">
@@ -149,9 +180,9 @@ const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i =
                                 <Row>
                                     <Col lg={6}>
                                         <div className="mb-3">
-                                            <label htmlFor="assigned_by">Category</label>
+                                            <label htmlFor="category">Category</label>
                                             <Select
-                                                id="assigned_by"
+                                                id="category"
                                                 isMulti={false}
                                                 onChange={(e) => {
                                                     set_category(e.value)
@@ -159,7 +190,7 @@ const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i =
                                                 options={
                                                     optionGroupCategory
                                                 }
-                                                 value={{ label: category_id, value: category_id}}
+                                                value={{ label: category_id, value: category_id }}
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
@@ -177,26 +208,27 @@ const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i =
                                                     )
                                                     )
                                                 }
-                                                value={{ label: webpage_name, value: webpage_id}}
+                                                value={{ label: webpage_name, value: webpage_id }}
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
                                     </Col>
 
                                 </Row>
-                                <Row>
 
+                                <Row>
                                     <Col lg={6}>
                                         <div className="mb-3">
-                                            <label htmlFor="webpage">Members</label>
+                                            <label htmlFor="members">Members</label>
                                             <Select
-                                                id="webpage"
+                                                id="members"
                                                 isMulti={true}
                                                 onChange={setmembers_list}
                                                 // onChange={e => console.log(e.target.value)}
-                                                options={members_list}
+                                                options={default_members_list}
                                                 value={members_list}
-                                                defaultValue={members_list}
+
+
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
@@ -219,54 +251,54 @@ const member_lists_comma_sep = members_list.length !== 0 && members_list.map(i =
                                     </Col>
 
                                 </Row>
-                                <button type="button" className="btn btn-secondary w-auto mx-2"
+                                <button type="button" className="btn btn-secondary w-auto"
                                     onClick={() => {
-                                        getDaybooks()
+                                        reportSearch()
+
                                     }} >
                                     Search
                                 </button>
 
-                                {
-                                    start_date !== '' && end_date !== '' &&
-                                    <button type="button" className="btn btn-danger" onClick={resetSearch} >
-                                        Reset
-                                    </button>
-                                }
-
+                                <button type="button" className="btn btn-danger mx-2"
+                                    onClick={() => {
+                                        resetSearch()
+                                    }}  >
+                                    Reset
+                                </button>
                             </Col>
                         </CardBody>
                     </Card>
                 </Row>
-        { daybooks_list.length > 0 &&
-            <>
-                <Row>
-                    <Col className="col-12">
-                        <Card>
-                            <CardBody>
-                                {
-                                    is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
-                                        <>
-                                          <CardTitle>Members List</CardTitle>
-                                            <MDBDataTable responsive bordered data={{ rows, columns }} />
-                                            { total_hours !== 0 &&
-                                            <div className="col-md-4" style={{ float: "right", marginLeft: "50px", marginTop: "-50px", marginRight: "-40px" }}>
-                                                <button type="button" className="btn btn-info">
-                                                    Total Hours:  {
-                                                 total_hours.reduce((a, v) => a = a + v, 0)
-                                                    }
-                                                </button>
-                                            </div>
-                                            }
-                                        </>
-                                }
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
 
-                <Performance dayBookPayload={dayBookPayload} />
-            </>
-            }
+                <>
+                    <Row>
+                        <Col className="col-12">
+                            <Card>
+                                <CardBody>
+                                    {
+                                        is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+                                            <>
+                                                <div className="d-flex"> <CardTitle>Members List Of : </CardTitle>  <span style={{ marginLeft: "10px", fontWeight: "bold" }}> ({Moment(start_date).format('DD-MMM-YY')} - {Moment(end_date).format('DD-MMM-YY')} )</span> </div>
+                                                <MDBDataTable responsive bordered data={{ rows, columns }} />
+                                                {total_hours !== 0 &&
+                                                    <div className="col-md-4" style={{ float: "right", marginLeft: "50px", marginTop: "-50px", marginRight: "-40px" }}>
+                                                        <button type="button" className="btn btn-info">
+                                                            Total Hours:  {
+                                                                total_hours.reduce((a, v) => a = a + v, 0)
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                }
+                                            </>
+                                    }
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+
+                    <Performance activity_month={activity_month} activity_hours={activity_hours} />
+                </>
+
             </div>
 
         </React.Fragment>

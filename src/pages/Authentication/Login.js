@@ -155,8 +155,7 @@ const Login = (props) => {
               <div className="mt-5 text-center">
                 {/* <p>Don't have an account ? <Link to="/register"
                   lassName="fw-medium text-primary"> Signup now </Link> </p> */}
-                <p>© {new Date().getFullYear()} EasyDM. Crafted with <i
-                  className="mdi mdi-heart text-danger"></i> by Narola
+                <p>© {new Date().getFullYear()} EasyDM. All Rights Reserved By - <a href="https://www.narolainfotech.com/" target="_blank"> Narola Infotech</a>
                 </p>
               </div>
             </Col>
