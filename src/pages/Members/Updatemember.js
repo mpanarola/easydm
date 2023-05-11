@@ -35,7 +35,7 @@ const Updatemember = (props) => {
   const [email, setemail] = useState(member_data && member_data.data.email);
   const [type, settype] = useState(member_data && member_data.data.userType);
   const status_check = member_data && member_data.data.isActive ? true : false;
-  const [status, setstatus] = useState('1');
+  const [status, setstatus] = useState(member_data && member_data.data.isActive);
   const [id, setid] = useState(member_data && member_data.data._id);
   const [password, setspassword] = useState(null);
   const [passwordType, setPasswordType] = useState("password");
