@@ -10,7 +10,7 @@ import {
   Button
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { optionCategory, webpagesPayload } from './Constants'
@@ -29,10 +29,10 @@ const Updatedaybook = (props) => {
   const [confirm_both, setconfirm_both] = useState(false)
   const [confirm_id, setconfirm_id] = useState("")
   const [is_loading, setloading] = useState(true)
-  const data = props.location && props.location.state;
+  const data = props.location && props.location.state !== undefined ? props.location.state : ''; // props.location && props.location.state;
   // console.log('datassss ', data.data._id)
-  const daybooks_data = data['data'];
-  console.log('daybooks_data ', daybooks_data)
+  const daybooks_data = data !== '' && data['data'];
+  // console.log('daybooks_data ', daybooks_data)
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
 
@@ -46,8 +46,6 @@ const Updatedaybook = (props) => {
 
   const alert = useAlert();
   const history = useHistory();
-
-
 
   const getDaybookById = (is_reset_search) => {
     setloading(true)
@@ -117,6 +115,7 @@ const Updatedaybook = (props) => {
   }
 
   useEffect(() => {
+    !data &&  goBack();
     setTimeout(function () {
       allWebpages()
       getDaybookById()
@@ -130,7 +129,7 @@ const Updatedaybook = (props) => {
       updateDaybook(daybook_updated_data && daybook_updated_data[0], id).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Updated Successfully');
-          getDaybookById();
+          // getDaybookById();
         }
         else if (resp?.message == 'Unauthorized User!!') {
           history.push('/logout')
@@ -177,17 +176,12 @@ const Updatedaybook = (props) => {
                     <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value)}
                       defaultValue={end_date} max={Moment().format('YYYY-MM-DD')} />
                     
-
                       <button type="button" className="btn btn-secondary mx-2" onClick={getDaybookById} >
                       Search
                     </button>
                     <button type="button" className="btn btn-danger" onClick={resetSearch} >
                       Reset
                     </button>
-
-                      
-                   
-                
 
                   </div>
                 </div>
@@ -408,4 +402,5 @@ const Updatedaybook = (props) => {
   )
 }
 
-export default Updatedaybook
+// export default Updatedaybook
+export default withRouter(Updatedaybook)

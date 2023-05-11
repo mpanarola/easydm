@@ -7,7 +7,7 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
 import Moment from 'moment';
@@ -71,7 +71,7 @@ const Updatebacklink = (props) => {
   }
 
   useEffect(() => {
-
+    !data &&  goBack();
     setTimeout(function () {
       allWebpages()
     }, 500);
@@ -219,4 +219,5 @@ const Updatebacklink = (props) => {
   )
 }
 
-export default Updatebacklink
+// export default Updatebacklink
+export default withRouter(Updatebacklink)

@@ -7,7 +7,7 @@ import {
   CardTitle
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
 import Moment from 'moment';
@@ -22,7 +22,8 @@ import { optionGroupCategory, optionGroupWebPage } from './Constants'
 const Updatepageview = (props) => {
   const history = useHistory();
   const alert = useAlert();
-  const data = props.location && props.location.state;
+
+  const data =  props.location && props.location.state.data !== undefined ? props.location.state : ''; //props.location && props.location.state;
   let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
 
   const [webpage, setwebpage] = useState(data.data.webpage && data.data.webpage.webpage);
@@ -84,7 +85,7 @@ const Updatepageview = (props) => {
   }
 
   useEffect(() => {
-
+    !data &&  goBack();
     setTimeout(function () {
       allWebpages()
     }, 500);
@@ -306,4 +307,5 @@ const Updatepageview = (props) => {
   )
 }
 
-export default Updatepageview
+// export default Updatepageview
+export default withRouter(Updatepageview)

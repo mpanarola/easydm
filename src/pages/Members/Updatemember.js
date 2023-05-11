@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Row,
   Col,
@@ -22,6 +22,7 @@ import { optionGroupStaus, optionGroupType } from './Constants'
 const Updatemember = (props) => {
 
   const member_data = props.location && props.location.state;
+
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
 
   const alert = useAlert();
@@ -91,6 +92,10 @@ const Updatemember = (props) => {
     })
 
   }
+
+  useEffect(() => {
+    !member_data &&   history.push('/members');
+  }, []);
 
   return (
     <>

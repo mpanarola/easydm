@@ -68,9 +68,6 @@ const Daybook = () => {
       "search": {
         "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
         "dateTo":  is_reset_search  == true ?  Moment().format('YYYY-MM-DD') : end_date,
-        "sort": {
-          "createdAt": [1/-1]
-      }
       }
     }
     setloading(true)

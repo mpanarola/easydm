@@ -9,7 +9,7 @@ import {
   Button,
 } from "reactstrap"
 import Select from "react-select";
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -21,7 +21,7 @@ import Historytimeline from "./Historytimeline"
 
 const UpdateSchedular = (props) => {
 
-  const schedular_data = props.location && props.location.state.data;
+  const schedular_data = props.location && props.location.state !== undefined ? props.location.state.data : '';
   // console.log('schedular_datass ', schedular_data)
   const history = useHistory();
   const alert = useAlert();
@@ -36,7 +36,7 @@ const UpdateSchedular = (props) => {
 
   let inpRow = []
 
-  if (schedular_data.refereceLinks.length > 0) {
+  if (!schedular_data == ''  && schedular_data.refereceLinks.length > 0) {
     inpRow = schedular_data && schedular_data.refereceLinks
   }
   let head_published_on = Moment(schedular_data && schedular_data.submitedOn).format('DD-MMM-YY');
@@ -88,7 +88,7 @@ const UpdateSchedular = (props) => {
   }
 
   useEffect(() => {
-
+    !schedular_data &&  goBack();
     setTimeout(function () {
       allMembers()
       allWebpages()
@@ -591,4 +591,5 @@ const UpdateSchedular = (props) => {
   )
 }
 
-export default UpdateSchedular
+// export default UpdateSchedular
+export default withRouter(UpdateSchedular)

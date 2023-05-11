@@ -23,6 +23,7 @@ import { getAllMembers } from '../../helpers/backend_helper'
 const Updatepage = (props) => {
 
   const data = props.location && props.location.state;
+ 
   let published_on_format = Moment(data && data.data.publishedOn).format('YYYY-MM-DD')
   let effective_from_format = Moment(data && data.data.effectiveFrom).format('YYYY-MM-DD')
   let head_published_on = Moment(data && data.data.publishedOn).format('DD-MMM-YY');
@@ -50,6 +51,7 @@ const Updatepage = (props) => {
   }
 
   useEffect(() => {
+    !data &&  goBack()
     setTimeout(function () {
       allMembers()
     }, 1000);

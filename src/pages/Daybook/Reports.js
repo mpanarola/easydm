@@ -278,9 +278,9 @@ const Reports = () => {
                                     {
                                         is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
                                             <>
-                                                <div className="d-flex"> <CardTitle>Members List Of : </CardTitle>  <span style={{ marginLeft: "10px", fontWeight: "bold" }}> ({Moment(start_date).format('DD-MMM-YY')} - {Moment(end_date).format('DD-MMM-YY')} )</span> </div>
+                                                <div className="d-flex"> <CardTitle>Daybooks List : </CardTitle>  <span style={{ marginLeft: "10px", fontWeight: "bold" }}> ( {Moment(start_date).format('DD-MMM-YY')} - {Moment(end_date).format('DD-MMM-YY')} )</span> </div>
                                                 <MDBDataTable responsive bordered data={{ rows, columns }} />
-                                                {total_hours !== 0 &&
+                                                {total_hours !== 0 && total_hours.length !== 0 &&
                                                     <div className="col-md-4" style={{ float: "right", marginLeft: "50px", marginTop: "-50px", marginRight: "-40px" }}>
                                                         <button type="button" className="btn btn-info">
                                                             Total Hours:  {
