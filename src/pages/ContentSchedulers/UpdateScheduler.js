@@ -180,7 +180,7 @@ const UpdateSchedular = (props) => {
 
   return (
     <>
-      <div className="page-content">
+      <div className="page-content view_page">
 
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Content Schedulers" breadcrumbItem="Update Content Scheduler" />

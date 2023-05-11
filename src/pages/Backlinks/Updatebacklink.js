@@ -86,7 +86,7 @@ const Updatebacklink = (props) => {
 
   return (
     <>
-      <div className="page-content">
+      <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
 

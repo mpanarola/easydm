@@ -99,7 +99,7 @@ const Updatemember = (props) => {
 
   return (
     <>
-      <div className="page-content">
+      <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Members" breadcrumbItem="Update Member" />
         <Row>

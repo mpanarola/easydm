@@ -160,7 +160,7 @@ const Updatedaybook = (props) => {
 
   return (
     <>
-      <div className="page-content">
+      <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Update Day Book" />
         <Row>

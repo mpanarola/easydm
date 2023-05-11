@@ -182,7 +182,7 @@ const Daybook = () => {
               </div>
             </div>
 
-            <div className="col-md-4 float-end mt-4">
+            <div className="col-md-4 float-end mt-4 add_new">
               <div className="float-end ">
                 <Link
                   onClick={() => {

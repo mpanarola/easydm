@@ -147,7 +147,7 @@ const Webpage = props => {
         <Card >
           <CardBody>
             {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
-            <div className="float-end">
+            <div className="float-end add_new">
               <Link
                 onClick={() => {
                   history.push("/create_website")

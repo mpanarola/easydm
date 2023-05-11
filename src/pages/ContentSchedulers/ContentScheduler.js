@@ -157,7 +157,7 @@ const ContentScheduler = () => {
         <Card >
           <CardBody>
             {/* <CardTitle className="mb-4 ">Add Website</CardTitle> */}
-            <div className="float-end">
+            <div className="float-end add_new">
               <Link
 
                 to="/create_scheduler"

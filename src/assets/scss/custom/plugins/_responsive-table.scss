@@ -136,3 +136,12 @@
     }
   }
 }
+
+
+
+@media (max-width: 576px) {
+  .page-content {
+    padding: 0 !important;
+    width: 500px;
+}
+}

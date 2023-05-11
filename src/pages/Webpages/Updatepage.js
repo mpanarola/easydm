@@ -96,7 +96,7 @@ const Updatepage = (props) => {
 
   return (
     <>
-      <div className="page-content">
+      <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Websites" breadcrumbItem="Update Website" />
         <Row>
