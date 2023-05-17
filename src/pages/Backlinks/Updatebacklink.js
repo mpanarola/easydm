@@ -18,6 +18,10 @@ import { useAlert } from "react-alert";
 import { getWebsite, updateBackLink } from '../../helpers/backend_helper'
 import { optionGroupCategory, optionGroupWebPage } from './Constants'
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const Updatebacklink = (props) => {
 
   const history = useHistory();
@@ -27,6 +31,8 @@ const Updatebacklink = (props) => {
   let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
   const [webpage, setwebpage] = useState(data && data.data.webpage.webpage);
   const [webpage_id, setwebpage_id] = useState(data && data.data.webpage._id);
+  const [webpage_url, setwebpage_url] = useState(data && data.data.webpage.webpageUrl);
+
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState();
   const [total_backlinks, settotal_backlinks] = useState(data && data.data.numberOfBacklinks);
@@ -110,23 +116,39 @@ const Updatebacklink = (props) => {
                     <Col lg={6} >
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
+                        {webpage_url !== '' && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <Select
                           id="webpage"
-                          // options={optionGroupWebPage}
-                          // options= {{ label: webpage, value: webpage_id }}
                           classNamePrefix="select2-selection"
-                          // onChange={e => setwebpage_id(e.value)}
                           defaultValue={{ label: webpage, value: webpage }}
-                          readOnly
-                        // isOptionDisabled={(option) => option.isdisabled}
+                          isDisabled={true}
                         />
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        {/* <label htmlFor="published_on">Published On</label> */}
-                        <AvField
+                        <label htmlFor="published_on">Published On</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="published_on"
+                          label="Published On"
+                          id="published_on"
+                          // onChange={e => setpublished_on(e.target.value)}
+                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
+                          isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: false,
+                        }}
+                      />
+
+
+                        {/* <AvField
                           type="date"
                           name="published_on"
                           label="Published On"
@@ -135,7 +157,7 @@ const Updatebacklink = (props) => {
                           defaultValue={published_on}
                           onChange={e => setpublished_on(e.target.value)}
                           readOnly
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -147,6 +169,7 @@ const Updatebacklink = (props) => {
                           classNamePrefix="select2-selection"
                           value={{ label: category && category, value: category && category }}
                         // defaultValue={{ label: category, value: category }}
+                          isDisabled={true}
                         />
                       </div>
                     </Col>

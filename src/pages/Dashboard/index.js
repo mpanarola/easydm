@@ -112,37 +112,11 @@ const Dashboard = () => {
           </Col>
         </Row> */}
 
-        <Row>
+        {/* <Row>
           <Col lg={12}>
             <SalesAnalytics />
           </Col>
-
-          {/* <Col lg={4}>
-            <ScatterChart />
-          </Col> */}
-
-          {/* <Col lg={3}>
-            <Card className="bg-primary">
-              <CardBody>
-                <div className="text-white">
-                  <h5 className="text-white">2400 + New Users</h5>
-                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus</p>
-                  <div>
-                    <Link to="#" className="btn btn-outline-success btn-sm">View more</Link>
-                  </div>
-                </div>
-                <Row className="justify-content-end">
-                  <div className="col-8">
-                    <div className="mt-4">
-                      <img src={widgetImage} alt=""
-                        className="img-fluid mx-auto d-block" />
-                    </div>
-                  </div>
-                </Row>
-              </CardBody>
-            </Card>
-          </Col> */}
-        </Row>
+        </Row> */}
         
         {/* <Row>
           <Overview />
@@ -150,17 +124,14 @@ const Dashboard = () => {
           <Revenue />
         </Row> */}
 
-        <Row>
-          {/* <Inbox /> */}
+        {/* <Row>
           <Col lg={6}>
           <Top3BackLinks />
           </Col>
           <Col lg={6}>
           <Top3Pageviews />
           </Col>
-
-
-        </Row>
+        </Row> */}
 
       </div>
     </React.Fragment>

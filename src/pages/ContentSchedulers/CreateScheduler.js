@@ -17,6 +17,10 @@ import { addNewSchedular, getWebsites, getAllMembers } from '../../helpers/backe
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const AddSchedular = () => {
 
   const history = useHistory();
@@ -368,9 +372,24 @@ const AddSchedular = () => {
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="assigned_on">Assigned On</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="assigned_on">Assigned On</label>
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="assigned_on"
+                          id="assigned_on"
+                          onChange={date => setassigned_on(date[0])}
+                          defaultValue={assigned_on}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: true,
+                        }}
+                      />
+                        {/* <AvField
                           type="date"
                           name="assigned_on"
                           label="Assigned On"
@@ -379,7 +398,7 @@ const AddSchedular = () => {
                           defaultValue={assigned_on}
                           onChange={e => setassigned_on(e.target.value)}
                           required
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -407,9 +426,26 @@ const AddSchedular = () => {
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="submitted_on">Submiited On</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="submitted_on">Submiited On</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="submitted_on"
+                          id="submitted_on"
+                          onChange={date => setsubmited_on(date[0])}
+                          defaultValue={submited_on}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: true,
+                        }}
+                      />
+                      
+                        {/* <AvField
                           type="date"
                           name="submitted_on"
                           label="Submiited On"
@@ -418,7 +454,7 @@ const AddSchedular = () => {
                           defaultValue={submited_on}
                           onChange={e => setsubmited_on(e.target.value)}
                           required
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -464,6 +500,8 @@ const AddSchedular = () => {
 
 
                   <Row className="mt-4">
+                  <h5 className="mb-4">Content Quality</h5>
+                  {/* <CardTitle className="mb-4">Content Quality</CardTitle> */}
 
                     <Col lg={6}>
                       <div className="mb-3">

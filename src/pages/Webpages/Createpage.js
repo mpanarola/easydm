@@ -16,6 +16,10 @@ import { getAllMembers, addNewWebsite } from '../../helpers/backend_helper'
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const Createpage = () => {
   const [webpage, setwebpage] = useState(null);
   const [webpage_url, setwebpage_url] = useState(null);
@@ -58,8 +62,8 @@ const Createpage = () => {
       webpageUrl: webpage_url,
       category: category,
       assignedTo: assigned_to.map(i => i.value ? i.value : i._id),
-      effectiveFrom: effective_from,
-      publishedOn: published_on
+      effectiveFrom: Moment(effective_from).format('YYYY-MM-DD') ,
+      publishedOn: Moment(published_on).format('YYYY-MM-DD')
     }
 
     addNewWebsite(website_data).then(resp => {
@@ -147,9 +151,26 @@ const Createpage = () => {
 
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="Published_on">Published On</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="Published_on">Published On</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="published_on"
+                          id="published_on"
+                          onChange={date => setpublished_on(date[0])}
+                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          // clickOpens: false,
+                        }}
+                      />
+
+                        {/* <AvField
                           type="date"
                           label="Published On"
                           name="published_on"
@@ -158,12 +179,12 @@ const Createpage = () => {
                           onChange={e => setpublished_on(e.target.value)}
                           defaultValue={published_on}
                           required
-                        />
+                        /> */}
                       </div>
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
+                      <div className="mb-3 ">
                         <label htmlFor="assigned_to">Assigned To</label>
                         <Select
                           id="assigned_to"
@@ -181,9 +202,26 @@ const Createpage = () => {
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="effective_from">Effective From</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="effective_from">Effective From</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="effective_from"
+                          id="effective_from"
+                          onChange={date => seteffective_from(date[0])}
+                          defaultValue={effective_from}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          // clickOpens: false,
+                        }}
+                      />
+
+                        {/* <AvField
                           type="date"
                           label="Effective From"
                           name="effective_from"
@@ -192,7 +230,7 @@ const Createpage = () => {
                           onChange={e => seteffective_from(e.target.value)}
                           defaultValue={effective_from}
                           required
-                        />
+                        /> */}
                       </div>
                     </Col>
 

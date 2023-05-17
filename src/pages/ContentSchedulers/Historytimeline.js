@@ -57,7 +57,7 @@ const HistoryTimeline = (props) => {
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
-                    <h5 className="font-size-14">{Moment(activity.updatedAt).format('DD-MMM-YY HH:mm')} <i
+                    <h5 className="font-size-14">{Moment(activity.updatedAt).format('DD-MMM-YY HH:mm a')} <i
                       className="mdi mdi-arrow-right text-primary align-middle ms-2"></i>
                     </h5>
                   </div>
@@ -73,10 +73,10 @@ const HistoryTimeline = (props) => {
                                 {
                                   <b>{ key=='submitedOn' || key=='assignedOn' || key=='submitedOn' ? Moment(activity.newData[key]).format('DD-MMM-YY') :
                                   key=='refereceLinks' ? activity.newData[key] && activity.newData[key].map(link => (
-                                    <li style={{ listStyle: 'inside'}}>{link}</li>
+                                    <li style={{ listStyle: 'inside'}}> <a href={link} target="_blank"> {link} </a></li>
                                   )
                                   ):
-                                  key =='assignedBy' || key == 'writtenBy' ? ' Member Changed' : key =='webpage' ? ' Webpage Changed' : activity.newData[key] == '' ? 'Null'  : activity.newData[key]}</b>
+                               activity.newData[key] == '' ? 'Removed'  : activity.newData[key]}</b>
                                 }
 
                               </li>

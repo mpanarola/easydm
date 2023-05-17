@@ -15,6 +15,9 @@ import { getAlldaybooks, getAllMembers, getWebsites, activityDaybook } from '../
 import { memberPayload, optionGroupCategory, webpagePayload } from './Constants';
 
 import Performance from "./Performance"
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
 
 
 const Reports = () => {
@@ -227,25 +230,55 @@ const Reports = () => {
                                                 // onChange={e => console.log(e.target.value)}
                                                 options={default_members_list}
                                                 value={members_list}
-
-
                                                 classNamePrefix="select2-selection"
                                             />
                                         </div>
                                     </Col>
 
                                     <Col lg={6}>
-                                        <div className="float-start">
+                                        <div className="float-start while_bg_c">
                                             <div> <div className="card-title">Date Filter</div> </div>
                                             <div className="float-start  d-flex ">
+                                            <Flatpickr
+                                                className="form-control d-block"
+                                                name="start_date"
+                                                id="start_date"
+                                                onChange={date => set_start_date(date[0])}
+                                                defaultValue={start_date}
+                                                // isDisabled={true}
+                                                //   placeholder="dd M,yyyy"
+                                                options={{
+                                                altInput: true,
+                                                altFormat: "j-F-y",
+                                                dateFormat: "Y-m-d",
+                                                clickOpens: true,
+                                                }}
+                                            />
 
-                                                <input type="date" name="start_date" className="form-control" value={start_date} onChange={(e) => {
+                                                <Flatpickr
+                                                className="form-control d-block"
+                                                name="end_date"
+                                                id="end_date"
+                                                onChange={date => set_end_date(date[0])}
+                                                defaultValue={end_date}
+                                                max={Moment().format('YYYY-MM-DD')}
+                                                // isDisabled={true}
+                                                //   placeholder="dd M,yyyy"
+                                                options={{
+                                                altInput: true,
+                                                altFormat: "j-F-y",
+                                                dateFormat: "Y-m-d",
+                                                clickOpens: true,
+                                                }}
+                                            />
+
+                                                {/* <input type="date" name="start_date" className="form-control" value={start_date} onChange={(e) => {
                                                     set_start_date(e.target.value)
-                                                }} />
+                                                }} /> */}
                                                 {/* <span>Start</span> */}
-                                                <input type="date" name="end_date" value={end_date} className="form-control mx-2" onChange={(e) => {
+                                                {/* <input type="date" name="end_date" value={end_date} className="form-control mx-2" onChange={(e) => {
                                                     set_end_date(e.target.value)
-                                                }} max={Moment().format('YYYY-MM-DD')} />
+                                                }} max={Moment().format('YYYY-MM-DD')} /> */}
                                             </div>
                                         </div>
                                     </Col>

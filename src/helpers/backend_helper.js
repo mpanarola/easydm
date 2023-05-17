@@ -100,8 +100,8 @@ export const getAlldaybooks = (daybook) => post(url.GET_DAY_BOOKS, daybook)
 export const getDaybooksDetails = id =>
   get(`${url.GET_DAY_BOOK_DETAIL}/${id}`, { params: { id } })
 
-export const getDaybooksCurrentUser = (daybook, id) =>
-post(`${url.GET_DAY_BOOK_CURRENT_USER}/${id}`, daybook)
+export const getDaybooksCurrentUser = (daybook) =>
+post(`${url.GET_DAY_BOOK_CURRENT_USER}`, daybook)
 
 export const addDaybook = daybook => post(url.ADD_DAY_BOOK, daybook)
 export const updateDaybook = (daybook, id) => put(`${url.UPDATE_DAY_BOOK}/${id}`, daybook)

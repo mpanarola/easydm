@@ -20,6 +20,10 @@ import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import { getAllMembers } from '../../helpers/backend_helper'
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const Updatepage = (props) => {
 
   const data = props.location && props.location.state;
@@ -68,8 +72,8 @@ const Updatepage = (props) => {
       webpage: data.data.webpage !== webpage ? webpage : undefined,
       category: data.data.category !== category ? category : undefined,
       webpageUrl: data.data.webpageUrl !== webpage_url ? webpage_url : undefined,
-      effectiveFrom: effective_from !== effective_from_format ? effective_from : undefined,
-      publishedOn: published_on !== published_on_format ? published_on : undefined,
+      effectiveFrom: effective_from !== effective_from_format ? Moment(effective_from).format('YYYY-MM-DD') : undefined,
+      publishedOn: published_on !== published_on_format ? Moment(published_on).format('YYYY-MM-DD') : undefined,
       assignedTo: !is_assigned_equal ? assigned_to.map(i => i.value ? i.value : i._id) : undefined,
     }
 
@@ -133,6 +137,7 @@ const Updatepage = (props) => {
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="name">Web Page</label> */}
+                     
                         <AvField
                           type="text"
                           label="Web Page"
@@ -165,9 +170,26 @@ const Updatepage = (props) => {
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="published_on">Published On</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="published_on">Published On</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="published_on"
+                          id="published_on"
+                          onChange={date => setpublished_on(date[0])}
+                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          // clickOpens: false,
+                        }}
+                      />
+
+                        {/* <AvField
                           type="date"
                           label="Published On"
                           name="published_on"
@@ -176,7 +198,7 @@ const Updatepage = (props) => {
                           onChange={e => setpublished_on(e.target.value)}
                           defaultValue={published_on}
                           required
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -209,9 +231,26 @@ const Updatepage = (props) => {
 
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="effective_from">Effective From</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="effective_from">Effective From</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="effective_from"
+                          id="effective_from"
+                          onChange={date => seteffective_from(date[0])}
+                          defaultValue={effective_from}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          // clickOpens: false,
+                        }}
+                      />
+
+                        {/* <AvField
                           label="Effective From"
                           name="effective_from"
                           type="date"
@@ -220,7 +259,7 @@ const Updatepage = (props) => {
                           onChange={e => seteffective_from(e.target.value)}
                           required
                           defaultValue={effective_from}
-                        />
+                        /> */}
                       </div>
                     </Col>
 

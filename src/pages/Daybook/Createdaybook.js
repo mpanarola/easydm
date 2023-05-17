@@ -190,12 +190,12 @@ const Createdaybook = () => {
                               <Col md="2">
                                 <div className="mb-4  mt-md-0">
                                   <input
-                                    type="number"
+                                    type="text"
                                     name="hours"
                                     className="inner form-control"
                                     defaultValue={field.hours}
                                     placeholder="Enter Hours"
-                                    maxLength="3"
+                                    pattern="[0-9]+(\.[0-9]{1,2})?%?" maxlength="4"
                                     min={1}
                                     // onChange={e => settotalHours(e.target.value)}
                                     onChange={e => handleInput(key, "hours", e.target.value)}

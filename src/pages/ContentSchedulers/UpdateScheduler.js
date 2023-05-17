@@ -19,6 +19,10 @@ import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 import Historytimeline from "./Historytimeline"
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const UpdateSchedular = (props) => {
 
   const schedular_data = props.location && props.location.state !== undefined ? props.location.state.data : '';
@@ -129,12 +133,19 @@ const UpdateSchedular = (props) => {
   }
 
   const updateScheduler = (e) => {
+
+    const original_data = schedular_data.refereceLinks;
+  
+    var updated_ref_link = referece_links.filter( function(n) { return !this.has(n) }, new Set(original_data) );
+    
+    // console.log('res ', res);
+
     const is_assigned_equal = isArrayEquals(referece_links, schedular_data.refereceLinks);
     // console.log('webpage_id ',webpage_id)
     const schedularData = {
       contentType: schedular_data && schedular_data.contentType !== topic_type ? topic_type : undefined,
       webpage: schedular_data && schedular_data.webpage && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage ? webpage_id : webpage_id : webpage_id == '' ? webpage_id : schedular_data.webpage == null ? webpage : undefined,
-      refereceLinks: schedular_data && !is_assigned_equal ? referece_links : undefined,
+      refereceLinks: schedular_data && !is_assigned_equal ? updated_ref_link : undefined,
       topicTitle: schedular_data && schedular_data.topicTitle !== topic_title ? topic_title : undefined,
       docLink: schedular_data && schedular_data.docLink !== doc_link ? doc_link : undefined,
       expectedWords: schedular_data && schedular_data.expectedWords !== expected_words ? expected_words : undefined,
@@ -256,7 +267,7 @@ const UpdateSchedular = (props) => {
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
-
+                              
                                   <AvField
                                     type="url"
                                     name={"url" + key}
@@ -267,7 +278,7 @@ const UpdateSchedular = (props) => {
                                     placeholder="Enter Referece Link"
                                     onChange={(evnt) => handleChange(key, evnt)}
                                   />
-
+                                  {typeof field !== 'object' && <a href={field} target="_blank" style={{ float: "right" }} >View Link</a>}
                                 </Col>
 
                                 {key != 0 &&
@@ -275,13 +286,12 @@ const UpdateSchedular = (props) => {
                                     <div className="mt-2 mt-md-0 d-grid">
                                       <Button
                                         color="danger"
-                                        className="inner"
+                                        className="btn btn-danger fas fa-trash"
                                         onClick={(e) => {
                                           handleRemoveFields(e, key)
                                         }}
-                                        block
+                                        
                                       >
-                                        Remove
                                       </Button>
                                     </div>
                                   </Col>
@@ -380,9 +390,26 @@ const UpdateSchedular = (props) => {
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="assigned_on">Assigned On</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="assigned_on">Assigned On</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="assigned_on"
+                          id="assigned_on"
+                          onChange={date => setassigned_on(date[0])}
+                          defaultValue={assigned_on}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: true,
+                        }}
+                      />
+
+                        {/* <AvField
                           type="date"
                           name="assigned_on"
                           label="Assigned On"
@@ -390,7 +417,7 @@ const UpdateSchedular = (props) => {
                           id="assigned_on"
                           onChange={e => setassigned_on(e.target.value)}
                           defaultValue={Moment(assigned_on).format('YYYY-MM-DD')}
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -419,9 +446,26 @@ const UpdateSchedular = (props) => {
                     </Col>
 
                     <Col lg={6}>
-                      <div className="mb-3">
-                        {/* <label htmlFor="submitted_on">Submiited On</label> */}
-                        <AvField
+                      <div className="mb-3 while_bg_c">
+                        <label htmlFor="submitted_on">Submiited On</label>
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="submitted_on"
+                          id="submitted_on"
+                          onChange={date => setsubmited_on(date[0])}
+                          defaultValue={submited_on}
+                          // isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: true,
+                        }}
+                      />
+
+                        {/* <AvField
                           type="date"
                           name="submitted_on"
                           label="Submiited On"
@@ -429,7 +473,7 @@ const UpdateSchedular = (props) => {
                           id="submitted_on"
                           onChange={e => setsubmited_on(e.target.value)}
                           defaultValue={Moment(submited_on).format('YYYY-MM-DD')}
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -475,7 +519,7 @@ const UpdateSchedular = (props) => {
 
 
                   <Row className="mt-4">
-
+                  <h5 className="mb-4">Content Quality</h5>
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}

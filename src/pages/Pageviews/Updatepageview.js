@@ -19,6 +19,10 @@ import { useAlert } from "react-alert";
 import { getWebsite, updatePageView as updatePageview } from '../../helpers/backend_helper'
 import { optionGroupCategory, optionGroupWebPage } from './Constants'
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const Updatepageview = (props) => {
   const history = useHistory();
   const alert = useAlert();
@@ -28,6 +32,7 @@ const Updatepageview = (props) => {
 
   const [webpage, setwebpage] = useState(data.data.webpage && data.data.webpage.webpage);
   const [webpage_id, setwebpage_id] = useState(data.data.webpage && data.data.webpage._id);
+  const [webpage_url, setwebpage_url] = useState(data && data.data.webpage.webpageUrl);
   const [monthyear, setmonthyear] = useState(Moment(data && data.data.monthYear).format("YYYY-MM"));
   const [monthyear_full, setmonthyear_full] = useState(Moment(data && data.data.monthYear).startOf('month').format("YYYY-MM-DD"));
   const [category, setcategory] = useState();
@@ -121,21 +126,41 @@ const Updatepageview = (props) => {
                     <Col lg={6} >
                       <div className="mb-3">
                         <label htmlFor="webpage">Web Page</label>
+                        {webpage_url !== '' && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <Select
                           id="webpage"
                           classNamePrefix="select2-selection"
                           defaultValue={{ label: webpage, value: webpage }}
-                          readOnly
+                          isDisabled={true}
                         />
                         {is_set_webpage_required == true &&
                           <div class="d-block">This field is required</div>
                         }
+                       
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <AvField
+                      <label htmlFor="published_on">Published On</label>
+                      <Flatpickr
+                        className="form-control d-block"
+                        name="published_on"
+                          label="Published On"
+                          id="published_on"
+                          // onChange={e => setpublished_on(e.target.value)}
+                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
+                          isDisabled={true}
+                          placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: false,
+                        }}
+                      />
+
+                        {/* <AvField
                           type="date"
                           name="published_on"
                           label="Published On"
@@ -143,8 +168,8 @@ const Updatepageview = (props) => {
                           id="published_on"
                           defaultValue={published_on}
                           onChange={e => setpublished_on(e.target.value)}
-                          readOnly
-                        />
+                          isDisabled={true}
+                        /> */}
                       </div>
                     </Col>
 
@@ -156,6 +181,7 @@ const Updatepageview = (props) => {
                           classNamePrefix="select2-selection"
                           value={{ label: category && category, value: category && category }}
                         // defaultValue={{ label: category, value: category }}
+                          isDisabled={true}
                         />
                       </div>
                     </Col>
@@ -197,6 +223,7 @@ const Updatepageview = (props) => {
                     </Row>
 
                     <Row className="mt-4">
+                    <h5 className="mb-4">Content Quality</h5>
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}

@@ -18,6 +18,10 @@ import { useAlert } from "react-alert";
 import Moment from 'moment';
 import { webpages_payload } from './Constants'
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const Createpageview = () => {
 
   const [webpage, setwebpage] = useState();
@@ -140,7 +144,24 @@ const Createpageview = () => {
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="published_on">Published On</label>
-                        <input
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="published_on"
+                          label="Published On"
+                          id="published_on"
+                          // onChange={e => setpublished_on(e.target.value)}
+                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
+                          isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: false,
+                        }}
+                      />
+
+                        {/* <input
                           type="date"
                           name="published_on"
                           label="Published On"
@@ -150,7 +171,7 @@ const Createpageview = () => {
                           value={Moment(published_on).format('YYYY-MM-DD')}
                           readOnly
                           required
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -164,6 +185,7 @@ const Createpageview = () => {
                           classNamePrefix="select2-selection"
                           onChange={e => setcategory(e.value)}
                           value={{ label: category, value: category }}
+                          isDisabled={true}
                         />
                       </div>
                     </Col>
@@ -181,6 +203,7 @@ const Createpageview = () => {
                             required
                             onChange={e => setmonthyear(e.target.value)}
                             defaultValue={monthyear}
+                            // placeholder={'Select'}
                           />
                         </div>
                       </Col>
@@ -204,7 +227,7 @@ const Createpageview = () => {
                     </Row>
 
                     <Row className="mt-4">
-
+                    <h5 className="mb-4">Content Quality</h5>
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}

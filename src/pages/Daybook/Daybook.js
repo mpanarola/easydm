@@ -14,6 +14,10 @@ import { useAlert } from "react-alert";
 import { getAlldaybooks, deleteDaybook } from '../../helpers/backend_helper'
 import { columns } from './Constants';
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
 const Daybook = () => {
 
   const history = useHistory();
@@ -52,11 +56,11 @@ const Daybook = () => {
   const updateDaybook = (data) => {
     history.push({
       pathname: '/update_daybook',
-      state: { data: data },
+      state: { data: data, start_date, end_date },
     })
   };
 
-  const resetSearch = () =>{
+  const resetSearch = () => {
     setloading(true)
     set_end_date(Moment().format('YYYY-MM-DD'))
     set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
@@ -67,13 +71,13 @@ const Daybook = () => {
     const dayBookPayload = {
       "search": {
         "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
-        "dateTo":  is_reset_search  == true ?  Moment().format('YYYY-MM-DD') : end_date,
+        "dateTo": is_reset_search == true ? Moment().format('YYYY-MM-DD') : end_date,
       }
     }
     setloading(true)
     getAlldaybooks(dayBookPayload).then(resp => {
-      if(resp?.status){
-        console.log('success', resp?.status )
+      if (resp?.status) {
+        console.log('success', resp?.status)
         setdaybooks_list(resp?.data[0])
         setloading(false)
       }
@@ -92,47 +96,47 @@ const Daybook = () => {
   const rows = useMemo(() =>
     daybooks_list && daybooks_list.map((row, order) => (
       {
-      ...row,
-      id: order + 1,
-      photo: (
-        <div className="d-flex align-items-start">
-          <div className="me-3 align-self-center">
-            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+        ...row,
+        id: order + 1,
+        photo: (
+          <div className="d-flex align-items-start">
+            <div className="me-3 align-self-center">
+              <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+            </div>
           </div>
-        </div>
-      ),
-      // webpage_url: "",
-      name: row['info'][0].userName,
-      date: start_date!== '' ||  end_date !=='' ? Moment(start_date).format('DD-MMM-YY') + ' - ' + Moment(end_date).format('DD-MMM-YY') : Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
-      hours: (
-        <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
-      ),
-      action: (
-        <div className="d-flex">
-          <div
-            className="btn btn-primary fas fa-edit"
-            style={{
-              cursor: "pointer",
-              marginRight: "10px"
-            }}
-            onClick={() => updateDaybook(row)}
-            title="View Day Book"
-          >
-            
-          </div>
+        ),
+        // webpage_url: "",
+        name: row['info'][0].userName,
+        date: start_date !== '' || end_date !== '' ? Moment(start_date).format('DD-MMM-YY') + ' - ' + Moment(end_date).format('DD-MMM-YY') : Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
+        hours: (
+          <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+        ),
+        action: (
+          <div className="d-flex">
+            <div
+              className="btn btn-primary fas fa-edit"
+              style={{
+                cursor: "pointer",
+                marginRight: "10px"
+              }}
+              onClick={() => updateDaybook(row)}
+              title="View Day Book"
+            >
 
-          {/* <div
+            </div>
+
+            {/* <div
             className="btn btn-danger"
             onClick={() => confirmDelete()}
           >
             Delete
           </div> */}
 
-        </div>
-      )
+          </div>
+        )
 
 
-    })), [daybooks_list])
+      })), [daybooks_list])
 
   useEffect(() => {
     setTimeout(function () {
@@ -164,21 +168,53 @@ const Daybook = () => {
 
             <div className="col-md-8 float-start">
               <div> <div className="card-title">Date Filter</div> </div>
-              <div className="float-start  d-flex ">
+              <div className="float-start  d-flex while_bg_c">
 
-                <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value) } value={start_date} />
+                <Flatpickr
+                  className="form-control d-block"
+                  name="start_date"
+                  id="start_date"
+                  onChange={date => set_start_date(date[0])}
+                  defaultValue={start_date}
+                  // isDisabled={true}
+                  // placeholder="dd M,yyyy"
+                  options={{
+                    altInput: true,
+                    altFormat: "j-F-y",
+                    dateFormat: "Y-m-d",
+                    clickOpens: true,
+                  }}
+                />
+
+                <Flatpickr
+                  className="form-control d-block"
+                  name="end_date"
+                  id="end_date"
+                  onChange={date => set_end_date(date[0])}
+                  defaultValue={end_date}
+                  max={Moment().format('YYYY-MM-DD')}
+                  // placeholder="dd M,yyyy"
+                  options={{
+                    altInput: true,
+                    altFormat: "j-F-y",
+                    dateFormat: "Y-m-d",
+                    clickOpens: true,
+                  }}
+                />
+
+                {/* <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value) } value={start_date} /> */}
                 {/* <span>Start</span> */}
-                <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value) }
-                 value={end_date} max={Moment().format('YYYY-MM-DD')} />
+                {/* <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value) }
+                 value={end_date} max={Moment().format('YYYY-MM-DD')} /> */}
                 <button type="button" className="btn btn-secondary  mx-2" onClick={getDaybooks} >
                   Search
                 </button>
                 {
-                  start_date !== '' && end_date !=='' && 
+                  start_date !== '' && end_date !== '' &&
                   <button type="button" className="btn btn-danger" onClick={resetSearch} >
-                  Reset
-                </button>
-                } 
+                    Reset
+                  </button>
+                }
               </div>
             </div>
 

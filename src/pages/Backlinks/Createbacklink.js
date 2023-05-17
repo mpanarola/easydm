@@ -18,6 +18,11 @@ import { useAlert } from "react-alert";
 import Moment from 'moment';
 import { optionGroupCategory, optionGroupWebPage } from './Constants'
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
+
 const Createbacklink = () => {
   const [webpage, setwebpage] = useState();
   const [webpage_err, setwebpage_err] = useState(false);
@@ -137,7 +142,25 @@ const Createbacklink = () => {
                     <Col lg={6}>
                       <div className="mb-3">
                         <label htmlFor="published_on">Published On</label>
-                        <input
+
+                        <Flatpickr
+                        className="form-control d-block"
+                        name="published_on"
+                          label="Published On"
+                          id="published_on"
+                          // onChange={e => setpublished_on(e.target.value)}
+                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
+                          isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                        options={{
+                          altInput: true,
+                          altFormat: "j-F-y",
+                          dateFormat: "Y-m-d",
+                          clickOpens: false,
+                        }}
+                      />
+                      
+                        {/* <input
                           type="date"
                           name="published_on"
                           label="Published On"
@@ -146,7 +169,7 @@ const Createbacklink = () => {
                           onChange={e => setpublished_on(e.target.value)}
                           value={Moment(published_on).format('YYYY-MM-DD')}
                           readOnly
-                        />
+                        /> */}
                       </div>
                     </Col>
 
@@ -157,6 +180,7 @@ const Createbacklink = () => {
                           id="category"
                           name="category"
                           label="Category"
+                          isDisabled={true}
                           // options={optionGroupCategory}
                           classNamePrefix="select2-selection"
                           onChange={e => setcategory(e.value)}

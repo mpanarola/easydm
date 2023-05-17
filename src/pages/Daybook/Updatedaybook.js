@@ -19,6 +19,11 @@ import { useAlert } from "react-alert";
 import Moment from 'moment';
 import SweetAlert from "react-bootstrap-sweetalert";
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import "./datatables.scss"
+
+
 const Updatedaybook = (props) => {
   var today = new Date(); //Current Date
   let today_date = Moment(today).format('YYYY-MM-DD');
@@ -30,7 +35,7 @@ const Updatedaybook = (props) => {
   const [confirm_id, setconfirm_id] = useState("")
   const [is_loading, setloading] = useState(true)
   const data = props.location && props.location.state !== undefined ? props.location.state : ''; // props.location && props.location.state;
-  // console.log('datassss ', data.data._id)
+  console.log('datassss ', data)
   const daybooks_data = data !== '' && data['data'];
   // console.log('daybooks_data ', daybooks_data)
   const inpRow = []
@@ -41,8 +46,8 @@ const Updatedaybook = (props) => {
   const [daybook_id, setdaybook_id] = useState(daybooks_data._id);
   const [member_id, set_member_id] = useState([]);
   const [total_hours, settotal_hours] = useState([]);
-  const [start_date, set_start_date] = useState(Moment().startOf('month').format('YYYY-MM-DD'))
-  const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
+  const [start_date, set_start_date] = useState(Moment(date && data.start_date).startOf('month').format('YYYY-MM-DD'))
+  const [end_date, set_end_date] = useState(Moment(date && data.end_date).format('YYYY-MM-DD'))
 
   const alert = useAlert();
   const history = useHistory();
@@ -53,18 +58,18 @@ const Updatedaybook = (props) => {
     const page_payload = {
       "search": {
         "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
-        "dateTo":  is_reset_search  == true ?  Moment().format('YYYY-MM-DD') : end_date,
+        "dateTo": is_reset_search == true ? Moment().format('YYYY-MM-DD') : end_date,
         "member": [data.data && data.data._id]
       }
     }
 
 
     getAlldaybooks(page_payload).then(resp => {
-      if(resp?.data[0]){
-        setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [] )
-      settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours: 0 )
-      set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
-      // member_id.push(resp?.data[0][0] ? resp?.data[0][0]._id : [])
+      if (resp?.data[0]) {
+        setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [])
+        settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours : 0)
+        set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
+        // member_id.push(resp?.data[0][0] ? resp?.data[0][0]._id : [])
       }
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -86,10 +91,10 @@ const Updatedaybook = (props) => {
   function handleRemoveFields() {
     deleteDaybook(confirm_id).then(resp => {
       setconfirm_both(false)
-      if(resp.status){
+      if (resp.status) {
         alert.success('Your daybook has been deleted.');
       }
-      else{
+      else {
         alert.error(resp.message);
       }
       getDaybookById();
@@ -115,7 +120,7 @@ const Updatedaybook = (props) => {
   }
 
   useEffect(() => {
-    !data &&  goBack();
+    !data && goBack();
     setTimeout(function () {
       allWebpages()
       getDaybookById()
@@ -129,7 +134,7 @@ const Updatedaybook = (props) => {
       updateDaybook(daybook_updated_data && daybook_updated_data[0], id).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Updated Successfully');
-          // getDaybookById();
+          setloading(false)
         }
         else if (resp?.message == 'Unauthorized User!!') {
           history.push('/logout')
@@ -147,7 +152,7 @@ const Updatedaybook = (props) => {
 
   };
 
-  const resetSearch = () =>{
+  const resetSearch = () => {
     setloading(true)
     set_end_date(Moment().format('YYYY-MM-DD'))
     set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
@@ -163,11 +168,11 @@ const Updatedaybook = (props) => {
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Update Day Book" />
-        <Row>
+        <Row className="d-none">
           <Col lg="12">
             <Card>
               <CardBody>
-                <div className="col-md-8 float-start">
+                <div className="col-md-8 float-start d-none">
                   <div> <div class="card-title">Date Filter</div> </div>
                   <div className="float-start  d-flex ">
 
@@ -175,8 +180,8 @@ const Updatedaybook = (props) => {
                     {/* <span>Start</span> */}
                     <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value)}
                       defaultValue={end_date} max={Moment().format('YYYY-MM-DD')} />
-                    
-                      <button type="button" className="btn btn-secondary mx-2" onClick={getDaybookById} >
+
+                    <button type="button" className="btn btn-secondary mx-2" onClick={getDaybookById} >
                       Search
                     </button>
                     <button type="button" className="btn btn-danger" onClick={resetSearch} >
@@ -207,7 +212,7 @@ const Updatedaybook = (props) => {
                               className="inner col-lg-12 ml-md-auto"
                               id="repeater"
                             >
-                              
+
                               {inputFields && inputFields.map((field, key) => (
                                 field.webpage &&
                                 <div
@@ -217,15 +222,31 @@ const Updatedaybook = (props) => {
                                 >
 
                                   <Col md="2">
-                                    <div className="mb-4 mt-md-0">
-                                      <input
+                                    <div className="mb-4 mt-md-0 while_bg_c">
+
+                                      <Flatpickr
+                                        className="form-control d-block"
+                                        name="creationDate"
+                                        id="creationDate"
+                                        max={today_date}
+                                        defaultValue={field.creationDate ? Moment(field.creationDate).format('YYYY-MM-DD') : today_date}
+                                        onChange={date => handleInput(key, "creationDate", date[0])}
+                                        options={{
+                                          altInput: true,
+                                          altFormat: "j-F-y",
+                                          dateFormat: "Y-m-d",
+                                          clickOpens: true,
+                                        }}
+                                      />
+
+                                      {/* <input
                                         type="date"
                                         name="creationDate"
                                         className="inner form-control"
                                         max={today_date}
                                         defaultValue={field.creationDate ? Moment(field.creationDate).format('YYYY-MM-DD') : today_date}
                                         onChange={e => handleInput(key, "creationDate", e.target.value)}
-                                      />
+                                      /> */}
                                     </div>
                                   </Col>
 
@@ -270,13 +291,13 @@ const Updatedaybook = (props) => {
                                   <Col md="1">
                                     <div className="mb-4  mt-md-0">
                                       <input
-                                        type="number"
+                                        type="text"
                                         name="hours"
                                         className="inner form-control"
                                         defaultValue={field.hours}
                                         placeholder="Enter Hours"
-                                        maxLength="3"
                                         min={1}
+                                        pattern="[0-9]+(\.[0-9]{1,2})?%?" maxlength="4"
                                         onChange={e => handleInput(key, "hours", e.target.value)}
                                       />
                                     </div>
@@ -377,14 +398,14 @@ const Updatedaybook = (props) => {
 
                             </div>
 
-                          { total_hours !== '' || total_hours !== 0 &&
-                            <div className="col-md-4">
-                              <button type="button" style={{ marginLeft: "50px" }} className="btn btn-info">
-                                Total Hours:  {total_hours}
-                              </button>
-                            </div>
-                          }
-                          
+                            {total_hours !== '' &&
+                              <div className="col-md-4">
+                                <button type="button" style={{ marginLeft: "50px" }} className="btn btn-info">
+                                  Total Hours:  {total_hours}
+                                </button>
+                              </div>
+                            }
+
                           </div>
 
                         </Col>
