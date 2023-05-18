@@ -44,7 +44,7 @@ const Login = (props) => {
         window.location.replace("/dashboard");
         
       } else {
-        alert.error('Your account is deactivated!!');
+        alert.error('Please enter valid details.');
       }
 
     }).catch(err => {

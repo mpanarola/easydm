@@ -380,6 +380,7 @@ const AddSchedular = () => {
                           id="assigned_on"
                           onChange={date => setassigned_on(date[0])}
                           defaultValue={assigned_on}
+                          value={assigned_on}
                           // isDisabled={true}
                           // placeholder="dd M,yyyy"
                         options={{
@@ -435,6 +436,7 @@ const AddSchedular = () => {
                           id="submitted_on"
                           onChange={date => setsubmited_on(date[0])}
                           defaultValue={submited_on}
+                          value={assigned_on}
                           // isDisabled={true}
                           // placeholder="dd M,yyyy"
                         options={{

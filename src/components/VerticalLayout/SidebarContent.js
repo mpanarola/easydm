@@ -78,6 +78,7 @@ const SidebarContent = props => {
     }
   }
 
+  const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
 
   return (
     <React.Fragment>
@@ -103,12 +104,14 @@ const SidebarContent = props => {
               </Link>
             </li>
 
-            <li>
-              <Link to="/members" className=" waves-effect">
-                <i className="mdi mdi-account-circle"></i>
-                <span>{props.t("Members")}</span>
-              </Link>
-            </li>
+            {get_auth_user.userRole == 1 &&
+             <li>
+             <Link to="/members" className=" waves-effect">
+               <i className="mdi mdi-account-circle"></i>
+               <span>{props.t("Members")}</span>
+             </Link>
+           </li>
+          }
 
             <li>
               <Link to="/content_schedulers" className=" waves-effect">

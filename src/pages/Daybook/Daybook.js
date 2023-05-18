@@ -11,7 +11,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
 import { useHistory } from 'react-router-dom';
 import { useAlert } from "react-alert";
-import { getAlldaybooks, deleteDaybook } from '../../helpers/backend_helper'
+import { getDaybooksCurrentUser, deleteDaybook } from '../../helpers/backend_helper'
 import { columns } from './Constants';
 
 import "flatpickr/dist/themes/material_blue.css";
@@ -45,7 +45,7 @@ const Daybook = () => {
       deleteDaybook(record_id).then(resp => {
         setconfirm_both(false)
         alert.success('Your daybook has been deleted.');
-        getAlldaybooks()
+        getDaybooksCurrentUser()
       }).catch(err => {
         alert.error('Please try again...');
       })
@@ -56,7 +56,7 @@ const Daybook = () => {
   const updateDaybook = (data) => {
     history.push({
       pathname: '/update_daybook',
-      state: { data: data, start_date, end_date },
+      state: { data: data },
     })
   };
 
@@ -69,13 +69,22 @@ const Daybook = () => {
 
   const getDaybooks = (is_reset_search) => {
     const dayBookPayload = {
+      "options": {
+        "populate": [
+          {
+            "path": "addedBy",
+            "select": ["avatar", "name"]
+          }
+        ]
+      },
       "search": {
-        "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
-        "dateTo": is_reset_search == true ? Moment().format('YYYY-MM-DD') : end_date,
+        "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : Moment(start_date).format('YYYY-MM-DD'),
+        "dateTo": is_reset_search == true ? Moment().format('YYYY-MM-DD') : Moment(end_date).format('YYYY-MM-DD'),
       }
     }
     setloading(true)
-    getAlldaybooks(dayBookPayload).then(resp => {
+    getDaybooksCurrentUser(dayBookPayload).then(resp => {
+      // console.log('resp ', resp)
       if (resp?.status) {
         console.log('success', resp?.status)
         setdaybooks_list(resp?.data[0])
@@ -93,50 +102,103 @@ const Daybook = () => {
 
   }
 
+  // const rows = useMemo(() =>
+  //   daybooks_list && daybooks_list.map((row, order) => (
+  //     {
+  //       ...row,
+  //       id: order + 1,
+  //       photo: (
+  //         <div className="d-flex align-items-start">
+  //           <div className="me-3 align-self-center">
+  //             { row.addedBy ?
+  //             <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row.addedBy.avatar}`}  className="avatar-sm rounded-circle" alt={row.addedBy && row.addedBy.name} title={row.addedBy.name && row.addedBy.name}  />
+  //          : 
+  //          <img src={`${process.env.REACT_APP_DATABASEURL}avatar/def.png`} title={row.addedBy && row.addedBy.name} alt={row.addedBy && row.addedBy.name} className="avatar-sm rounded-circle" />
+
+  //           }
+  //             </div>
+  //         </div>
+  //       ),
+  //       // webpage_url: "",
+  //       name: row.addedBy && row.addedBy.name && row.addedBy.name,
+  //       date:Moment(row.creationDate).format('DD-MMM-YY'),
+  //       hours: (
+  //         <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.hours}</span>
+  //       ),
+  //       action: (
+  //         <div className="d-flex">
+  //           <div
+  //             className="btn btn-primary fas fa-edit"
+  //             style={{
+  //               cursor: "pointer",
+  //               marginRight: "10px"
+  //             }}
+  //             onClick={() => updateDaybook(row._id)}
+  //             title="View Day Book"
+  //           >
+
+  //           </div>
+
+  //           {/* <div
+  //           className="btn btn-danger"
+  //           onClick={() => confirmDelete()}
+  //         >
+  //           Delete
+  //         </div> */}
+
+  //         </div>
+  //       )
+
+
+  //     })), [daybooks_list])
+
+
   const rows = useMemo(() =>
-    daybooks_list && daybooks_list.map((row, order) => (
-      {
-        ...row,
-        id: order + 1,
-        photo: (
-          <div className="d-flex align-items-start">
-            <div className="me-3 align-self-center">
-              <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
-            </div>
+  daybooks_list && daybooks_list.map( (row, order) => (
+    {
+      
+      ...row,
+      id: order + 1,
+      photo: (
+        <div className="d-flex align-items-start">
+          <div className="me-3 align-self-center">
+            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
           </div>
-        ),
-        // webpage_url: "",
-        name: row['info'][0].userName,
-        date: start_date !== '' || end_date !== '' ? Moment(start_date).format('DD-MMM-YY') + ' - ' + Moment(end_date).format('DD-MMM-YY') : Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
-        hours: (
-          <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
-        ),
-        action: (
-          <div className="d-flex">
-            <div
-              className="btn btn-primary fas fa-edit"
-              style={{
-                cursor: "pointer",
-                marginRight: "10px"
-              }}
-              onClick={() => updateDaybook(row)}
-              title="View Day Book"
-            >
-
-            </div>
-
-            {/* <div
-            className="btn btn-danger"
-            onClick={() => confirmDelete()}
+        </div>
+      ),
+      // webpage_url: "",
+      name: row['info'][0].userName,
+      date: Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
+      hours: (
+        <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+      ),
+      action: (
+        <div className="d-flex">
+          <div
+            className="btn btn-primary fas fa-edit"
+            style={{
+              cursor: "pointer",
+              marginRight: "10px"
+            }}
+            onClick={() => updateDaybook(row['info'])}
+            title="View Day Book"
           >
-            Delete
-          </div> */}
 
           </div>
-        )
+
+          {/* <div
+          className="btn btn-danger"
+          onClick={() => confirmDelete()}
+        >
+          Delete
+        </div> */}
+
+        </div>
+      )
 
 
-      })), [daybooks_list])
+    }) ) , [daybooks_list])
+    
 
   useEffect(() => {
     setTimeout(function () {

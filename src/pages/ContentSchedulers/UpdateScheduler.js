@@ -145,7 +145,7 @@ const UpdateSchedular = (props) => {
     const schedularData = {
       contentType: schedular_data && schedular_data.contentType !== topic_type ? topic_type : undefined,
       webpage: schedular_data && schedular_data.webpage && schedular_data.webpage._id !== webpage_id ? !schedular_data.webpage ? webpage_id : webpage_id : webpage_id == '' ? webpage_id : schedular_data.webpage == null ? webpage : undefined,
-      refereceLinks: schedular_data && !is_assigned_equal ? updated_ref_link : undefined,
+      refereceLinks: schedular_data && !is_assigned_equal ? referece_links : undefined,
       topicTitle: schedular_data && schedular_data.topicTitle !== topic_title ? topic_title : undefined,
       docLink: schedular_data && schedular_data.docLink !== doc_link ? doc_link : undefined,
       expectedWords: schedular_data && schedular_data.expectedWords !== expected_words ? expected_words : undefined,

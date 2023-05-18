@@ -14,7 +14,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { optionCategory, webpagesPayload } from './Constants'
-import { updateDaybook, getWebsites, deleteDaybook, getAlldaybooks } from '../../helpers/backend_helper'
+import { updateDaybook, getWebsites, deleteDaybook, getDaybooksCurrentUser } from '../../helpers/backend_helper'
 import { useAlert } from "react-alert";
 import Moment from 'moment';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -37,17 +37,17 @@ const Updatedaybook = (props) => {
   const data = props.location && props.location.state !== undefined ? props.location.state : ''; // props.location && props.location.state;
   console.log('datassss ', data)
   const daybooks_data = data !== '' && data['data'];
-  // console.log('daybooks_data ', daybooks_data)
+  console.log('daybooks_data ', daybooks_data[0].creationDate)
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
 
   const [date, setdate] = useState(today_date);
   const [webpages_list, setwebpages_list] = useState([]);
   const [daybook_id, setdaybook_id] = useState(daybooks_data._id);
-  const [member_id, set_member_id] = useState([]);
+  const [member_id, set_member_id] = useState(daybooks_data[0].addedBy);
   const [total_hours, settotal_hours] = useState([]);
-  const [start_date, set_start_date] = useState(Moment(date && data.start_date).startOf('month').format('YYYY-MM-DD'))
-  const [end_date, set_end_date] = useState(Moment(date && data.end_date).format('YYYY-MM-DD'))
+  const [start_date, set_start_date] = useState(Moment(daybooks_data[0].creationDate).startOf('month').format('YYYY-MM-DD'))
+  const [end_date, set_end_date] = useState(Moment(daybooks_data[0].creationDate).format('YYYY-MM-DD'))
 
   const alert = useAlert();
   const history = useHistory();
@@ -57,19 +57,22 @@ const Updatedaybook = (props) => {
 
     const page_payload = {
       "search": {
-        "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : start_date,
-        "dateTo": is_reset_search == true ? Moment().format('YYYY-MM-DD') : end_date,
-        "member": [data.data && data.data._id]
+        "dateFrom":  start_date,
+        "dateTo": end_date,
+        "member": member_id
       }
     }
 
 
-    getAlldaybooks(page_payload).then(resp => {
+    getDaybooksCurrentUser(page_payload).then(resp => {
+      setloading(true)
       if (resp?.data[0]) {
+        console.log('resp ', resp?.data[0][0]._id)
         setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [])
         settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours : 0)
-        set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
+        // set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
         // member_id.push(resp?.data[0][0] ? resp?.data[0][0]._id : [])
+        setloading(false)
       }
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -134,6 +137,7 @@ const Updatedaybook = (props) => {
       updateDaybook(daybook_updated_data && daybook_updated_data[0], id).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Updated Successfully');
+          getDaybookById()
           setloading(false)
         }
         else if (resp?.message == 'Unauthorized User!!') {
@@ -152,12 +156,12 @@ const Updatedaybook = (props) => {
 
   };
 
-  const resetSearch = () => {
-    setloading(true)
-    set_end_date(Moment().format('YYYY-MM-DD'))
-    set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
-    getDaybookById(true)
-  }
+  // const resetSearch = () => {
+  //   setloading(true)
+  //   set_end_date(Moment().format('YYYY-MM-DD'))
+  //   set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
+  //   getDaybookById(true)
+  // }
 
   const goBack = (e) => {
     history.push('/daybooks');
@@ -168,7 +172,9 @@ const Updatedaybook = (props) => {
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Update Day Book" />
-        <Row className="d-none">
+      
+      
+        {/* <Row className="d-none">
           <Col lg="12">
             <Card>
               <CardBody>
@@ -177,7 +183,6 @@ const Updatedaybook = (props) => {
                   <div className="float-start  d-flex ">
 
                     <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value)} defaultValue={start_date} />
-                    {/* <span>Start</span> */}
                     <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value)}
                       defaultValue={end_date} max={Moment().format('YYYY-MM-DD')} />
 
@@ -193,7 +198,7 @@ const Updatedaybook = (props) => {
               </CardBody>
             </Card>
           </Col>
-        </Row>
+        </Row> */}
 
 
         <Row>
@@ -229,13 +234,14 @@ const Updatedaybook = (props) => {
                                         name="creationDate"
                                         id="creationDate"
                                         max={today_date}
+                                        isDisabled={true}
                                         defaultValue={field.creationDate ? Moment(field.creationDate).format('YYYY-MM-DD') : today_date}
                                         onChange={date => handleInput(key, "creationDate", date[0])}
                                         options={{
                                           altInput: true,
                                           altFormat: "j-F-y",
                                           dateFormat: "Y-m-d",
-                                          clickOpens: true,
+                                          clickOpens: false,
                                         }}
                                       />
 
