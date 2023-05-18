@@ -35,9 +35,9 @@ const Updatedaybook = (props) => {
   const [confirm_id, setconfirm_id] = useState("")
   const [is_loading, setloading] = useState(true)
   const data = props.location && props.location.state !== undefined ? props.location.state : ''; // props.location && props.location.state;
-  console.log('datassss ', data)
+  // console.log('datassss ', data)
   const daybooks_data = data !== '' && data['data'];
-  console.log('daybooks_data ', daybooks_data[0].creationDate)
+  // console.log('daybooks_data ', daybooks_data[0].creationDate)
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
 
@@ -62,7 +62,6 @@ const Updatedaybook = (props) => {
         "member": member_id
       }
     }
-
 
     getDaybooksCurrentUser(page_payload).then(resp => {
       setloading(true)
@@ -172,8 +171,6 @@ const Updatedaybook = (props) => {
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Update Day Book" />
-      
-      
         {/* <Row className="d-none">
           <Col lg="12">
             <Card>
@@ -199,8 +196,6 @@ const Updatedaybook = (props) => {
             </Card>
           </Col>
         </Row> */}
-
-
         <Row>
           <Col lg="12">
             <Card>
@@ -210,7 +205,6 @@ const Updatedaybook = (props) => {
                   is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
                     <form >
                       <Row>
-
                         <div className="inner-repeater mb-5">
                           <div className="inner form-group mb-0 row">
                             <div
@@ -225,10 +219,8 @@ const Updatedaybook = (props) => {
                                   id={"nested" + key}
                                   className="mb-1 row align-items-center"
                                 >
-
                                   <Col md="2">
                                     <div className="mb-4 mt-md-0 while_bg_c">
-
                                       <Flatpickr
                                         className="form-control d-block"
                                         name="creationDate"

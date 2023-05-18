@@ -63,20 +63,62 @@ const HistoryTimeline = (props) => {
                   </div>
                   <div className="flex-1">
                     <div className="font-size-15">
-                    <b>{activity.addedBy.name}</b> {activity.activityName == 'Updated' ? " Updated Following Field's : " : 'Created'}
+                      <b>{activity.addedBy.name}</b> {activity.activityName == 'Updated' ? " Updated Following Field's : " : 'Created'}
                       <ul>
+                        {activity.updated_ref_link.length > 0 && activity.updated_ref_link && <p className="mt-2 mb-0" style={{ marginLeft: "-20px" }}><b>Updated</b> Referece Links: </p>}
+                        {
+                          activity.updated_ref_link &&
+                          Object.values(activity.updated_ref_link).map((val) => (
+                            <li key={val} className="mt-2 mb-2 milan_1">
+                              {
+                                <a href={val} target="_blank"> {val} </a>
+                              }
+                            </li>
+                          ))
+                        }
+                      
+                      
+                        {activity.deleted_ref_link.length > 0 && activity.deleted_ref_link && <p className="mt-3 mb-0" style={{ marginLeft: "-20px" }}><b>Removed</b> Referece Links: </p>}
+                        {
+                          activity.deleted_ref_link &&
+                          Object.values(activity.deleted_ref_link).map((val) => (
+                            <li key={val} className="mt-2 mb-2 milan_1">
+
+                              {
+                                <a href={val} target="_blank"> {val} </a>
+
+                              }
+                            </li>
+                          ))
+
+                        }
+
+                        {activity.added_ref_link.length > 0 && activity.added_ref_link && <p className="mt-3 mb-0" style={{ marginLeft: "-20px" }}><b>Added</b> Referece Links: </p>}
+                        {
+                          activity.added_ref_link &&
+                          Object.values(activity.added_ref_link).map((val) => (
+                            <li key={val} className="mt-2 mb-2 milan_1">
+                              {
+                                <a href={val} target="_blank"> {val} </a>
+
+                              }
+                            </li>
+                          ))
+                        }
+
                         {
                           activity.newData ?
                             Object.keys(activity.newData).map(key => (
-                              <li key={key} className="mt-2 mb-2">
-                                {insertSpaces(key) && insertSpaces(key) =='Webpage' || insertSpaces(key) == 'Assigned By' || insertSpaces(key) == 'Written By' ? insertSpaces(key) + ' : ' : insertSpaces(key) + ' To : '}
+                              key !== 'refereceLinks' &&
+                              <li key={key} className="mt-3 mb-2">
+                                {insertSpaces(key) && insertSpaces(key) == 'Webpage' || insertSpaces(key) == 'Assigned By' || insertSpaces(key) == 'Written By' ? insertSpaces(key) + ' : ' : insertSpaces(key) + ' To : '}
                                 {
-                                  <b>{ key=='submitedOn' || key=='assignedOn' || key=='submitedOn' ? Moment(activity.newData[key]).format('DD-MMM-YY') :
-                                  key=='refereceLinks' ? activity.newData[key] && activity.newData[key].map(link => (
-                                    <li style={{ listStyle: 'inside'}}> <a href={link} target="_blank"> {link} </a></li>
-                                  )
-                                  ):
-                               activity.newData[key] == '' ? 'Removed'  : activity.newData[key]}</b>
+                                  <b>{key == 'submitedOn' || key == 'assignedOn' || key == 'submitedOn' ? Moment(activity.newData[key]).format('DD-MMM-YY') :
+                                    key == 'refereceLinks' ? activity.newData[key] && activity.newData[key].map(link => (
+                                      <li style={{ listStyle: 'inside' }}> <a href={link} target="_blank"> {link} </a></li>
+                                    )
+                                    ) :
+                                      activity.newData[key] == '' ? 'Removed' : activity.newData[key]}</b>
                                 }
 
                               </li>

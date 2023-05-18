@@ -38,9 +38,16 @@ const UpdateSchedular = (props) => {
   const [doc_link, setdoc_link] = useState(schedular_data && schedular_data.docLink);
   const [ref_links, setref_links] = useState([]);
 
+  const [deleted_ref_links, setdeleted_ref_links] = useState([]);
+  const [updated_ref_links, setupdated_ref_links] = useState([]);
+  const [added_ref_links, setadded_ref_links] = useState([]);
+
+
+
+
   let inpRow = []
 
-  if (!schedular_data == ''  && schedular_data.refereceLinks.length > 0) {
+  if (!schedular_data == '' && schedular_data.refereceLinks.length > 0) {
     inpRow = schedular_data && schedular_data.refereceLinks
   }
   let head_published_on = Moment(schedular_data && schedular_data.submitedOn).format('DD-MMM-YY');
@@ -92,7 +99,7 @@ const UpdateSchedular = (props) => {
   }
 
   useEffect(() => {
-    !schedular_data &&  goBack();
+    !schedular_data && goBack();
     setTimeout(function () {
       allMembers()
       allWebpages()
@@ -110,7 +117,28 @@ const UpdateSchedular = (props) => {
   }
 
   const handleChange = (index, evnt) => {
+    // console.log('ok')
     const { value } = evnt.target;
+
+    const updated_link = referece_links.filter(function (val, id) {
+      if (index == id) {
+        return val
+      }
+    });
+
+    if( updated_link[0].ref_link !== '') {
+    updated_ref_links.push(updated_link[0])
+    }
+    const added_links = referece_links.filter(function (val, id) {
+      if (index == id) {
+        return val
+      }
+    });
+    
+   if( added_links[0].ref_link == '') {
+    added_ref_links.push(value)
+   }
+    
     if (value) {
       const list = [...referece_links];
       list[index] = value;
@@ -126,20 +154,20 @@ const UpdateSchedular = (props) => {
 
   // Function for Remove Input Fields
   function handleRemoveFields(e, idx) {
-    // document.getElementById(idx).style.display = "none"
+    const new_ref = referece_links.filter(function (key, obj) {
+      return obj == idx;
+    });
+    deleted_ref_links.push(new_ref[0])
+
     const rows = [...referece_links];
     rows.splice(idx, 1);
     setreferece_links(rows);
   }
 
   const updateScheduler = (e) => {
-
-    const original_data = schedular_data.refereceLinks;
-  
-    var updated_ref_link = referece_links.filter( function(n) { return !this.has(n) }, new Set(original_data) );
-    
-    // console.log('res ', res);
-
+    // const original_data = schedular_data.refereceLinks;
+    // var updated_ref_link = referece_links.filter( function(n) { return !this.has(n) }, new Set(original_data) );
+    // console.log('deleted_ref_links ', );
     const is_assigned_equal = isArrayEquals(referece_links, schedular_data.refereceLinks);
     // console.log('webpage_id ',webpage_id)
     const schedularData = {
@@ -155,6 +183,9 @@ const UpdateSchedular = (props) => {
       submitedOn: schedular_data && schedular_data.submitedOn !== submited_on ? submited_on : undefined,
 
       writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by ? !schedular_data.writtenBy ? written_by : written_by : schedular_data.writtenBy == null ? written_by : undefined,
+      updated_ref_link: updated_ref_links,
+      deleted_ref_link: deleted_ref_links,
+      added_ref_link: added_ref_links,
 
       // writtenBy: schedular_data && schedular_data.writtenBy && schedular_data.writtenBy._id !== written_by && schedular_data.written_by == null ? written_by : undefined,
       contentStatus: schedular_data && schedular_data.contentStatus !== content_status ? content_status : undefined,
@@ -267,7 +298,7 @@ const UpdateSchedular = (props) => {
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
-                              
+
                                   <AvField
                                     type="url"
                                     name={"url" + key}
@@ -276,7 +307,7 @@ const UpdateSchedular = (props) => {
                                     required
                                     defaultValue={typeof field !== 'object' ? field : ''}
                                     placeholder="Enter Referece Link"
-                                    onChange={(evnt) => handleChange(key, evnt)}
+                                    onBlur={(evnt) => handleChange(key, evnt)}
                                   />
                                   {typeof field !== 'object' && <a href={field} target="_blank" style={{ float: "right" }} >View Link</a>}
                                 </Col>
@@ -290,7 +321,7 @@ const UpdateSchedular = (props) => {
                                         onClick={(e) => {
                                           handleRemoveFields(e, key)
                                         }}
-                                        
+
                                       >
                                       </Button>
                                     </div>
@@ -394,20 +425,20 @@ const UpdateSchedular = (props) => {
                         <label htmlFor="assigned_on">Assigned On</label>
 
                         <Flatpickr
-                        className="form-control d-block"
-                        name="assigned_on"
+                          className="form-control d-block"
+                          name="assigned_on"
                           id="assigned_on"
                           onChange={date => setassigned_on(date[0])}
                           defaultValue={assigned_on}
                           // isDisabled={true}
                           // placeholder="dd M,yyyy"
-                        options={{
-                          altInput: true,
-                          altFormat: "j-F-y",
-                          dateFormat: "Y-m-d",
-                          clickOpens: true,
-                        }}
-                      />
+                          options={{
+                            altInput: true,
+                            altFormat: "j-F-y",
+                            dateFormat: "Y-m-d",
+                            clickOpens: true,
+                          }}
+                        />
 
                         {/* <AvField
                           type="date"
@@ -450,20 +481,20 @@ const UpdateSchedular = (props) => {
                         <label htmlFor="submitted_on">Submiited On</label>
 
                         <Flatpickr
-                        className="form-control d-block"
-                        name="submitted_on"
+                          className="form-control d-block"
+                          name="submitted_on"
                           id="submitted_on"
                           onChange={date => setsubmited_on(date[0])}
                           defaultValue={submited_on}
                           // isDisabled={true}
                           // placeholder="dd M,yyyy"
-                        options={{
-                          altInput: true,
-                          altFormat: "j-F-y",
-                          dateFormat: "Y-m-d",
-                          clickOpens: true,
-                        }}
-                      />
+                          options={{
+                            altInput: true,
+                            altFormat: "j-F-y",
+                            dateFormat: "Y-m-d",
+                            clickOpens: true,
+                          }}
+                        />
 
                         {/* <AvField
                           type="date"
@@ -519,7 +550,7 @@ const UpdateSchedular = (props) => {
 
 
                   <Row className="mt-4">
-                  <h5 className="mb-4">Content Quality</h5>
+                    <h5 className="mb-4">Content Quality</h5>
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="content_status">Readability (SEMRush)</label> */}
