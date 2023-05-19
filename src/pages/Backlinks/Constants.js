@@ -48,7 +48,7 @@ export const columns = [
   {
     label: "Web Page",
     field: "webpage",
-    sort: "asc",
+    sort: "disabled",
     width: 150,
   },
   {
@@ -91,6 +91,7 @@ export const columns = [
     label: "Action",
     field: "action",
     width: 250,
+    sort: "disabled",
   },
 
 ];

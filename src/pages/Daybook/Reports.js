@@ -160,7 +160,9 @@ const Reports = () => {
                 hours: (
                     // hours_arr.push(row.totalHours),
                     total_hours.push(row.totalHours),
-                    <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+                    row.totalHours
+                    // <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+                    
                 ),
             })), [daybooks_list])
 

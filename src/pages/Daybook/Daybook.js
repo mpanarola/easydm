@@ -170,7 +170,8 @@ const Daybook = () => {
       name: row['info'][0].userName,
       date: Moment(row['info'][0].creationDate).format('DD-MMM-YY'),
       hours: (
-        <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+        // <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.totalHours}</span>
+        row.totalHours
       ),
       action: (
         <div className="d-flex">

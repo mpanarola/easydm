@@ -47,7 +47,7 @@ export const columns = [
   {
     label: "Web Page",
     field: "webpage",
-    sort: "asc",
+    sort: "disabled",
     width: 150,
   },
   {
@@ -59,7 +59,7 @@ export const columns = [
   {
     label: "Assigned To",
     field: "assigned_to",
-    sort: "asc",
+    sort: "disabled",
     width: 200,
   },
   {
@@ -73,6 +73,7 @@ export const columns = [
     label: "Action",
     field: "action",
     width: 200,
+    sort: "disabled",
   },
 
 ];

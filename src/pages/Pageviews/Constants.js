@@ -8,7 +8,7 @@ export const columns = [
   {
     label: "Web Page",
     field: "webpage",
-    sort: "asc",
+    sort: "disabled",
     width: 150,
   },
   {

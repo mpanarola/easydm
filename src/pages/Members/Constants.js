@@ -36,7 +36,7 @@ export const isArrayEquals = (a, b) => {
     {
       label: "Photo",
       field: "avatar",
-      sort: "asc",
+      sort: "disabled",
       width: 150,
     },
     {
@@ -48,7 +48,7 @@ export const isArrayEquals = (a, b) => {
     {
       label: "Email",
       field: "email",
-      sort: "asc",
+      sort: "disabled",
       width: 270,
     },
     {
@@ -60,7 +60,7 @@ export const isArrayEquals = (a, b) => {
     {
       label: "Status",
       field: "isActive",
-      sort: "asc",
+      sort: "disabled",
       width: 150,
     },
     {
@@ -73,6 +73,7 @@ export const isArrayEquals = (a, b) => {
       label: "Action",
       field: "action",
       width: 200,
+      sort: "disabled",
     },
    
   ];

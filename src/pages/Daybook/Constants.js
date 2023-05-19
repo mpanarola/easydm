@@ -8,8 +8,8 @@ export const columns = [
   {
     label: "Photo",
     field: "photo",
-    sort: "asc",
     width: 150,
+    sort: "disabled",
   },
   {
     label: "Name",
@@ -33,6 +33,7 @@ export const columns = [
     label: "Action",
     field: "action",
     width: 200,
+    sort: "disabled",
   },
 
 ];
@@ -93,7 +94,7 @@ export const reportDaybookcolumns = [
   {
     label: "Photo",
     field: "photo",
-    sort: "asc",
+    sort: "disabled",
     width: 150,
   },
   {

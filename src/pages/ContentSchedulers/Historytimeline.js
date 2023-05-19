@@ -54,6 +54,8 @@ const HistoryTimeline = (props) => {
 
             {activity_list && activity_list.map(activity => (
 
+              
+             activity.newData &&
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
@@ -63,6 +65,7 @@ const HistoryTimeline = (props) => {
                   </div>
                   <div className="flex-1">
                     <div className="font-size-15">
+                    
                       <b>{activity.addedBy.name}</b> {activity.activityName == 'Updated' ? " Updated Following Field's : " : 'Created'}
                       <ul>
                         {activity.updated_ref_link.length > 0 && activity.updated_ref_link && <p className="mt-2 mb-0" style={{ marginLeft: "-20px" }}><b>Updated</b> Referece Links: </p>}
@@ -136,6 +139,7 @@ const HistoryTimeline = (props) => {
                 </div>
 
               </li>
+              
             )
             )
             }

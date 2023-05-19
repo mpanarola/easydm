@@ -93,10 +93,12 @@ const ContentScheduler = () => {
         width: "150px"
       }}> <a href={row.docLink} target="_blank"> {row.topicTitle} </a></div>),
       expected_words: (
-        <span class="bg-primary badge badge-secondary" style={{ fontSize: "14px" }}>{row.expectedWords}</span>
+        // <span class="bg-primary badge badge-secondary" style={{ fontSize: "14px" }}>{row.expectedWords}</span>
+        row.expectedWords
       ),
       actual_words: (
-        <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.actualWords}</span>
+        // <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.actualWords}</span>
+        row.actualWords
       ),
       assigned_on: Moment(row.assignedOn).format('DD-MMM-YY'),
       assigned_by: row.assignedBy && row.assignedBy.name,

@@ -88,7 +88,8 @@ const Backlink = () => {
       category: row.webpage && row.webpage.category,
       month_year: Moment(row.monthYear).format('MMM-YY'),
       total_backlinks: (
-        <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.numberOfBacklinks}</span>
+        row.numberOfBacklinks
+        // <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.numberOfBacklinks}</span>
       ),
       action: (
         <div className="d-flex" >
