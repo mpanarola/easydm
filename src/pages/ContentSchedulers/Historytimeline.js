@@ -55,7 +55,7 @@ const HistoryTimeline = (props) => {
             {activity_list && activity_list.map(activity => (
 
               
-             activity.newData &&
+             activity.newData ?
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
@@ -125,7 +125,7 @@ const HistoryTimeline = (props) => {
                                 }
 
                               </li>
-                            )) : activity.activityName == 'Created' ? <li>This Scheduler</li> : ''}
+                            )) : ''}
                       </ul>
                     </div>
                   </div>
@@ -139,7 +139,8 @@ const HistoryTimeline = (props) => {
                 </div>
 
               </li>
-              
+              :
+              ''
             )
             )
             }
