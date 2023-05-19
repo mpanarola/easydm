@@ -43,11 +43,11 @@ const Updatedaybook = (props) => {
 
   const [date, setdate] = useState(today_date);
   const [webpages_list, setwebpages_list] = useState([]);
-  const [daybook_id, setdaybook_id] = useState(daybooks_data._id);
-  const [member_id, set_member_id] = useState(daybooks_data[0].addedBy);
+  const [daybook_id, setdaybook_id] = useState(daybooks_data && daybooks_data._id);
+  const [member_id, set_member_id] = useState(daybooks_data[0] && daybooks_data[0].addedBy);
   const [total_hours, settotal_hours] = useState([]);
-  const [start_date, set_start_date] = useState(Moment(daybooks_data[0].creationDate).startOf('month').format('YYYY-MM-DD'))
-  const [end_date, set_end_date] = useState(Moment(daybooks_data[0].creationDate).format('YYYY-MM-DD'))
+  const [start_date, set_start_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).startOf('month').format('YYYY-MM-DD'))
+  const [end_date, set_end_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).format('YYYY-MM-DD'))
 
   const alert = useAlert();
   const history = useHistory();
@@ -122,7 +122,7 @@ const Updatedaybook = (props) => {
   }
 
   useEffect(() => {
-    !data && goBack();
+    !daybooks_data && goBack();
     setTimeout(function () {
       allWebpages()
       getDaybookById()

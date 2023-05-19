@@ -27,11 +27,12 @@ const Updatepageview = (props) => {
   const history = useHistory();
   const alert = useAlert();
 
-  const data =  props.location && props.location.state.data !== undefined ? props.location.state : ''; //props.location && props.location.state;
-  let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
+  const data =  props.location && props.location.state && props.location.state.data !== undefined ? props.location.state : ''; //props.location && props.location.state;
+  
+  const head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
 
-  const [webpage, setwebpage] = useState(data.data.webpage && data.data.webpage.webpage);
-  const [webpage_id, setwebpage_id] = useState(data.data.webpage && data.data.webpage._id);
+  const [webpage, setwebpage] = useState(data && data.data.webpage && data.data.webpage.webpage);
+  const [webpage_id, setwebpage_id] = useState(data && data.data.webpage && data.data.webpage._id);
   const [webpage_url, setwebpage_url] = useState(data && data.data.webpage.webpageUrl);
   const [monthyear, setmonthyear] = useState(Moment(data && data.data.monthYear).format("YYYY-MM"));
   const [monthyear_full, setmonthyear_full] = useState(Moment(data && data.data.monthYear).startOf('month').format("YYYY-MM-DD"));
