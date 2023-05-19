@@ -53,6 +53,7 @@ export const columns = [
     label: "Action",
     field: "action",
     width: 200,
+    sort: "disabled",
   },
 
 ];

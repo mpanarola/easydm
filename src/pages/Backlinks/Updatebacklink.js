@@ -32,8 +32,9 @@ const Updatebacklink = (props) => {
   const [webpage, setwebpage] = useState(data && data.data.webpage.webpage);
   const [webpage_id, setwebpage_id] = useState(data && data.data.webpage._id);
   const [webpage_url, setwebpage_url] = useState(data && data.data.webpage.webpageUrl);
-
-  const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
+// console.log('data ',Moment( data.data.monthYear).format('MMM-YY'))
+  // const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
+  const [monthyear, setmonthyear] = useState(Moment(data && data.data.monthYear).format("YYYY-MM"));
   const [category, setcategory] = useState();
   const [total_backlinks, settotal_backlinks] = useState(data && data.data.numberOfBacklinks);
   const [published_on, setpublished_on] = useState(Moment(data && data.data.publishedOn).format('YYYY-MM-DD'));
@@ -179,19 +180,32 @@ const Updatebacklink = (props) => {
                       <Col lg={6}>
                         <div className="mb-3">
                           {/* <label htmlFor="month_year">Month-Year</label> */}
-                          <AvField
+                          {/* <AvField
                             type="month"
                             name="month_year"
                             label="Month-Year"
                             className="form-control"
                             id="month_year"
                             // defaultValue = {monthyear}
-                            readOnly
+                            isDisabled={true}
                             required
                             onChange={e => setmonthyear(e.target.value)}
                             // value={monthyear}
                             defaultValue={monthyear}
+                          /> */}
+
+                          <AvField
+                            type="month"
+                            name="month_year"
+                            label="Month-Year"
+                            className="form-control"
+                            id="month_year"
+                            readOnly
+                            required
+                            onChange={e => setmonthyear(e.target.value)}
+                            defaultValue={monthyear}
                           />
+
                         </div>
                       </Col>
 
