@@ -155,6 +155,7 @@ const Updatepage = (props) => {
                     <Col lg={6}>
                       <div className="mb-3">
                         {/* <label htmlFor="webpage_url">Web Page URL</label> */}
+                        {webpage_url !== '' && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
                         <AvField
                           label="Web Page URL"
                           name="webpage_url"

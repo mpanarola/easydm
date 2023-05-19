@@ -74,7 +74,10 @@ const HistoryTimeline = (props) => {
                                 {/* {insertSpaces(key)+ ' To : ' } */}
                                 {
                                   <b>{key =='assigne' ? activity.newData[key] && activity.newData[key].join(', ')  : key=='publishedOn' || key=='effectiveFrom' ? Moment(activity.newData[key]).format('DD-MMM-YY') : 
-                                  activity.newData[key] == '' ? 'Removed'  : activity.newData[key]
+                                  key == 'webpageUrl' ?
+                                  <a href={activity.newData[key]} target="_blank"> {activity.newData[key]} </a>
+                                  :
+                                    activity.newData[key] == null ? 'Removed' : activity.newData[key]
                                   }</b>
                                 }
 
