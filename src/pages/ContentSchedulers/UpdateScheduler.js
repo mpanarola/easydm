@@ -231,7 +231,7 @@ const UpdateSchedular = (props) => {
           <Card>
             <CardBody>
               <h4 className="me-4"> ID:  {id}</h4>
-              <label htmlFor="created_on">Submiited On :  {head_published_on}</label>
+              <label htmlFor="created_on">Submitted On :  {head_published_on}</label>
             </CardBody>
           </Card>
 
