@@ -69,7 +69,7 @@ export const GET_TASKS = "/tasks"
 
 export const GET_MEMBERS = "/members"
 export const GET_MEMBER_DETAIL = "/member"
-export const GET_USER_PROFILE = "/me"
+export const GET_USER_PROFILE = "/me/"
 
 export const GET_CONTENT_SCHEDULERS = "/contents_schedulars"
 export const GET_CONTENT_SCHEDULER_DETAIL = "/contents_schedular"
@@ -97,7 +97,7 @@ export const GET_USERS = "/users"
 
 
 /** -------------------MY API URL----------------- */
-export const USER_LOGIN = "/login"
+export const USER_LOGIN = "/login/"
 export const ADD_MEMBER = "/registration"
 export const UPDATE_MEMBER = "/update_member"
 export const DELETE_MEMBER = "/delete_member"

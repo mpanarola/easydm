@@ -28,12 +28,12 @@ function* loginUser({ payload: { user } }) {
 function* logoutUser({ payload: { history } }) {
   try {
     localStorage.removeItem("authUser")
-console.log('log_out')
+// console.log('log_out')
     // if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
     //   const response = yield call(fireBaseBackend.logout)
     //   yield put(logoutUserSuccess(response))
     // }
-    history.push("/login")
+    history.push("/easyDM/login")
   } catch (error) {
     yield put(apiError(error))
   }

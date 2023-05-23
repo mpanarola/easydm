@@ -1,7 +1,7 @@
 {
   "name": "qovex-react",
   "version": "1.0.0",
-  "homepage": "http://clientapp.narola.online/EasyDM/",
+  "homepage": "/EasyDM/",
   "private": true,
   "dependencies": {
     "@fullcalendar/bootstrap": "^5.5.0",

@@ -87,13 +87,13 @@ const userRoutes = [
 
   // this route should be at the end of all other routes
   { path: "/", exact: true, component: () => <Redirect to="/easyDM/dashboard" /> },
-  { path: "/*", exact: true, component: () => <Redirect to="/easyDMdashboard" /> },
+  { path: "/*", exact: true, component: () => <Redirect to="/easyDM/dashboard" /> },
 
 ]
 
 const authRoutes = [
 
-  { path: "/logout", component: Logout },
+  { path: "/easyDM/logout", component: Logout },
   { path: "/easyDM/login", component: Login },
   { path: "/login", component: Login },
   { path: "/easyDM/forgot-password", component: ForgetPwd },
