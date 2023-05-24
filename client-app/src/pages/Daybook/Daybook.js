@@ -112,9 +112,9 @@ const Daybook = () => {
   //         <div className="d-flex align-items-start">
   //           <div className="me-3 align-self-center">
   //             { row.addedBy ?
-  //             <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row.addedBy.avatar}`}  className="avatar-sm rounded-circle" alt={row.addedBy && row.addedBy.name} title={row.addedBy.name && row.addedBy.name}  />
+  //             <img src={`${process.env.REACT_APP_BACKEND}avatar/${row.addedBy.avatar}`}  className="avatar-sm rounded-circle" alt={row.addedBy && row.addedBy.name} title={row.addedBy.name && row.addedBy.name}  />
   //          : 
-  //          <img src={`${process.env.REACT_APP_DATABASEURL}avatar/def.png`} title={row.addedBy && row.addedBy.name} alt={row.addedBy && row.addedBy.name} className="avatar-sm rounded-circle" />
+  //          <img src={`${process.env.REACT_APP_BACKEND}avatar/def.png`} title={row.addedBy && row.addedBy.name} alt={row.addedBy && row.addedBy.name} className="avatar-sm rounded-circle" />
 
   //           }
   //             </div>
@@ -163,7 +163,7 @@ const Daybook = () => {
       photo: (
         <div className="d-flex align-items-start">
           <div className="me-3 align-self-center">
-            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+            <img src={`${process.env.REACT_APP_BACKEND}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
           </div>
         </div>
       ),

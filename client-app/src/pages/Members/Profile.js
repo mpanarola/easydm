@@ -123,7 +123,7 @@ const Profile = props => {
                 <div className="d-flex">
                   <div className="ms-3">
                     <img
-                      src={`${process.env.REACT_APP_DATABASEURL}avatar/${updateAvatar}`}
+                      src={`${process.env.REACT_APP_BACKEND}avatar/${updateAvatar}`}
                       alt={name}
                       className="avatar-md rounded-circle img-thumbnail"
                     />

@@ -58,11 +58,11 @@ const Login = (props) => {
 
   return (
     <React.Fragment>
-      <div className="home-btn d-none d-sm-block">
+      {/* <div className="home-btn d-none d-sm-block">
         <Link to="/" className="text-dark">
           <i className="fas fa-home h2" />
         </Link>
-      </div>
+      </div> */}
       <div className="account-pages my-5 pt-sm-5">
         <Container>
           <Row className="justify-content-center">

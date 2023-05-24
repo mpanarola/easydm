@@ -83,7 +83,7 @@ const HistoryTimeline = (props) => {
 
                 <div className="activity-icon avatar-xs">
                   <span className="avatar-title bg-soft-primary text-primary rounded-circle">
-                    <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${activity.addedBy.avatar}`} alt={activity.addedBy.name} className="avatar-sm rounded-circle" title={activity.addedBy.name} />
+                    <img src={`${process.env.REACT_APP_BACKEND}avatar/${activity.addedBy.avatar}`} alt={activity.addedBy.name} className="avatar-sm rounded-circle" title={activity.addedBy.name} />
                     {/* <img src="/static/media/avatar-3.2cfd5ba6.jpg" alt="" className="avatar-sm rounded-circle" /> */}
                   </span>
                 </div>

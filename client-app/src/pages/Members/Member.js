@@ -106,7 +106,7 @@ const Member = () => {
       avatar: (
         <div className="d-flex align-items-start">
           <div className="me-3 align-self-center">
-            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
+            <img src={`${process.env.REACT_APP_BACKEND}avatar/${row.avatar}`} title={row.name} alt={row.name} className="avatar-sm rounded-circle" />
           </div>
         </div>
       ),

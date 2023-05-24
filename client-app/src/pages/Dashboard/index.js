@@ -9,7 +9,7 @@ import SalesAnalytics from "./sales-analytics"
 import Top3Pageviews from "./top_3_pageviews"
 
 import ScatterChart from "./scatter-analytics"
-import Top3BackLinks from "./top_3_backlinks"
+import BackLinkHistoryReport from "./backlink-report"
 
 //Import Image
 import widgetImage from "../../assets/images/widget-img.png"
@@ -124,14 +124,14 @@ const Dashboard = () => {
           <Revenue />
         </Row> */}
 
-        {/* <Row>
-          <Col lg={6}>
-          <Top3BackLinks />
+        <Row>
+          <Col lg={12}>
+          <BackLinkHistoryReport />
           </Col>
-          <Col lg={6}>
+          {/* <Col lg={6}>
           <Top3Pageviews />
-          </Col>
-        </Row> */}
+          </Col> */}
+        </Row>
 
       </div>
     </React.Fragment>

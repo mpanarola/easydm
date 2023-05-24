@@ -38,9 +38,13 @@ export const getUsers = () => get(url.GET_USERS)
 
 /** MPA API Method */
 
+
 const userLogin = data => post(url.USER_LOGIN, data)
 
 export const getUserProfile = () => get(url.GET_USER_PROFILE)
+
+export const userDashboard = () => get(url.USER_DASHBOARD)
+
 
 // Members
 const getAllMembers = data => post(url.GET_MEMBERS, data)

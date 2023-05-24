@@ -69,7 +69,7 @@ const ProfileMenu = props => {
         >
           <img
             className="rounded-circle header-profile-user"
-            src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name}
+            src={`${process.env.REACT_APP_BACKEND}avatar/${avatar}`} alt={name}
           />{" "}
           <span className="d-none d-xl-inline-block ms-1">{name}</span>{" "}
           <i className="mdi mdi-chevron-down d-none d-xl-inline-block"></i>{" "}
