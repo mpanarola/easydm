@@ -102,6 +102,8 @@ export const ADD_MEMBER = "/registration"
 export const UPDATE_MEMBER = "/update_member"
 export const DELETE_MEMBER = "/delete_member"
 
+export const USER_DASHBOARD = "/dashboard"
+
 
 export const GET_WEBSITES = "/get_websites"
 export const GET_WEBSITE_DETAIL = "/get_website_ById"

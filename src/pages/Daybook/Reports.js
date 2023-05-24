@@ -152,7 +152,7 @@ const Reports = () => {
                 photo: (
                     <div className="d-flex align-items-start">
                         <div className="me-3 align-self-center">
-                            <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
+                            <img src={`${process.env.REACT_APP_BACKEND}avatar/${row['info'][0].avatar}`} title={row['info'][0].userName} alt={row['info'][0].userName} className="avatar-sm rounded-circle" />
                         </div>
                     </div>
                 ),

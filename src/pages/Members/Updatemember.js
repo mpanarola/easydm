@@ -113,7 +113,7 @@ const Updatemember = (props) => {
     
                 <div className="col-md-1" style={{ float: "right" }}>
                   {
-                    avatarURL == '' ?    <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name} width="90px" />
+                    avatarURL == '' ?    <img src={`${process.env.REACT_APP_BACKEND}avatar/${avatar}`} alt={name} width="90px" />
                     :
                     <img src={avatarURL} alt={name} width="90px" className="avatar" />
                   }

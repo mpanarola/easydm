@@ -5,7 +5,7 @@ import accessToken from "./jwt-token-access/accessToken"
 // const get_auth = localStorage.getItem('authUser')
 const get_auth = JSON.parse(localStorage.getItem("authUser"))
 //apply base url for axios
-const API_URL = process.env.REACT_APP_APIKEY
+const API_URL = process.env.REACT_APP_BACKEND_API
 
 const axiosApi = axios.create({
   baseURL: API_URL,

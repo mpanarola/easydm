@@ -72,7 +72,7 @@ const Webpage = props => {
             row.assignedTo.length > 0 &&
               row.assignedTo && row.assignedTo.map(data => (
                 <div className="me-3 align-self-center">
-                  <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${data.avatar}`} alt={data.name} className="avatar-sm rounded-circle" title={data.name} />
+                  <img src={`${process.env.REACT_APP_BACKEND}avatar/${data.avatar}`} alt={data.name} className="avatar-sm rounded-circle" title={data.name} />
                 </div>
               ))
           }

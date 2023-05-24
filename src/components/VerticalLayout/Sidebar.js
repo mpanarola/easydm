@@ -44,7 +44,7 @@ const Sidebar = props => {
         <div className="h-100">
           <div className="user-wid text-center py-4">
             <div className="user-img">
-              <img src={`${process.env.REACT_APP_DATABASEURL}avatar/${avatar}`} alt={name} className="avatar-md mx-auto rounded-circle" />
+              <img src={`${process.env.REACT_APP_BACKEND}avatar/${avatar}`} alt={name} className="avatar-md mx-auto rounded-circle" />
             </div>
 
             <div className="mt-3">
