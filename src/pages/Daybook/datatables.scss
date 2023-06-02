@@ -1,3 +1,8 @@
+.select2-selection--is-disabled .select2-selection__control--is-disabled, .select2-selection__single-value--is-disabled {
+  background: #eff2f7!important;
+  color: #495057!important;
+}
+
 table.dataTable thead > tr > th.sorting_asc,
 table.dataTable thead > tr > th.sorting_desc,
 table.dataTable thead > tr > th.sorting,

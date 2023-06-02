@@ -168,9 +168,6 @@ const AddSchedular = () => {
         alert.error('Backend server not responding, Please try again....');
       })
     }
-
-
-
   };
 
   const goBack = (e) => {
@@ -362,11 +359,7 @@ const AddSchedular = () => {
                           min={1}
                           placeholder="Enter Actual Words"
                           onChange={e => setactual_words(e.target.value)}
-                          required
-                        // validate={{
-                        //   required: {value: true},
-                        //   maxLength: {value: 5}
-                        // }}
+                          // required
                         />
                       </div>
                     </Col>
@@ -428,7 +421,7 @@ const AddSchedular = () => {
 
                     <Col lg={6}>
                       <div className="mb-3 while_bg_c">
-                        <label htmlFor="submitted_on">Submiited On</label>
+                        <label htmlFor="submitted_on">To Be Submitted On</label>
 
                         <Flatpickr
                         className="form-control d-block"

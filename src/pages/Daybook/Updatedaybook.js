@@ -14,7 +14,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { optionCategory, webpagesPayload } from './Constants'
-import { updateDaybook, getWebsites, deleteDaybook, getDaybooksCurrentUser } from '../../helpers/backend_helper'
+import { updateDaybook, getWebsites, deleteDaybook, getDaybooksCurrentUser, getContentSchedulars } from '../../helpers/backend_helper'
 import { useAlert } from "react-alert";
 import Moment from 'moment';
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -34,19 +34,21 @@ const Updatedaybook = (props) => {
   const [confirm_both, setconfirm_both] = useState(false)
   const [confirm_id, setconfirm_id] = useState("")
   const [is_loading, setloading] = useState(true)
+  const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
+
   const data = props.location && props.location.state !== undefined ? props.location.state : ''; // props.location && props.location.state;
   // console.log('datassss ', data)
   const daybooks_data = data !== '' && data['data'];
-  // console.log('daybooks_data ', daybooks_data[0].creationDate)
+
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
-
   const [date, setdate] = useState(today_date);
   const [webpages_list, setwebpages_list] = useState([]);
+  const [schedulars_list, setschedulars_list] = useState([]);
   const [daybook_id, setdaybook_id] = useState(daybooks_data && daybooks_data._id);
   const [member_id, set_member_id] = useState(daybooks_data[0] && daybooks_data[0].addedBy);
   const [total_hours, settotal_hours] = useState([]);
-  const [start_date, set_start_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).startOf('month').format('YYYY-MM-DD'))
+  const [start_date, set_start_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).format('YYYY-MM-DD'))
   const [end_date, set_end_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).format('YYYY-MM-DD'))
 
   const alert = useAlert();
@@ -54,11 +56,10 @@ const Updatedaybook = (props) => {
 
   const getDaybookById = (is_reset_search) => {
     setloading(true)
-
     const page_payload = {
       "search": {
-        "dateFrom":  start_date,
-        "dateTo": end_date,
+        "dateFrom": daybooks_data[0] && daybooks_data[0].creationDate,
+        "dateTo": daybooks_data[0] && daybooks_data[0].creationDate,
         "member": member_id
       }
     }
@@ -66,9 +67,10 @@ const Updatedaybook = (props) => {
     getDaybooksCurrentUser(page_payload).then(resp => {
       setloading(true)
       if (resp?.data[0]) {
-        console.log('resp ', resp?.data[0][0]._id)
+        // console.log('resp ', resp?.data[0][0]._id)
         setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [])
         settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours : 0)
+       
         // set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
         // member_id.push(resp?.data[0][0] ? resp?.data[0][0]._id : [])
         setloading(false)
@@ -106,6 +108,9 @@ const Updatedaybook = (props) => {
   }
 
   const handleInput = (index, name, value) => {
+    name == 'category' && value !== '' &&  allWebpages(value)  
+    name == 'category' && value == 'Blogs' ?  setis_show_contentshedular(true) : setis_show_contentshedular(false)
+
     setinputFields(prev => prev.map((item, idx) => {
       if (index === idx && item.hasOwnProperty(name)) item[name] = value
       return item
@@ -113,7 +118,16 @@ const Updatedaybook = (props) => {
 
   }
 
-  const allWebpages = () => {
+  const allWebpages = (category) => {
+    const webpagesPayload = {
+      "options": {
+        "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
+      },
+      "query": {
+        "category": category !== '' && category
+      }
+    }
+
     getWebsites(webpagesPayload).then(resp => {
       setwebpages_list(resp?.data[0]?.list)
     }).catch(err => {
@@ -121,11 +135,22 @@ const Updatedaybook = (props) => {
 
   }
 
+  const allSchedulars = () => {
+
+    getContentSchedulars().then(resp => {
+      setschedulars_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
+
+  }
+
+
   useEffect(() => {
     !daybooks_data && goBack();
     setTimeout(function () {
       allWebpages()
       getDaybookById()
+      allSchedulars()
     }, 1000);
   }, []);
 
@@ -155,13 +180,6 @@ const Updatedaybook = (props) => {
 
   };
 
-  // const resetSearch = () => {
-  //   setloading(true)
-  //   set_end_date(Moment().format('YYYY-MM-DD'))
-  //   set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
-  //   getDaybookById(true)
-  // }
-
   const goBack = (e) => {
     history.push('/daybooks');
   };
@@ -171,31 +189,6 @@ const Updatedaybook = (props) => {
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Day Books" breadcrumbItem="Update Day Book" />
-        {/* <Row className="d-none">
-          <Col lg="12">
-            <Card>
-              <CardBody>
-                <div className="col-md-8 float-start d-none">
-                  <div> <div class="card-title">Date Filter</div> </div>
-                  <div className="float-start  d-flex ">
-
-                    <input type="date" name="start_date" className="form-control" onChange={e => set_start_date(e.target.value)} defaultValue={start_date} />
-                    <input type="date" name="end_date" className="form-control mx-2" onChange={e => set_end_date(e.target.value)}
-                      defaultValue={end_date} max={Moment().format('YYYY-MM-DD')} />
-
-                    <button type="button" className="btn btn-secondary mx-2" onClick={getDaybookById} >
-                      Search
-                    </button>
-                    <button type="button" className="btn btn-danger" onClick={resetSearch} >
-                      Reset
-                    </button>
-
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row> */}
         <Row>
           <Col lg="12">
             <Card>
@@ -220,7 +213,7 @@ const Updatedaybook = (props) => {
                                   className="mb-1 row align-items-center"
                                 >
                                   <Col md="2">
-                                    <div className="mb-4 mt-md-0 while_bg_c">
+                                    <div className="mb-4 mt-md-0 ">
                                       <Flatpickr
                                         className="form-control d-block"
                                         name="creationDate"
@@ -236,15 +229,6 @@ const Updatedaybook = (props) => {
                                           clickOpens: false,
                                         }}
                                       />
-
-                                      {/* <input
-                                        type="date"
-                                        name="creationDate"
-                                        className="inner form-control"
-                                        max={today_date}
-                                        defaultValue={field.creationDate ? Moment(field.creationDate).format('YYYY-MM-DD') : today_date}
-                                        onChange={e => handleInput(key, "creationDate", e.target.value)}
-                                      /> */}
                                     </div>
                                   </Col>
 
@@ -262,22 +246,19 @@ const Updatedaybook = (props) => {
                                     </div>
                                   </Col>
 
+                                  {
+                                   field.category !== 'Blogs' && is_show_contentshedular == false ?
+
                                   <Col md="2">
                                     <div className="mb-4 mt-md-0">
-
                                       <Select
                                         id="webpage"
                                         name="webpage"
-                                        options={
-                                          webpages_list && webpages_list.map(website => (
-                                            { label: website.webpage, value: website._id }
-                                          )
-                                          )
-                                        }
+                                        options={webpages_list && webpages_list.filter(website => website.category == field.category).map(website => (
+                                          { label: website.webpage, value: website._id }
+                                        ))}
                                         classNamePrefix="select2-selection"
                                         defaultValue={{ value: field.webpage, label: field.webpageName }}
-
-
                                         placeholder={<div>Web Page</div>}
                                         onChange={e => handleInput(key, "webpage", e.value)}
 
@@ -285,6 +266,25 @@ const Updatedaybook = (props) => {
 
                                     </div>
                                   </Col>
+                                    :
+                                  
+                                  <Col md="2">
+                                    <div className="mb-4 mt-md-0">
+                                      <Select
+                                        id="schedular"
+                                        name="schedular"
+                                        options={schedulars_list && schedulars_list.map(schedular => (
+                                          { label: schedular.topicTitle, value: schedular._id }
+                                        ))}
+                                        classNamePrefix="select2-selection"
+                                        defaultValue={{ value: field.contentScheduler ? field.contentScheduler : null, label: field.contentSchedulerTitle }}
+                                        placeholder={<div>Select Values</div>}
+                                        onChange={e => handleInput(key, "contentScheduler", e.value)}
+                                      />
+
+                                    </div>
+                                  </Col>
+                                  }
 
                                   <Col md="1">
                                     <div className="mb-4  mt-md-0">

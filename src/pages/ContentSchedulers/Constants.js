@@ -11,11 +11,11 @@ export const payload =  {
       },
       {
         "path": "assignedBy",
-        "select": ["name"]
+        "select": ["name", "avatar"]
       },
       {
         "path": "writtenBy",
-        "select": ["name"]
+        "select": ["name", "avatar"]
       }
     ]
   }
@@ -98,7 +98,7 @@ export const columns = [
     },
 
     {
-      label: "Submiited On",
+      label: "To Be Submitted On",
       field: "submiited_on",
       sort: "asc",
       width: 100,
@@ -134,6 +134,7 @@ export const optionGroupType = [
         { label: "eBook", value: "eBook" },
         { label: "Infographics", value: "Infographics" },
         { label: "PPT", value: "PPT" },
+        { label: "PPC", value: "PPC" },
       ],
     },
   

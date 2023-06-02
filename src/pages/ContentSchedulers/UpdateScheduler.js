@@ -478,8 +478,7 @@ const UpdateSchedular = (props) => {
 
                     <Col lg={6}>
                       <div className="mb-3 while_bg_c">
-                        <label htmlFor="submitted_on">Submiited On</label>
-
+                        <label htmlFor="submitted_on">To Be Submitted On</label>
                         <Flatpickr
                           className="form-control d-block"
                           name="submitted_on"

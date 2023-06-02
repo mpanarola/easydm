@@ -133,8 +133,8 @@ const Reports = () => {
     const gethoursReports = () => {
         activityDaybook(dayBookReportsPayload).then(resp => {
             // setactivity_list(resp?.data)
-            setactivity_hours(resp?.data[0].length !== 0 && resp?.data[0].map(i => i.totalHours ? i.totalHours : i.totalHours).join(", ").split(','))
-            setactivity_month(resp?.data[0].length !== 0 && resp?.data[0].map(i => i.month ? i.month : i.month).join(", ").split(','))
+            setactivity_hours(resp?.data.length !== 0 && resp?.data.map(i => i.totalCount ? i.totalCount : i.totalCount).join(", ").split(','))
+            setactivity_month(resp?.data.length !== 0 && resp?.data.map(i => i.month ? i.month : i.month).join(", ").split(','))
             setloading(false)
             if (resp?.message == 'Unauthorized User!!') {
                 history.push('/logout')

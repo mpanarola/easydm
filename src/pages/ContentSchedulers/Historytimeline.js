@@ -121,7 +121,7 @@ const HistoryTimeline = (props) => {
                                       <li style={{ listStyle: 'inside' }}> <a href={link} target="_blank"> {link} </a></li>
                                     )
                                     ) :
-                                      activity.newData[key] == null ? 'Removed' : activity.newData[key]}</b>
+                                      activity.newData[key] == null || activity.newData[key] == '' ? 'Removed' : activity.newData[key]}</b>
                                 }
 
                               </li>

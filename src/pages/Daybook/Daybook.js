@@ -69,14 +69,6 @@ const Daybook = () => {
 
   const getDaybooks = (is_reset_search) => {
     const dayBookPayload = {
-      "options": {
-        "populate": [
-          {
-            "path": "addedBy",
-            "select": ["avatar", "name"]
-          }
-        ]
-      },
       "search": {
         "dateFrom": is_reset_search == true ? Moment().startOf('month').format('YYYY-MM-DD') : Moment(start_date).format('YYYY-MM-DD'),
         "dateTo": is_reset_search == true ? Moment().format('YYYY-MM-DD') : Moment(end_date).format('YYYY-MM-DD'),
@@ -101,57 +93,6 @@ const Daybook = () => {
     })
 
   }
-
-  // const rows = useMemo(() =>
-  //   daybooks_list && daybooks_list.map((row, order) => (
-  //     {
-  //       ...row,
-  //       id: order + 1,
-  //       photo: (
-  //         <div className="d-flex align-items-start">
-  //           <div className="me-3 align-self-center">
-  //             { row.addedBy ?
-  //             <img src={`${process.env.REACT_APP_BACKEND}avatar/${row.addedBy.avatar}`}  className="avatar-sm rounded-circle" alt={row.addedBy && row.addedBy.name} title={row.addedBy.name && row.addedBy.name}  />
-  //          : 
-  //          <img src={`${process.env.REACT_APP_BACKEND}avatar/def.png`} title={row.addedBy && row.addedBy.name} alt={row.addedBy && row.addedBy.name} className="avatar-sm rounded-circle" />
-
-  //           }
-  //             </div>
-  //         </div>
-  //       ),
-  //       // webpage_url: "",
-  //       name: row.addedBy && row.addedBy.name && row.addedBy.name,
-  //       date:Moment(row.creationDate).format('DD-MMM-YY'),
-  //       hours: (
-  //         <span className="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.hours}</span>
-  //       ),
-  //       action: (
-  //         <div className="d-flex">
-  //           <div
-  //             className="btn btn-primary fas fa-edit"
-  //             style={{
-  //               cursor: "pointer",
-  //               marginRight: "10px"
-  //             }}
-  //             onClick={() => updateDaybook(row._id)}
-  //             title="View Day Book"
-  //           >
-
-  //           </div>
-
-  //           {/* <div
-  //           className="btn btn-danger"
-  //           onClick={() => confirmDelete()}
-  //         >
-  //           Delete
-  //         </div> */}
-
-  //         </div>
-  //       )
-
-
-  //     })), [daybooks_list])
-
 
   const rows = useMemo(() =>
   daybooks_list && daybooks_list.map( (row, order) => (

@@ -16,11 +16,16 @@ const Performance = (props) => {
     const history = useHistory();
     const alert = useAlert();
     const [activity_list, setactivity_list] = useState([]);
-    
+    const [activity_month, setactivity_month] = useState();
+    const [activity_hours, setactivity_hours] = useState();
+
     const getallPerformanceBacklink = () => {
         performanceBackLink(props.id).then(resp=>{
         // console.log('datass ', resp?.data[0])
         setactivity_list(resp?.data)
+        setactivity_hours(resp?.data.length !== 0 && resp?.data.map(i => i.totalCount ? i.totalCount : i.totalCount).join(", ").split(','))
+        setactivity_month(resp?.data.length !== 0 && resp?.data.map(i => i.month ? i.month : i.month).join(", ").split(','))
+
         if(resp?.message == 'Unauthorized User!!')
         {          
             history.push('/logout')
@@ -46,7 +51,7 @@ const Performance = (props) => {
            
         {
             name: "Total Back Links",
-            data: activity_list.data, // [10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
+            data: activity_hours, // [10, 24, 17, 49, 27, 16, 28, 15, 27, 16, 28, 15, 15],
             type: 'area',
         }]
     
@@ -73,7 +78,7 @@ const Performance = (props) => {
                 size: 3
             },
             xaxis: {
-                categories: activity_list.months, //['Apr - 22', 'May - 22', 'Jun - 22', 'Jul - 22', 'Aug - 22', 'Sept - 22', 'Oct - 22', 'Nov - 22', 'Dec - 22', 'Jan - 23', 'Fab - 23', 'Mar - 23'],
+                categories: activity_month, //['Apr - 22', 'May - 22', 'Jun - 22', 'Jul - 22', 'Aug - 22', 'Sept - 22', 'Oct - 22', 'Nov - 22', 'Dec - 22', 'Jan - 23', 'Fab - 23', 'Mar - 23'],
                 title: {
                     text: 'Month'
                 }
