@@ -93,7 +93,7 @@ const Profile = props => {
       if (resp.status == true) {
         dispatch(loginUser(resp?.data))
         alert.success('Profile Updated Successfully');
-        history.push('/easyDM/profile')
+        history.push('/EasyDM/profile')
 
       } else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')

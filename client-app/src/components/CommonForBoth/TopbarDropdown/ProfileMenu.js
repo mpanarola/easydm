@@ -49,7 +49,7 @@ const ProfileMenu = props => {
     // alert('')
     alert.success('Logout Successfully');
     history.push({
-      pathname: '/easyDM/logout'
+      pathname: '/EasyDM/logout'
     })
 
   };
@@ -76,7 +76,7 @@ const ProfileMenu = props => {
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
           <DropdownItem >
-            <Link className="waves-effect waves-light" to="/easyDM/profile">   <i className="bx bx-user font-size-16 align-middle me-1"></i> View Profile </Link>
+            <Link className="waves-effect waves-light" to="/EasyDM/profile">   <i className="bx bx-user font-size-16 align-middle me-1"></i> View Profile </Link>
           </DropdownItem>
 
           <Link to="#" onClick={() => logOut()} className="dropdown-item text-danger">

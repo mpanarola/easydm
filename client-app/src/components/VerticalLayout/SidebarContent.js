@@ -87,18 +87,18 @@ const SidebarContent = props => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
-              <Link to="/#" className="waves-effect">
+              <Link to="/EasyDM/dashboard" className="waves-effect">
                 <i className="mdi mdi-airplay"></i><span className="badge rounded-pill bg-info float-end"></span>
                 <span>{props.t("Dashboard")}</span>
               </Link>
-              <ul className="sub-menu">
-                <li><Link to="/easyDM/dashboard">{props.t("Dashboard")} 1</Link></li>
-                <li><Link to="/easyDM/dashboard2">{props.t("Dashboard")} 2</Link></li>
-              </ul>
+              {/* <ul className="sub-menu">
+                <li><Link to="/EasyDM/dashboard">{props.t("Dashboard")}</Link></li>
+                <li><Link to="/EasyDM/dashboard2">{props.t("Dashboard")} 2</Link></li>
+              </ul> */}
             </li>
 
             <li>
-              <Link to="/easyDM/webpages" className=" waves-effect">
+              <Link to="/EasyDM/webpages" className=" waves-effect">
                 <i className="mdi mdi-web"></i>
                 <span>{props.t("Websites")}</span>
               </Link>
@@ -106,7 +106,7 @@ const SidebarContent = props => {
 
             {get_auth_user.userRole == 1 &&
              <li>
-             <Link to="/easyDM/members" className=" waves-effect">
+             <Link to="/EasyDM/members" className=" waves-effect">
                <i className="mdi mdi-account-circle"></i>
                <span>{props.t("Members")}</span>
              </Link>
@@ -114,28 +114,28 @@ const SidebarContent = props => {
           }
 
             <li>
-              <Link to="/easyDM/content_schedulers" className=" waves-effect">
+              <Link to="/EasyDM/content_schedulers" className=" waves-effect">
                 <i className="mdi mdi-calendar-text"></i>
                 <span>{props.t("Content Schedulers")}</span>
               </Link>
             </li>
 
             <li>
-              <Link to="/easyDM/backlinks" className=" waves-effect">
+              <Link to="/EasyDM/backlinks" className=" waves-effect">
                 <i className="mdi mdi-link-variant-plus"></i>
                 <span>{props.t("Back Links")}</span>
               </Link>
             </li>
 
             <li>
-              <Link to="/easyDM/page_views" className=" waves-effect">
+              <Link to="/EasyDM/page_views" className=" waves-effect">
                 <i className="mdi mdi-file-find"></i>
                 <span>{props.t("Page Views")}</span>
               </Link>
             </li>
 
             <li>
-              <Link to="/easyDM/daybooks" className=" waves-effect">
+              <Link to="/EasyDM/daybooks" className=" waves-effect">
                 <i className="mdi mdi-calendar-today"></i>
                 <span>{props.t("Day Books")}</span>
               </Link>
@@ -148,7 +148,7 @@ const SidebarContent = props => {
               </Link>
               <ul className="sub-menu">
                 <li>
-                  <Link to="/easyDM/daybooks_report">Daybook Summary</Link>
+                  <Link to="/EasyDM/daybooks_report">Daybook Summary</Link>
                 </li>
               </ul>
             </li>

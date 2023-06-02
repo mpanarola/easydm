@@ -63,7 +63,7 @@ const Createmember = () => {
       if (resp.status == true) {
         alert.success('Member Created Successfully.');
         dispatch(registerUser(resp?.data))
-        history.push('/easyDM/members')
+        history.push('/EasyDM/members')
       }
       else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')

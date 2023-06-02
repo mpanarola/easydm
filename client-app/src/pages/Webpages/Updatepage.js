@@ -80,7 +80,7 @@ const Updatepage = (props) => {
     websiteUpdate(website_data, id).then(resp => {
       if (resp?.status == true) {
         alert.success('Webpage Updated Successfully');
-        history.push('/easyDM/webpages')
+        history.push('/EasyDM/webpages')
       }
       else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -95,7 +95,7 @@ const Updatepage = (props) => {
   }
 
   const goBack = (e) => {
-    history.push('/easyDM/webpages');
+    history.push('/EasyDM/webpages');
   };
 
   return (

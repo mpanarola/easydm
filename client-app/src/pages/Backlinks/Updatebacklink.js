@@ -53,7 +53,7 @@ const Updatebacklink = (props) => {
         alert.error('Session timeout');
       } else {
         alert.success('Backlink Updated Successfully');
-        history.push('/easyDM/backlinks')
+        history.push('/EasyDM/backlinks')
       }
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
@@ -87,7 +87,7 @@ const Updatebacklink = (props) => {
 
   const goBack = (e) => {
     // history.goBack();
-    history.push('/easyDM/backlinks');
+    history.push('/EasyDM/backlinks');
   };
 
 

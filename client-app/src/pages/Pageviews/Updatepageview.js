@@ -67,7 +67,7 @@ const Updatepageview = (props) => {
         alert.error('Session timeout');
       } else {
         alert.success('Pageview Updated Successfully');
-        history.push('/easyDM/page_views')
+        history.push('/EasyDM/page_views')
       }
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
@@ -99,7 +99,7 @@ const Updatepageview = (props) => {
   }, []);
 
   const goBack = (e) => {
-    history.push('/easyDM/page_views');
+    history.push('/EasyDM/page_views');
   };
 
 

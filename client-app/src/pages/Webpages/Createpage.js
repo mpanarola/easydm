@@ -69,7 +69,7 @@ const Createpage = () => {
     addNewWebsite(website_data).then(resp => {
       if (resp?.status == true) {
         alert.success('Website Created Successfully');
-        history.push('/easyDM/webpages')
+        history.push('/EasyDM/webpages')
       }
       else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -85,7 +85,7 @@ const Createpage = () => {
 
   const goBack = (e) => {
     // history.goBack();
-    history.push('/easyDM/webpages');
+    history.push('/EasyDM/webpages');
   };
 
   return (

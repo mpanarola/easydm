@@ -201,7 +201,7 @@ const UpdateSchedular = (props) => {
     updateSchedular(schedularData, id).then(resp => {
       if (resp?.status == true) {
         alert.success('Content Schedular Updated Successfully');
-        history.push('/easyDM/content_schedulers')
+        history.push('/EasyDM/content_schedulers')
       }
       else if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -217,7 +217,7 @@ const UpdateSchedular = (props) => {
   };
 
   const goBack = (e) => {
-    history.push('/easyDM/content_schedulers');
+    history.push('/EasyDM/content_schedulers');
   };
 
   return (
@@ -298,7 +298,6 @@ const UpdateSchedular = (props) => {
                                 className="mb-3 row align-items-center"
                               >
                                 <Col md="11">
-
                                   <AvField
                                     type="url"
                                     name={"url" + key}
@@ -321,7 +320,6 @@ const UpdateSchedular = (props) => {
                                         onClick={(e) => {
                                           handleRemoveFields(e, key)
                                         }}
-
                                       >
                                       </Button>
                                     </div>
@@ -346,9 +344,6 @@ const UpdateSchedular = (props) => {
                         </Row>
                       </div>
                     </Col>
-
-
-
                   </Row>
 
                   <Row>
@@ -478,8 +473,7 @@ const UpdateSchedular = (props) => {
 
                     <Col lg={6}>
                       <div className="mb-3 while_bg_c">
-                        <label htmlFor="submitted_on">Submiited On</label>
-
+                        <label htmlFor="submitted_on">To Be Submitted On</label>
                         <Flatpickr
                           className="form-control d-block"
                           name="submitted_on"

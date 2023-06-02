@@ -33,7 +33,7 @@ const Member = () => {
 
   const updateMember = (data) => {
     history.push({
-      pathname: '/easyDM/update_member',
+      pathname: '/EasyDM/update_member',
       state: { data: data },
     })
   };
@@ -167,7 +167,7 @@ const Member = () => {
             <div className="float-end add_new">
               <Link
                 // onClick={()=>{history.push('/create_member')}}
-                to="/easyDM/create_member"
+                to="/EasyDM/create_member"
                 className="popup-form btn btn-primary fas fa-plus"
                 title="Add New"
               >

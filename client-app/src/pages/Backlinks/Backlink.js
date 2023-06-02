@@ -54,7 +54,7 @@ const Backlink = () => {
 
   const updateBacklink = (data) => {
     history.push({
-      pathname: '/easyDM/update_backlink',
+      pathname: '/EasyDM/update_backlink',
       state: { data: data },
     })
   };
@@ -144,7 +144,7 @@ const Backlink = () => {
             <div className="float-end add_new">
               <Link
                 onClick={() => {
-                  history.push("/easyDM/create_backlink")
+                  history.push("/EasyDM/create_backlink")
                 }}
                 to="#"
                 className="btn btn-primary fas fa-plus"

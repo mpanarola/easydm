@@ -31,7 +31,7 @@ const ContentScheduler = () => {
 
   const updateContentScheduler = (data) => {
     history.push({
-      pathname: '/easyDM/update_schedular',
+      pathname: '/EasyDM/update_schedular',
       state: { data: data },
     })
 
@@ -162,7 +162,7 @@ const ContentScheduler = () => {
             <div className="float-end add_new">
               <Link
 
-                to="/easyDM/create_scheduler"
+                to="/EasyDM/create_scheduler"
                 className="popup-form btn btn-primary fas fa-plus"
                 title="Add New"
               >

@@ -53,7 +53,7 @@ const Backlink = () => {
 
   const updatePageview = (data) => {
     history.push({
-      pathname: '/easyDM/update_page_view',
+      pathname: '/EasyDM/update_page_view',
       state: { data: data },
     })
   };
@@ -147,7 +147,7 @@ const Backlink = () => {
             <div className="float-end add_new">
               <Link
                 onClick={() => {
-                  history.push("/easyDM/create_page_view")
+                  history.push("/EasyDM/create_page_view")
                 }}
                 to="#"
                 className="btn btn-primary fas fa-plus"

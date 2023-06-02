@@ -79,7 +79,7 @@ const Updatemember = (props) => {
           alert.error('Session timeout');
         }
         else {
-          history.push('/easyDM/members')
+          history.push('/EasyDM/members')
         }
       } else {
         alert.error('Please Try Again...');

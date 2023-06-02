@@ -62,7 +62,7 @@ const Createpageview = () => {
       addPageView(pageview_data).then(resp => {
         if (resp.status == true) {
           alert.success('Pageview Created Successfully');
-          history.push('/easyDM/page_views')
+          history.push('/EasyDM/page_views')
         }
         else if (resp?.message == 'Unauthorized User!!') {
           history.push('/logout')
@@ -106,7 +106,7 @@ const Createpageview = () => {
 
 
   const goBack = (e) => {
-    history.push('/easyDM/page_views');
+    history.push('/EasyDM/page_views');
   };
 
   return (

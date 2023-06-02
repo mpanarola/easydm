@@ -37,7 +37,7 @@ const Updatedaybook = (props) => {
   const data = props.location && props.location.state !== undefined ? props.location.state : ''; // props.location && props.location.state;
   // console.log('datassss ', data)
   const daybooks_data = data !== '' && data['data'];
-  // console.log('daybooks_data ', daybooks_data[0].creationDate)
+  console.log('daybooks_data ', daybooks_data[0].creationDate)
   const inpRow = []
   const [inputFields, setinputFields] = useState(inpRow)
 
@@ -46,7 +46,7 @@ const Updatedaybook = (props) => {
   const [daybook_id, setdaybook_id] = useState(daybooks_data && daybooks_data._id);
   const [member_id, set_member_id] = useState(daybooks_data[0] && daybooks_data[0].addedBy);
   const [total_hours, settotal_hours] = useState([]);
-  const [start_date, set_start_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).startOf('month').format('YYYY-MM-DD'))
+  const [start_date, set_start_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).format('YYYY-MM-DD'))
   const [end_date, set_end_date] = useState(Moment(daybooks_data[0] && daybooks_data[0].creationDate).format('YYYY-MM-DD'))
 
   const alert = useAlert();
@@ -57,8 +57,8 @@ const Updatedaybook = (props) => {
 
     const page_payload = {
       "search": {
-        "dateFrom":  start_date,
-        "dateTo": end_date,
+        "dateFrom": daybooks_data[0] && daybooks_data[0].creationDate,
+        "dateTo": daybooks_data[0] && daybooks_data[0].creationDate,
         "member": member_id
       }
     }
@@ -66,7 +66,7 @@ const Updatedaybook = (props) => {
     getDaybooksCurrentUser(page_payload).then(resp => {
       setloading(true)
       if (resp?.data[0]) {
-        console.log('resp ', resp?.data[0][0]._id)
+        // console.log('resp ', resp?.data[0][0]._id)
         setinputFields(resp?.data[0][0] ? resp?.data[0][0]['info'] && resp?.data[0][0]['info'] : [])
         settotal_hours(resp?.data[0][0] ? resp?.data[0][0].totalHours : 0)
         // set_member_id(resp?.data[0][0] ? resp?.data[0][0]._id : [])
@@ -106,6 +106,7 @@ const Updatedaybook = (props) => {
   }
 
   const handleInput = (index, name, value) => {
+    name == 'category' && value !== '' && allWebpages(value)
     setinputFields(prev => prev.map((item, idx) => {
       if (index === idx && item.hasOwnProperty(name)) item[name] = value
       return item
@@ -113,7 +114,17 @@ const Updatedaybook = (props) => {
 
   }
 
-  const allWebpages = () => {
+  const allWebpages = (category) => {
+    
+    const webpagesPayload = {
+      "options": {
+        "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
+      },
+      "query": {
+        "category": category !== '' && category
+    }
+    }
+
     getWebsites(webpagesPayload).then(resp => {
       setwebpages_list(resp?.data[0]?.list)
     }).catch(err => {
@@ -163,7 +174,7 @@ const Updatedaybook = (props) => {
   // }
 
   const goBack = (e) => {
-    history.push('/easyDM/daybooks');
+    history.push('/EasyDM/daybooks');
   };
 
   return (
@@ -268,16 +279,11 @@ const Updatedaybook = (props) => {
                                       <Select
                                         id="webpage"
                                         name="webpage"
-                                        options={
-                                          webpages_list && webpages_list.map(website => (
-                                            { label: website.webpage, value: website._id }
-                                          )
-                                          )
-                                        }
+                                        options={webpages_list && webpages_list.filter(website => website.category == field.category).map(website => (
+                                          { label: website.webpage, value: website._id }
+                                        ))}
                                         classNamePrefix="select2-selection"
                                         defaultValue={{ value: field.webpage, label: field.webpageName }}
-
-
                                         placeholder={<div>Web Page</div>}
                                         onChange={e => handleInput(key, "webpage", e.value)}
 

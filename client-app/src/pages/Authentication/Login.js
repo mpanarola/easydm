@@ -41,17 +41,22 @@ const Login = (props) => {
         
         alert.success('Login Successfully');
         dispatch(loginUser(resp?.data))
-        history.push("/easyDM/dashboard")
-        // window.location.replace("/dashboard");
-
-        
+        // history.push("/EasyDM/dashboard")
+        window.location.replace("/EasyDM/dashboard");
       } else {
         alert.error('Please enter valid details.');
       }
 
     }).catch(err => {
-      alert.error(err.response);
-      dispatch(loginUser(err.response))
+      if(err.response){
+        alert.error(err.response);
+        dispatch(loginUser(err.response))
+      }
+      else{
+        alert.error('Backend server offline.');
+      }
+      
+      
     })
 
   }

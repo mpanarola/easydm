@@ -51,7 +51,7 @@ const Createbacklink = () => {
       addBackLink(backlink_data).then(resp => {
         if (resp.status == true) {
           alert.success('Backlink Created Successfully');
-          history.push('/easyDM/backlinks')
+          history.push('/EasyDM/backlinks')
         }
         else if (resp?.message == 'Unauthorized User!!') {
           history.push('/logout')
@@ -103,7 +103,7 @@ const Createbacklink = () => {
 
 
   const goBack = (e) => {
-    history.push('/easyDM/backlinks');
+    history.push('/EasyDM/backlinks');
   };
 
   return (

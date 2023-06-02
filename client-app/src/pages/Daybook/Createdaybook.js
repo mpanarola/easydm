@@ -18,6 +18,9 @@ import { useAlert } from "react-alert";
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import Moment from 'moment';
 
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+
 import { addDaybook, getWebsites, deleteDaybook } from '../../helpers/backend_helper'
 
 const Createdaybook = () => {
@@ -38,7 +41,17 @@ const Createdaybook = () => {
   const [details, setdetails] = useState(null);
   const [totalHours, settotalHours] = useState(0);
 
-  const allWebpages = () => {
+  const allWebpages = (category) => {
+    
+    const webpagesPayload = {
+      "options": {
+        "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
+      },
+      "query": {
+        "category": category !== '' && category
+    }
+    }
+
     getWebsites(webpagesPayload).then(resp => {
       setwebpages_list(resp?.data[0]?.list)
     }).catch(err => {
@@ -54,12 +67,14 @@ const Createdaybook = () => {
 
   // Function for Create Input Fields
   function handleAddFields() {
+
     const item1 = { webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }
     setinputFields([...inputFields, item1])
   }
 
   // Function for Remove Input Fields
   function handleRemoveFields(id) {
+
     setinputFields(prev => prev.filter((item) => item.id !== id));
   }
 
@@ -78,7 +93,7 @@ const Createdaybook = () => {
       addDaybook(result).then(resp => {
         if (resp.status == true) {
           alert.success('Daybook Added Successfully');
-          history.push('/easyDM/daybooks')
+          history.push('/EasyDM/daybooks')
         }
         else if (resp?.message == 'Unauthorized User!!') {
           history.push('/logout')
@@ -98,6 +113,7 @@ const Createdaybook = () => {
     name == 'category' && value !== '' && setcategory_err(false)
     name == 'hours' && value !== '' && sethours_err(false)
     name == 'webpage' && value !== '' && setwebpage_err(false)
+    name == 'category' && value !== '' && allWebpages(value)
 
     setinputFields(prev => prev.map((item, idx) => {
       if (index === idx && item.hasOwnProperty(name)) item[name] = value
@@ -107,7 +123,7 @@ const Createdaybook = () => {
   }
 
   const goBack = (e) => {
-    history.push('/easyDM/daybooks');
+    history.push('/EasyDM/daybooks');
   };
 
   return (
@@ -138,14 +154,29 @@ const Createdaybook = () => {
                             >
                               <Col md="2">
                                 <div className="mb-4 mt-md-0">
-                                  <AvField
+
+                                <Flatpickr
+                                        className="form-control d-block"
+                                        name="creationDate"
+                                        id="creationDate"
+                                        max={today_date}
+                                        defaultValue={field.creationDate}
+                                        onChange={date => handleInput(key, "creationDate", date[0])}
+                                        options={{
+                                          altInput: true,
+                                          altFormat: "j-F-y",
+                                          dateFormat: "Y-m-d",
+                                        }}
+                                      />
+
+                                  {/* <AvField
                                     type="date"
                                     name="creationDate"
                                     className="inner form-control"
                                     defaultValue={field.creationDate}
                                     max={today_date}
                                     onChange={e => handleInput(key, "creationDate", e.target.value)}
-                                  />
+                                  /> */}
                                 </div>
                               </Col>
 
@@ -169,12 +200,9 @@ const Createdaybook = () => {
                                   <Select
                                     id="webpage"
                                     name="webpage"
-                                    options={
-                                      webpages_list && webpages_list.map(website => (
-                                        { label: website.webpage, value: website._id }
-                                      )
-                                      )
-                                    }
+                                    options={webpages_list && webpages_list.filter(website => website.category == field.category).map(website => (
+                                      { label: website.webpage, value: website._id }
+                                    ))}
                                     classNamePrefix="select2-selection"
                                     defaultValue={field.webpage}
                                     placeholder={<div>Web Page</div>}

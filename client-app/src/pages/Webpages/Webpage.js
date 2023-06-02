@@ -52,7 +52,7 @@ const Webpage = props => {
 
   const updateWebsite = (data) => {
     history.push({
-      pathname: '/easyDM/update_website',
+      pathname: '/EasyDM/update_website',
       state: { data: data },
     })
   };
@@ -150,7 +150,7 @@ const Webpage = props => {
             <div className="float-end add_new">
               <Link
                 onClick={() => {
-                  history.push("/easyDM/create_website")
+                  history.push("/EasyDM/create_website")
                 }}
                 to="#"
                 className="btn btn-primary fas fa-plus"

@@ -33,7 +33,7 @@ function* logoutUser({ payload: { history } }) {
     //   const response = yield call(fireBaseBackend.logout)
     //   yield put(logoutUserSuccess(response))
     // }
-    history.push("/easyDM/login")
+    history.push("/EasyDM/login")
   } catch (error) {
     yield put(apiError(error))
   }
