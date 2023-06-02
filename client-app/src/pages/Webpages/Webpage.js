@@ -61,7 +61,7 @@ const Webpage = props => {
     websites_list && websites_list.map((row, order) => ({
       ...row,
       id: order + 1,
-      category: row.category,
+      category: row.category == 'Blogs' ? 'Blog Etc' :  row.category,
       webpage: (
         <a href={row.webpageUrl} rel="noopener" target="_blank">{row.webpage}</a>
       ),

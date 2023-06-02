@@ -11,7 +11,7 @@ export const optionGroupCategory = [
       { label: "Industry", value: "Industry" },
       { label: "Technologies", value: "Technologies" },
       { label: "Career", value: "Career" },
-      { label: "Blogs", value: "Blogs" }
+      { label: "Blog Etc", value: "Blogs" }
     ],
   },
 

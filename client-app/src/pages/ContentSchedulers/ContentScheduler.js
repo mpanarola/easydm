@@ -101,9 +101,17 @@ const ContentScheduler = () => {
         row.actualWords
       ),
       assigned_on: Moment(row.assignedOn).format('DD-MMM-YY'),
-      assigned_by: row.assignedBy && row.assignedBy.name,
+      assigned_by:  <div className="d-flex align-items-start">
+      <div className="me-3 align-self-center">
+        <img src={`${process.env.REACT_APP_BACKEND}avatar/${row.assignedBy.avatar}`} title={ row.assignedBy && row.assignedBy.name} alt={ row.assignedBy && row.assignedBy.name} className="avatar-sm rounded-circle" />
+      </div>
+    </div>,
       submiited_on: Moment(row.submitedOn).format('DD-MMM-YY'),
-      written_by: row.assignedBy && row.assignedBy.name,
+      written_by: <div className="d-flex align-items-start">
+      <div className="me-3 align-self-center">
+        <img src={`${process.env.REACT_APP_BACKEND}avatar/${row.writtenBy.avatar}`} title={ row.writtenBy && row.writtenBy.name} alt={ row.assignedBy && row.assignedBy.name} className="avatar-sm rounded-circle" />
+      </div>
+    </div>,
       content_status: (
         row.contentStatus == "Complete" ?
           <span class="bg-success badge badge-success font-size-13">{row.contentStatus}</span>
