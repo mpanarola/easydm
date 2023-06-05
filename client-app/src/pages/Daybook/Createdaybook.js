@@ -21,7 +21,7 @@ import Moment from 'moment';
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 
-import { addDaybook, getWebsites, deleteDaybook } from '../../helpers/backend_helper'
+import { addDaybook, getWebsites, deleteDaybook, getContentSchedulars } from '../../helpers/backend_helper'
 
 const Createdaybook = () => {
   let today = new Date(); //Current Date
@@ -31,9 +31,12 @@ const Createdaybook = () => {
   const [webpage_err, setwebpage_err] = useState(false);
   const [category_err, setcategory_err] = useState(false);
   const [hours_err, sethours_err] = useState(false);
-  const inpRow = [{ webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }]
+  const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
+  const inpRow = [{ webpage: null, category: "", hours: "", details: "", creationDate: today_date, id: Date.now(), contentScheduler: null }]
   const [inputFields, setinputFields] = useState(inpRow)
   const [webpages_list, setwebpages_list] = useState([]);
+  const [schedulars_list, setschedulars_list] = useState([]);
+
   const [webpage, setwebpage] = useState(null);
   const [date, setdate] = useState(today_date);
   const [category, setcategory] = useState(null);
@@ -41,15 +44,17 @@ const Createdaybook = () => {
   const [details, setdetails] = useState(null);
   const [totalHours, settotalHours] = useState(0);
 
+
+
   const allWebpages = (category) => {
-    
+
     const webpagesPayload = {
       "options": {
         "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
       },
       "query": {
         "category": category !== '' && category
-    }
+      }
     }
 
     getWebsites(webpagesPayload).then(resp => {
@@ -62,19 +67,19 @@ const Createdaybook = () => {
   useEffect(() => {
     setTimeout(function () {
       allWebpages()
+      allSchedulars()
     }, 1000);
   }, []);
 
   // Function for Create Input Fields
   function handleAddFields() {
 
-    const item1 = { webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now() }
+    const item1 = { webpage: null, category: "", hours: "", details: "", creationDate: today_date, id: Date.now(), contentScheduler: null }
     setinputFields([...inputFields, item1])
   }
 
   // Function for Remove Input Fields
   function handleRemoveFields(id) {
-
     setinputFields(prev => prev.filter((item) => item.id !== id));
   }
 
@@ -83,7 +88,7 @@ const Createdaybook = () => {
       data: inputFields
     }
 
-    if (inputFields[0].category == '' || inputFields[0].webpage == '' || inputFields[0].hours == '') {
+    if (inputFields[0].category == '' || inputFields[0].hours == '') {
 
       inputFields[0].category.length == 0 && setcategory_err(true)
       inputFields[0].hours.length == 0 && sethours_err(true)
@@ -96,7 +101,7 @@ const Createdaybook = () => {
           history.push('/EasyDM/daybooks')
         }
         else if (resp?.message == 'Unauthorized User!!') {
-          history.push('/logout')
+          history.push('/EasyDM/logout')
           alert.error('Session timeout');
         }
         else {
@@ -110,10 +115,12 @@ const Createdaybook = () => {
 
 
   const handleInput = (index, name, value) => {
+
     name == 'category' && value !== '' && setcategory_err(false)
     name == 'hours' && value !== '' && sethours_err(false)
     name == 'webpage' && value !== '' && setwebpage_err(false)
     name == 'category' && value !== '' && allWebpages(value)
+    name == 'category' && value == 'Blogs' ? setis_show_contentshedular(true) : setis_show_contentshedular(false)
 
     setinputFields(prev => prev.map((item, idx) => {
       if (index === idx && item.hasOwnProperty(name)) item[name] = value
@@ -121,6 +128,16 @@ const Createdaybook = () => {
     }))
 
   }
+
+  const allSchedulars = () => {
+
+    getContentSchedulars().then(resp => {
+      setschedulars_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
+
+  }
+
 
   const goBack = (e) => {
     history.push('/EasyDM/daybooks');
@@ -153,30 +170,20 @@ const Createdaybook = () => {
                               className="mb-1 row align-items-center"
                             >
                               <Col md="2">
-                                <div className="mb-4 mt-md-0">
-
-                                <Flatpickr
-                                        className="form-control d-block"
-                                        name="creationDate"
-                                        id="creationDate"
-                                        max={today_date}
-                                        defaultValue={field.creationDate}
-                                        onChange={date => handleInput(key, "creationDate", date[0])}
-                                        options={{
-                                          altInput: true,
-                                          altFormat: "j-F-y",
-                                          dateFormat: "Y-m-d",
-                                        }}
-                                      />
-
-                                  {/* <AvField
-                                    type="date"
+                                <div className="mb-4 mt-md-0 while_bg_c">
+                                  <Flatpickr
+                                    className="form-control d-block"
                                     name="creationDate"
-                                    className="inner form-control"
-                                    defaultValue={field.creationDate}
+                                    id="creationDate"
                                     max={today_date}
-                                    onChange={e => handleInput(key, "creationDate", e.target.value)}
-                                  /> */}
+                                    defaultValue={field.creationDate}
+                                    onChange={date => handleInput(key, "creationDate", date[0])}
+                                    options={{
+                                      altInput: true,
+                                      altFormat: "j-F-y",
+                                      dateFormat: "Y-m-d",
+                                    }}
+                                  />
                                 </div>
                               </Col>
 
@@ -195,26 +202,46 @@ const Createdaybook = () => {
                                 </div>
                               </Col>
 
-                              <Col md="2">
-                                <div className="mb-4 mt-md-0">
-                                  <Select
-                                    id="webpage"
-                                    name="webpage"
-                                    options={webpages_list && webpages_list.filter(website => website.category == field.category).map(website => (
-                                      { label: website.webpage, value: website._id }
-                                    ))}
-                                    classNamePrefix="select2-selection"
-                                    defaultValue={field.webpage}
-                                    placeholder={<div>Web Page</div>}
-                                    onChange={e => handleInput(key, "webpage", e.value)}
-                                  />
-                                  {webpage_err ? <div style={{ fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
+                              {
+                                field.category !== 'Blogs' && is_show_contentshedular == false ?
 
-                                  {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
-                                </div>
+                                  <Col md="2">
+                                    <div className="mb-4 mt-md-0">
+                                      <Select
+                                        id="webpage"
+                                        name="webpage"
+                                        options={webpages_list && webpages_list.filter(website => website.category == field.category).map(website => (
+                                          { label: website.webpage, value: website._id }
+                                        ))}
+                                        classNamePrefix="select2-selection"
+                                        defaultValue={field.webpage}
+                                        placeholder={<div>Web Page</div>}
+                                        onChange={e => handleInput(key, "webpage", e.value)}
+                                      />
+                                      {webpage_err ? <div style={{ fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
 
-                              </Col>
+                                      {/* { webpage!== null && <Link to={webpage} style={{ float: "right", marginTop: "5px"}} >View Page</Link> } */}
+                                    </div>
 
+                                  </Col>
+                                  :
+                                  <Col md="2">
+                                    <div className="mb-4 mt-md-0">
+                                      <Select
+                                        id="contentScheduler"
+                                        name="contentScheduler"
+                                        options={schedulars_list && schedulars_list.map(schedular => (
+                                          { label: schedular.topicTitle, value: schedular._id }
+                                        ))}
+                                        classNamePrefix="select2-selection"
+                                        // defaultValue={{ value: field.webpage, label: field.webpageName }}
+                                        placeholder={<div>Select Values</div>}
+                                        onChange={e => handleInput(key, "contentScheduler", e.value)}
+                                      />
+
+                                    </div>
+                                  </Col>
+                              }
                               <Col md="2">
                                 <div className="mb-4  mt-md-0">
                                   <input

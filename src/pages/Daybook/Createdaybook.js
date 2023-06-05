@@ -32,7 +32,7 @@ const Createdaybook = () => {
   const [category_err, setcategory_err] = useState(false);
   const [hours_err, sethours_err] = useState(false);
   const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
-  const inpRow = [{ webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now(), contentScheduler: null }]
+  const inpRow = [{ webpage: null, category: "", hours: "", details: "", creationDate: today_date, id: Date.now(), contentScheduler: null }]
   const [inputFields, setinputFields] = useState(inpRow)
   const [webpages_list, setwebpages_list] = useState([]);
   const [schedulars_list, setschedulars_list] = useState([]);
@@ -74,7 +74,7 @@ const Createdaybook = () => {
   // Function for Create Input Fields
   function handleAddFields() {
 
-    const item1 = { webpage: "", category: "", hours: "", details: "", creationDate: today_date, id: Date.now(), contentScheduler: null}
+    const item1 = { webpage: null, category: "", hours: "", details: "", creationDate: today_date, id: Date.now(), contentScheduler: null}
     setinputFields([...inputFields, item1])
   }
 
