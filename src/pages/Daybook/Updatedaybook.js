@@ -13,7 +13,7 @@ import Select from "react-select";
 import { useHistory, withRouter } from 'react-router-dom';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-import { optionCategory, webpagesPayload } from './Constants'
+import { optionGroupCategory } from '../../Constants'
 import { updateDaybook, getWebsites, deleteDaybook, getDaybooksCurrentUser, getContentSchedulars } from '../../helpers/backend_helper'
 import { useAlert } from "react-alert";
 import Moment from 'moment';
@@ -237,7 +237,7 @@ const Updatedaybook = (props) => {
                                       <Select
                                         id="category"
                                         name="category"
-                                        options={optionCategory}
+                                        options={optionGroupCategory}
                                         classNamePrefix="select2-selection"
                                         placeholder="Category"
                                         defaultValue={{ label: field.category && field.category, value: field.category && field.category }}

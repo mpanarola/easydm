@@ -12,12 +12,11 @@ import Performance from "./Performance"
 import HistoryTimeline from "./Historytimeline"
 import Moment from 'moment';
 //Import Breadcrumb
+import { optionGroupCategory, offPageActivityType, optionBackLinkStaus } from '../../Constants'
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
-import { getWebsite, updateBackLink } from '../../helpers/backend_helper'
-import { optionGroupCategory, optionGroupWebPage } from './Constants'
-
+import { getWebsites, updateBackLink, getContentSchedulars, checkBacklink } from '../../helpers/backend_helper'
 import "flatpickr/dist/themes/material_blue.css";
 import Flatpickr from "react-flatpickr";
 import "./datatables.scss"
@@ -28,26 +27,52 @@ const Updatebacklink = (props) => {
   const alert = useAlert();
 
   const data = props.location && props.location.state;
-  let head_published_on = Moment(data && data.data.createdAt).format('DD-MMM-YY');
-  const [webpage, setwebpage] = useState(data && data.data.webpage.webpage);
-  const [webpage_id, setwebpage_id] = useState(data && data.data.webpage._id);
-  const [webpage_url, setwebpage_url] = useState(data && data.data.webpage.webpageUrl);
-// console.log('data ',Moment( data.data.monthYear).format('MMM-YY'))
-  // const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
-  const [monthyear, setmonthyear] = useState(Moment(data && data.data.monthYear).format("YYYY-MM"));
-  const [category, setcategory] = useState();
+
+  let head_published_on = Moment(data && data.data.date).format('DD-MMM-YY');
+  const [webpage, setwebpage] = useState(data && data.data.webpage && data.data.webpage.webpage);
+  const [webpage_id, setwebpage_id] = useState(data && data.data.webpage && data.data.webpage._id);
+  const [webpage_url, setwebpage_url] = useState(data && data.data.webpage && data.data.webpage.webpageUrl);
+  const [webpage_err, setwebpage_err] = useState(false);
+
+  const [category, setcategory] = useState(data && data.data.category);
+
+  const [contentScheduler, setscheduler] = useState(data && data.data.contentScheduler);
+  const [contentTopicTitle, setcontentTopicTitle] = useState(data && data.data.contentTopicTitle);
+
+  const [offPageActivity, setactivity] = useState(data && data.data.offPageActivity);
+  const [domain, setdomain] = useState(data && data.data.domain);
+  const [directUrl, setdirect_url] = useState(data && data.data.directUrl);
+  const [id, setid] = useState(data && data.data.id);
+  const [password, setpassword] = useState(data && data.data.password);
+  const [notes, setnotes] = useState(data && data.data.notes);
+  const [status, setstatus] = useState(data && data.data.status);
+
+  const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
+  const [schedulars_list, setschedulars_list] = useState([]);
+
   const [total_backlinks, settotal_backlinks] = useState(data && data.data.numberOfBacklinks);
-  const [published_on, setpublished_on] = useState(Moment(data && data.data.publishedOn).format('YYYY-MM-DD'));
+  const [published_on, setpublished_on] = useState(Moment(data && data.data.date).format('YYYY-MM-DD'));
   const [webpages_list, setwebpages_list] = useState([]);
   // const [date, setdate] = useState(today_date);
-  const [id, setid] = useState(data && data.data._id);
+  const [backlink_id, setbacklink_id] = useState(data && data.data._id);
 
   const updateBacklink = (event, values) => {
     const backlink_data = {
-      numberOfBacklinks: data && data.data.numberOfBacklinks !== total_backlinks ? total_backlinks : undefined,
+      webpage: data && data.data.webpage.webpage !== webpage ? webpage : undefined,
+      category: data && data.data.category !== category ? category : undefined ,
+      offPageActivity: data && data.data.offPageActivity !== offPageActivity ? offPageActivity : undefined ,
+      domain: data && data.data.domain !== domain ? domain : undefined,
+      id: data && data.data.id !== id ? id : undefined ,
+      password: data && data.data.password !== password ? password : undefined,
+      notes: data && data.data.notes !== notes ? notes : undefined,
+      directUrl: data && data.data.directUrl !== directUrl ? directUrl : undefined,
+      contentScheduler: data && data.data.contentScheduler !== contentScheduler ? contentScheduler : undefined,
+      status: data && data.data.status !== status ? status : undefined,
+      // date: data && data.data.published_on !== published_on ? published_on : undefined 
     }
 
-    updateBackLink(backlink_data, id).then(resp => {
+
+    updateBackLink(backlink_data, backlink_id).then(resp => {
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
         alert.error('Session timeout');
@@ -62,25 +87,73 @@ const Updatebacklink = (props) => {
 
   }
 
-  const allWebpages = () => {
-    getWebsite(webpage_id).then(resp => {
-      const data = resp?.data[0];
+  const checkIdPass = (name, value) => {
 
-      setpublished_on(data.publishedOn)
-      setwebpage(data.webpage)
-      setwebpage_id(data._id)
+    const backlink_data = {
+      domain: domain,
+      directURL: directUrl,
+    }
 
-      setcategory(data.category)
-      setwebpages_list(resp?.data[0])
+    checkBacklink(backlink_data).then(resp => {
+      if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
+      } else {
+        console.log('resp ', resp)
+        // alert.success('Backlink Updated Successfully');
+        // history.push('/backlinks')
+      }
+    }).catch(err => {
+      alert.error('Backend server not responding, Please try again....');
+      history.push('/logout')
+    })
+
+  }
+
+  
+
+
+  const handleInput = (name, value) => {
+    name == 'category' && value !== '' && allWebpages(value)
+    name == 'category' && value == 'Blogs' ? setwebpage(null) && setis_show_contentshedular(true) : setis_show_contentshedular(false)
+    setcategory(value)
+  }
+
+
+
+  const allWebpages = (category) => {
+    const webpages_payload = {
+      "options": {
+        "select": ['webpage', 'webpageUrl']
+      },
+      "query": {
+        "category": category !== '' && category
+      }
+    }
+
+    getWebsites(webpages_payload).then(resp => {
+      setwebpages_list(resp?.data[0]?.list)
+
     }).catch(err => {
     })
 
   }
 
+  const allSchedulars = () => {
+
+    getContentSchedulars().then(resp => {
+      setschedulars_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
+
+  }
+
+
   useEffect(() => {
-    !data &&  goBack();
+    !data && goBack();
     setTimeout(function () {
       allWebpages()
+      allSchedulars()
     }, 500);
 
   }, []);
@@ -114,51 +187,43 @@ const Updatebacklink = (props) => {
                   updateBacklink(e, v)
                 }}>
                   <Row>
-                    <Col lg={6} >
+
+                    <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="webpage">Web Page</label>
-                        {webpage_url !== '' && <a href={webpage_url} target="_blank" style={{ float: "right" }} >View Page</a>}
-                        <Select
-                          id="webpage"
-                          classNamePrefix="select2-selection"
-                          defaultValue={{ label: webpage, value: webpage }}
+                        <label htmlFor="published_on">Date</label>
+
+                        <Flatpickr
+                          className="form-control d-block"
+                          name="published_on"
+                          label="Published On"
+                          id="published_on"
+                          // onChange={e => setpublished_on(e.target.value)}
+                          value={published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
                           isDisabled={true}
+                          // placeholder="dd M,yyyy"
+                          options={{
+                            altInput: true,
+                            altFormat: "j-F-y",
+                            dateFormat: "Y-m-d",
+                            clickOpens: false,
+                          }}
                         />
+
                       </div>
                     </Col>
 
                     <Col lg={6}>
                       <div className="mb-3">
-                        <label htmlFor="published_on">Published On</label>
-
-                        <Flatpickr
-                        className="form-control d-block"
-                        name="published_on"
-                          label="Published On"
-                          id="published_on"
-                          // onChange={e => setpublished_on(e.target.value)}
-                          value={ published_on ? Moment(published_on).format('YYYY-MM-DD') : undefined}
-                          isDisabled={true}
-                          // placeholder="dd M,yyyy"
-                        options={{
-                          altInput: true,
-                          altFormat: "j-F-y",
-                          dateFormat: "Y-m-d",
-                          clickOpens: false,
-                        }}
-                      />
-
-
-                        {/* <AvField
-                          type="date"
-                          name="published_on"
-                          label="Published On"
-                          className="form-control"
-                          id="published_on"
-                          defaultValue={published_on}
-                          onChange={e => setpublished_on(e.target.value)}
-                          readOnly
-                        /> */}
+                        <label htmlFor="page_activity">Off Page Activity Type</label>
+                        <Select
+                          id="page_activity"
+                          name="page_activity"
+                          label="Off Page Activity Type"
+                          options={offPageActivityType}
+                          defaultValue={{ value: offPageActivity, label: offPageActivity }}
+                          classNamePrefix="select2-selection"
+                          onChange={e => setactivity(e.value)}
+                        />
                       </div>
                     </Col>
 
@@ -167,66 +232,154 @@ const Updatebacklink = (props) => {
                         <label htmlFor="category">Category</label>
                         <Select
                           id="category"
+                          name="category"
+                          label="Category"
+                          options={optionGroupCategory}
                           classNamePrefix="select2-selection"
-                          value={{ label: category && category, value: category && category }}
-                        // defaultValue={{ label: category, value: category }}
-                          isDisabled={true}
+                          // onChange={e => setcategory(e.value)}
+                          defaultValue={{ value: category, label: category }}
+                          onChange={e => handleInput("category", e.value)}
                         />
                       </div>
                     </Col>
 
-                    <Row className="mt-4">
+                    {
+                      category !== 'Blogs' && is_show_contentshedular == false ?
 
-                      <Col lg={6}>
-                        <div className="mb-3">
-                          {/* <label htmlFor="month_year">Month-Year</label> */}
-                          {/* <AvField
-                            type="month"
-                            name="month_year"
-                            label="Month-Year"
-                            className="form-control"
-                            id="month_year"
-                            // defaultValue = {monthyear}
-                            isDisabled={true}
-                            required
-                            onChange={e => setmonthyear(e.target.value)}
-                            // value={monthyear}
-                            defaultValue={monthyear}
-                          /> */}
+                        <Col lg={6}>
+                          <div className="mb-3">
+                            <label htmlFor="webpage" className={webpage_err ? ' text-danger' : ''}>Web Page</label>
+                            <Select
+                              id="webpage"
+                              options={
+                                webpages_list && webpages_list !== null && webpages_list.map(website => (
 
-                          <AvField
-                            type="month"
-                            name="month_year"
-                            label="Month-Year"
-                            className="form-control"
-                            id="month_year"
-                            readOnly
-                            required
-                            onChange={e => setmonthyear(e.target.value)}
-                            defaultValue={monthyear}
-                          />
+                                  { label: website.webpage, value: website._id, id: website._id, url: website.webpageUrl, category: website.category, publishedOn: website.publishedOn }
+                                )
+                                )
+                              }
+                              defaultValue={{ value: webpage_id, label: webpage }}
+                              classNamePrefix="select2-selection"
+                              onChange={e => setwebpage(e.value)}
+                            />
+                            {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
+                          </div>
+                        </Col>
+                        :
+                        <Col lg={6}>
+                          <div className="mb-3">
+                            <label htmlFor="contentscheduler" >Content Scheduler</label>
+                            <Select
+                              id="contentScheduler"
+                              name="contentScheduler"
+                              options={schedulars_list && schedulars_list.map(schedular => (
+                                { label: schedular.topicTitle, value: schedular._id }
+                              ))}
+                              classNamePrefix="select2-selection"
+                              defaultValue={{ value: contentScheduler, label: contentTopicTitle }}
+                              placeholder={<div>Select Values</div>}
+                              onChange={e => setscheduler(e.value)}
 
-                        </div>
-                      </Col>
+                            />
+                            {/* {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''} */}
+                          </div>
+                        </Col>
+                    }
 
-                      <Col lg={6}>
-                        <div className="mb-3">
-                          {/* <label htmlFor="total_backlinks">Number of Back Links</label> */}
-                          <AvField
-                            type="number"
-                            name="total_backlinks"
-                            label="Number of Back Links"
-                            className="form-control"
-                            id="total_backlinks"
-                            min={1}
-                            onChange={e => settotal_backlinks(e.target.value)}
-                            defaultValue={total_backlinks}
-                            required
-                          />
-                        </div>
-                      </Col>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        {/* <label htmlFor="month_year">Month-Year</label> */}
+                        <AvField
+                          type="url"
+                          name="domain"
+                          label="Domain"
+                          className="form-control"
+                          id="domain"
+                          required
+                          onChange={e => setdomain(e.target.value)}
+                          onBlur={e => checkIdPass()}
 
-                    </Row>
+                          defaultValue={domain}
+
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <AvField
+                          type="url"
+                          name="direct_url"
+                          label="Direct URL"
+                          className="form-control"
+                          id="direct_url"
+                          defaultValue={directUrl}
+                          required
+                          onChange={e => setdirect_url(e.target.value)}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="status">Status</label>
+                        <Select
+                          name="status"
+                          options={optionBackLinkStaus}
+                          classNamePrefix="select2-selection form-control"
+                          onChange={e => setstatus(e.value)}
+                          defaultValue={{ value: status, label: status }}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <AvField
+                          type="text"
+                          name="id"
+                          label="ID"
+                          className="form-control"
+                          id="id"
+                          required
+                          onChange={e => setid(e.target.value)}
+                          defaultValue={id}
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <AvField
+                          type="text"
+                          name="password"
+                          label="Password"
+                          className="form-control"
+                          id="password"
+                          required
+                          onChange={e => setpassword(e.target.value)}
+                          defaultValue={password}
+
+                        />
+                      </div>
+                    </Col>
+
+                    <Col lg={6}>
+                      <div className="mb-3">
+                        <label htmlFor="notes">Notes</label>
+                        <textarea
+                          rows="4" cols="5"
+                          name="notes"
+                          className="inner form-control"
+                          placeholder="Enter Notes"
+                          onChange={e => setnotes(e.target.value)}
+                          defaultValue={notes}
+
+                        />
+                      </div>
+                    </Col>
 
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
@@ -248,8 +401,8 @@ const Updatebacklink = (props) => {
             </Card>
           </Col>
 
-          <Performance id={webpage_id} />
-          <HistoryTimeline id={id} />
+          {/* <Performance id={webpage_id} /> */}
+          <HistoryTimeline id={backlink_id} />
         </Row>
       </div>
     </>

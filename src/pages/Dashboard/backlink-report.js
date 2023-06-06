@@ -16,7 +16,7 @@ const BackLinkHistoryReport = (props) => {
     const getallPerformanceBacklink = () => {
         userDashboard().then(resp => {
             setbacklinks_months(resp?.data.totalBackLinks && resp?.data.totalBackLinks.length !== 0 && resp?.data.totalBackLinks.map(i => i.month ? i.month : i.month).join(", ").split(','))
-            settotal_backlinks(resp?.data.totalBackLinks && resp?.data.totalBackLinks.length !== 0 && resp?.data.totalBackLinks.map(i => i.totalBackLinks ? i.totalBackLinks : i.totalBackLinks).join(", ").split(','))
+            settotal_backlinks(resp?.data.totalBackLinks && resp?.data.totalBackLinks.length !== 0 && resp?.data.totalBackLinks.map(i => i.totalCount ? i.totalCount : i.totalCount).join(", ").split(','))
             setloading(false)
 
             if (resp?.message == 'Unauthorized User!!') {

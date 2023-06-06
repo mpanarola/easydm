@@ -14,7 +14,10 @@ import { useHistory, withRouter } from 'react-router-dom';
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import { registerUser } from "../../store/actions"
 import { addMember } from '../../helpers/backend_helper'
-import { optionGroupStaus, optionGroupType } from './Constants'
+
+
+import { optionMemberStaus as optionGroupStaus, optionMemberType as optionGroupType } from '../../Constants'
+
 import { AvForm, AvField } from "availity-reactstrap-validation"
 
 const Createmember = () => {

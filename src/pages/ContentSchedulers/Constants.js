@@ -1,7 +1,3 @@
-export const isArrayEquals = (a, b) => {
-	return Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((val, index) => val === b[index]);
-};
-
 export const payload =  {
   "options": {
     "populate": [
@@ -124,33 +120,3 @@ export const columns = [
 
   ];
 
-// Type
-export const optionGroupType = [
-    {
-      label: "Type",
-      options: [
-        { label: "Blog", value: "Blog"  },
-        { label: "Article", value: "Article" },
-        { label: "eBook", value: "eBook" },
-        { label: "Infographics", value: "Infographics" },
-        { label: "PPT", value: "PPT" },
-        { label: "PPC", value: "PPC" },
-      ],
-    },
-  
-  ];
-
-  // Status
-export const optionGroupStaus = [
-    {
-      label: "Status",
-      options: [
-        { label: "In Progress", value: "In-progress" },
-        { label: "Complete", value: "Complete" },
-        { label: "Input missing", value: "Input-missing" },
-        { label: "In review", value: "In-review" },
-      ],
-
-    },
-  
-  ];

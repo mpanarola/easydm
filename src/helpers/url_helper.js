@@ -128,6 +128,7 @@ export const UPDATE_BACK_LINK = "/update_backlink"
 export const DELETE_BACK_LINK = "/delete_backlink"
 export const VIEW_BACK_LINK_ACTIVITY = "/activity_backlink"
 export const VIEW_BACK_LINK_PERFORMANCE = "/backLinkHistory"
+export const CHECK_BACK_LINK = "/check_backlink"
 
 
 

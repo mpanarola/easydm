@@ -11,7 +11,9 @@ import {
 } from "reactstrap"
 import Select from "react-select";
 import { useHistory, Link } from 'react-router-dom';
-import { optionCategory, webpagesPayload } from './Constants'
+// import { optionCategory, webpagesPayload } from './Constants'
+import { optionGroupCategory } from '../../Constants'
+
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
 //Import Breadcrumb
@@ -192,7 +194,7 @@ const Createdaybook = () => {
                                   <Select
                                     id="category"
                                     name="category"
-                                    options={optionCategory}
+                                    options={optionGroupCategory}
                                     classNamePrefix="select2-selection"
                                     placeholder={<div>Category</div>}
                                     defaultValue={field.category}

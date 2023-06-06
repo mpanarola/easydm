@@ -4,7 +4,7 @@ export const webpage_payload = {
     "populate": [
       {
         "path": "webpage",
-        "select": ["webpage", "webpageUrl", "category", "publishedOn"]
+        "select": ["webpage", "webpageUrl"]
       }
     ]
   }
@@ -24,20 +24,6 @@ export const optionGroupWebPage = [
 
 ];
 
-export const optionGroupCategory = [
-  {
-    label: "Category",
-    options: [
-      { label: "Services", value: "Services" },
-      { label: "Industry", value: "Industry" },
-      { label: "Technologies", value: "Technologies" },
-      { label: "Career", value: "Career" },
-      { label: "Blogs", value: "Blogs" }
-    ],
-  },
-
-];
-
 export const columns = [
   {
     label: "ID",
@@ -46,47 +32,59 @@ export const columns = [
     width: 150,
   },
   {
+    label: "Date",
+    field: "date",
+    sort: "asc",
+    width: 150,
+  },
+  {
+    label: "Off Page Activity Type",
+    field: "offPageActivity",
+    sort: "asc",
+    width: 200,
+  },
+  {
     label: "Web Page",
     field: "webpage",
     sort: "disabled",
     width: 150,
   },
+
   {
-    label: "Web Page Search",
-    field: "webpage_dummy",
+    label: "Web Page",
+    field: "webpage_search",
+    sort: "disabled",
+    width: 150,
+  },
+
+  {
+    label: "Domain",
+    field: "domain",
     sort: "asc",
     width: 150,
   },
+
   {
-    label: "Web Page Search",
-    field: "webpage_url_search",
+    label: "Domain",
+    field: "domain_search",
     sort: "asc",
     width: 150,
   },
+
   {
-    label: "Published On",
-    field: "date",
-    sort: "asc",
-    width: 200,
-  },
-  {
-    label: "Category",
-    field: "category",
+    label: "Direct URL",
+    field: "directUrl",
     sort: "asc",
     width: 270,
   },
+
   {
-    label: "Month-Year",
-    field: "month_year",
+    label: "Direct URL",
+    field: "directUrl_search",
     sort: "asc",
-    width: 200,
+    width: 270,
   },
-  {
-    label: "No. Of Back Links",
-    field: "total_backlinks",
-    sort: "asc",
-    width: 170,
-  },
+
   {
     label: "Action",
     field: "action",

@@ -12,7 +12,9 @@ import { useHistory, Link } from 'react-router-dom';
 import Moment from 'moment';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-import { optionGroupType, optionGroupStaus } from './Constants'
+// import { optionGroupType, optionGroupStaus } from './Constants'
+import { optionGroupType, optionGroupStaus } from '../../Constants'
+
 import { addNewSchedular, getWebsites, getAllMembers } from '../../helpers/backend_helper'
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { useAlert } from "react-alert";
