@@ -58,7 +58,7 @@ const Updatebacklink = (props) => {
 
   const updateBacklink = (event, values) => {
     const backlink_data = {
-      webpage: data && data.data.webpage.webpage !== webpage ? webpage : undefined,
+      webpage: data && data.data.webpage._id !== webpage_id ? webpage_id : undefined,
       category: data && data.data.category !== category ? category : undefined ,
       offPageActivity: data && data.data.offPageActivity !== offPageActivity ? offPageActivity : undefined ,
       domain: data && data.data.domain !== domain ? domain : undefined,
@@ -71,15 +71,20 @@ const Updatebacklink = (props) => {
       // date: data && data.data.published_on !== published_on ? published_on : undefined 
     }
 
-
+// console.log('backlink_data ', backlink_data)
     updateBackLink(backlink_data, backlink_id).then(resp => {
-      if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
-        alert.error('Session timeout');
-      } else {
+      if (resp.status == true) {
         alert.success('Backlink Updated Successfully');
         history.push('/backlinks')
       }
+      else if (resp?.message == 'Unauthorized User!!') {
+        history.push('/logout')
+        alert.error('Session timeout');
+      }
+      else {
+        alert.error('BackLink already exists for same webpage/contentscheduler and Direct URL.');
+      }
+
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
       history.push('/logout')
@@ -87,39 +92,33 @@ const Updatebacklink = (props) => {
 
   }
 
-  const checkIdPass = (name, value) => {
+  const checkIdPass = () => {
+    setid(null)  
+    setpassword(null) 
 
     const backlink_data = {
       domain: domain,
-      directURL: directUrl,
+      webpage: webpage_id !== null ? webpage_id : undefined,
+      contentScheduler: contentScheduler !== null ? contentScheduler : undefined
     }
 
     checkBacklink(backlink_data).then(resp => {
-      if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
-        alert.error('Session timeout');
-      } else {
-        console.log('resp ', resp)
-        // alert.success('Backlink Updated Successfully');
-        // history.push('/backlinks')
-      }
+      const data = resp.data[0];
+      setid(data.id)  
+      setpassword(data.password) 
     }).catch(err => {
-      alert.error('Backend server not responding, Please try again....');
-      history.push('/logout')
+      setid(id)  
+      setpassword(password) 
     })
 
   }
-
-  
 
 
   const handleInput = (name, value) => {
     name == 'category' && value !== '' && allWebpages(value)
-    name == 'category' && value == 'Blogs' ? setwebpage(null) && setis_show_contentshedular(true) : setis_show_contentshedular(false)
+    name == 'category' && value == 'Blogs' ? setwebpage_id(null) && setis_show_contentshedular(true) : setscheduler(null) && setis_show_contentshedular(false)
     setcategory(value)
   }
-
-
 
   const allWebpages = (category) => {
     const webpages_payload = {
@@ -140,7 +139,6 @@ const Updatebacklink = (props) => {
   }
 
   const allSchedulars = () => {
-
     getContentSchedulars().then(resp => {
       setschedulars_list(resp?.data[0]?.list)
     }).catch(err => {
@@ -169,11 +167,11 @@ const Updatebacklink = (props) => {
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
-
+        {console.log('password', password)}
         <Row>
           <Card>
             <CardBody>
-              <h4 className="me-4"> ID:  {id}</h4>
+              <h4 className="me-4"> ID:  {webpage_id}</h4>
               <label htmlFor="created_on">Created On :  {head_published_on}</label>
             </CardBody>
           </Card>
@@ -260,7 +258,7 @@ const Updatebacklink = (props) => {
                               }
                               defaultValue={{ value: webpage_id, label: webpage }}
                               classNamePrefix="select2-selection"
-                              onChange={e => setwebpage(e.value)}
+                              onChange={e => setwebpage_id(e.value)}
                             />
                             {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
                           </div>
@@ -345,7 +343,7 @@ const Updatebacklink = (props) => {
                           id="id"
                           required
                           onChange={e => setid(e.target.value)}
-                          defaultValue={id}
+                          value={id}
                         />
                       </div>
                     </Col>
@@ -360,7 +358,7 @@ const Updatebacklink = (props) => {
                           id="password"
                           required
                           onChange={e => setpassword(e.target.value)}
-                          defaultValue={password}
+                          value={password}
 
                         />
                       </div>

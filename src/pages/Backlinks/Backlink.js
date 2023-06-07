@@ -47,16 +47,11 @@ const Backlink = () => {
 
   const [offPageActivity, setoffPageActivity] = useState(null)
   const [status, setstatus] = useState(null)
-
-
-
   const [start_date, set_start_date] = useState(Moment().format('YYYY-MM-DD'))
   const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
-
   const [backlinks_list, setbacklinks_list] = useState([])
   const [record_id, set_id] = useState()
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
-
   const [is_loading, setloading] = useState(true)
 
   const confirmDelete = (id) => {
@@ -111,18 +106,34 @@ const Backlink = () => {
     const memberPayload = {
       "options": {
         "select": ['name']
+      },
+      "query": {
+        "_id": get_auth_user.user_id
       }
+
+    }
+
+    const defaultmemberPayload = {
+      "options": {
+        "select": ['name']
+      }
+
     }
 
     getAllMembers(memberPayload).then(resp => {
+
       setmembers_list(
         resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
-          get_auth_user.user_id == user._id &&
           { label: user.name, value: user._id }
         )
         )
       )
 
+    }).catch(err => {
+    })
+
+
+    getAllMembers(defaultmemberPayload).then(resp => {
       setdefault_members_list(
         resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
           { label: user.name, value: user._id }
@@ -137,7 +148,6 @@ const Backlink = () => {
 
 
   const allWebpages = (category_id) => {
-
     const webpagePayload = {
       "options": {
         "select": ['webpage', 'webpageUrl']
@@ -162,8 +172,12 @@ const Backlink = () => {
 
   }
 
-  const getAllBacklinks = (event, values) => {
+ 
 
+  const getAllBacklinks = (event, values) => {
+    setloading(true)
+    const member_lists_comma_sep = members_list && members_list.length !== 0 && members_list.map(i => i.value ? i.value : i.value).join(",").split(',');
+   
     const webpage_payload = {
       "options": {
         "populate": [
@@ -180,17 +194,18 @@ const Backlink = () => {
           "$gte": Moment(start_date).format('YYYY-MM-DD'),
           "$lte": Moment(end_date).format('YYYY-MM-DD')
         },
-        "status": status,
-        "webpage": webpage_id,
-        "addedBy": members_list,
-        "category": category_id,
-        "contentSchedular": contentSchedular,
-        "offPageActivity": offPageActivity
+        "status": status !== null ? status : undefined,
+        "webpage": webpage_id !== null ? webpage_id : undefined,
+        "addedBy":  member_lists_comma_sep !== false ? member_lists_comma_sep !== null ? member_lists_comma_sep : get_auth_user.userRole == 1 ?  undefined : [get_auth_user.user_id] : member_lists_comma_sep == false && undefined,
+        "category": category_id !== null ? category_id : undefined,
+        "contentSchedular": contentSchedular !== null ? contentSchedular : undefined,
+        "offPageActivity": offPageActivity !== null ? offPageActivity : undefined,
+        "domain": domain_url !== null ? domain_url !== "" ? domain_url : undefined : undefined
       },
     }
 
     getBackLinks(webpage_payload).then(resp => {
-      setbacklinks_list(resp?.data?.list)
+      setbacklinks_list(resp?.data[0]?.list)
       setloading(false)
       if (resp?.message == 'Unauthorized User!!') {
         history.push('/logout')
@@ -249,12 +264,10 @@ const Backlink = () => {
     })), [backlinks_list])
 
   useEffect(() => {
-    setTimeout(function () {
-      getAllBacklinks()
-      allWebpages()
-      allMembers()
-      allSchedulars()
-    }, 1000);
+    getAllBacklinks()
+    allWebpages()
+    allMembers()
+    allSchedulars()
 
   }, []);
 
@@ -326,7 +339,7 @@ const Backlink = () => {
                       <Select
                         id="page_activity"
                         name="page_activity"
-                        label="Off Page Activity Type"
+                        placeholder={<div></div>}
                         options={offPageActivityType}
                         classNamePrefix="select2-selection"
                         onChange={e => setoffPageActivity(e.value)}
@@ -348,6 +361,7 @@ const Backlink = () => {
                         }
                         defaultValue={{ label: category_id, value: category_id }}
                         classNamePrefix="select2-selection"
+                       
                       />
                     </div>
                   </Col>
@@ -355,7 +369,7 @@ const Backlink = () => {
                   {
                     category_id !== 'Blogs' && is_show_contentshedular == false ?
 
-                      <Col lg={3}>
+                      <Col lg={6}>
                         <div className="mb-3">
                           <label htmlFor="webpage">Web Page</label>
                           <Select
@@ -374,7 +388,7 @@ const Backlink = () => {
                         </div>
                       </Col>
                       :
-                      <Col lg={3}>
+                      <Col lg={6}>
                         <div className="mb-3">
                           <label htmlFor="contentscheduler" >Content Scheduler</label>
                           <Select
@@ -393,7 +407,7 @@ const Backlink = () => {
                       </Col>
                   }
 
-<Col lg={3}>
+<Col lg={6}>
                     <div className="mb-3">
                       <label htmlFor="members">Added By</label>
                       <Select
@@ -402,8 +416,9 @@ const Backlink = () => {
                         onChange={setmembers_list}
                         // onChange={e => console.log(e.target.value)}
                         options={default_members_list}
-                        value={members_list}
+
                         classNamePrefix="select2-selection"
+                        defaultValue= {  get_auth_user.userRole !== 1 && { value: get_auth_user.user_id , label: get_auth_user.name }}
                       />
                     </div>
                   </Col>

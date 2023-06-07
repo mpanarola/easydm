@@ -9,7 +9,7 @@ import {
 import Select from "react-select";
 import { useHistory } from 'react-router-dom';
 
-import { addBackLink, getWebsites, getContentSchedulars } from '../../helpers/backend_helper'
+import { addBackLink, getWebsites, getContentSchedulars, checkBacklink } from '../../helpers/backend_helper'
 
 import { optionGroupCategory, offPageActivityType, optionBackLinkStaus } from '../../Constants'
 
@@ -27,11 +27,10 @@ const Createbacklink = () => {
   let today = new Date(); //Current Date
   let today_date = Moment(today).format('YYYY-MM-DD');
 
-  const [webpage, setwebpage] = useState();
+  const [webpage, setwebpage] = useState(null);
   const [webpage_err, setwebpage_err] = useState(false);
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
   const [category, setcategory] = useState(null);
-
   const [scheduler, setscheduler] = useState(null);
   const [activity, setactivity] = useState(null);
   const [domain, setdomain] = useState(null);
@@ -40,12 +39,8 @@ const Createbacklink = () => {
   const [password, setpassword] = useState(null);
   const [notes, setnotes] = useState(null);
   const [status, setstatus] = useState(null);
-
   const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
-
-
   const [schedulars_list, setschedulars_list] = useState([]);
-
   const [total_backlinks, settotal_backlinks] = useState();
   const [published_on, setpublished_on] = useState(today_date);
   const [webpages_list, setwebpages_list] = useState([]);
@@ -53,13 +48,9 @@ const Createbacklink = () => {
   const alert = useAlert();
 
   const insertBackLink = (event, values) => {
-    const backlink_data = {
-      // webpage: webpage,
-      // monthYear: Moment(monthyear).startOf('month').format("YYYY-MM-DD"),
-      // category: category,
-      // numberOfBacklinks: total_backlinks,
-      // publishedOn: published_on
 
+
+    const backlink_data = {
       webpage: webpage,
       category: category,
       offPageActivity: activity,
@@ -73,7 +64,10 @@ const Createbacklink = () => {
       date: published_on
     }
 
-    console.log('backlink_data ',backlink_data)
+    if(webpage == null){
+      alert.error('Please select webpage');
+    }
+    else{
       addBackLink(backlink_data).then(resp => {
         if (resp.status == true) {
           alert.success('Backlink Created Successfully');
@@ -84,30 +78,32 @@ const Createbacklink = () => {
           alert.error('Session timeout');
         }
         else {
-          alert.error('Month-Year already added for this page.');
+          alert.error('BackLink already exists for same webpage/contentscheduler and Direct URL.');
         }
 
       }).catch(err => {
         alert.error('Backend server not responding, Please try again....');
       })
+    }
     
   }
 
-  const webpages_payload = {
-    "options": {
-      "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
-    }
-  }
-
-
   const handleInput = (name, value) => {
     name == 'category' && value !== '' && allWebpages(value)
-    name == 'category' && value == 'Blogs' ? setwebpage(null) && setis_show_contentshedular(true) : setis_show_contentshedular(false)
+    name == 'category' && value == 'Blogs' ? setwebpage(null) && setis_show_contentshedular(true) : setscheduler(null) && setis_show_contentshedular(false)
     setcategory(value)
   }
 
+  const allWebpages = (category) => {
+    const webpages_payload = {
+      "options": {
+        "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
+      },
+      "query": {
+        "category": category !== '' && category
+      }
+    }
 
-  const allWebpages = () => {
     getWebsites(webpages_payload).then(resp => {
       setwebpages_list(resp?.data[0]?.list)
 
@@ -120,6 +116,7 @@ const Createbacklink = () => {
     if (e) {
       setwebpage(e.value);
       setwebpage_err(false);
+      checkIdPass()
     }
     // setwebpageurl(e.url);
   }
@@ -141,6 +138,23 @@ const Createbacklink = () => {
     }, 1000);
 
   }, []);
+
+
+  const checkIdPass = () => {
+    const backlink_data = {
+      domain: domain,
+      webpage: webpage,
+    }
+
+checkBacklink(backlink_data).then(resp => {
+      const data = resp.data[0];
+      setid(data.id)  
+      setpassword(data.password) 
+    }).catch(err => {
+      setid(null)  
+      setpassword(null) 
+    })
+  }
 
 
   const goBack = (e) => {
@@ -197,6 +211,7 @@ const Createbacklink = () => {
                           options={offPageActivityType}
                           classNamePrefix="select2-selection"
                           onChange={e => setactivity(e.value)}
+                          defaultValue={{ value: 'Social Bookmarking', label: 'Social Bookmarking' }}
                         />
                       </div>
                     </Col>
@@ -210,7 +225,7 @@ const Createbacklink = () => {
                           label="Category"
                           options={optionGroupCategory}
                           classNamePrefix="select2-selection"
-                          // onChange={e => setcategory(e.value)}
+                          defaultValue={{ value: 'Services', label: 'Services' }}
                           onChange={e => handleInput("category", e.value)}
                         />
                       </div>
@@ -271,6 +286,7 @@ const Createbacklink = () => {
                           id="domain"
                           required
                           onChange={e => setdomain(e.target.value)}
+                          onBlur={e => checkIdPass()}
                         />
                       </div>
                     </Col>
@@ -297,7 +313,7 @@ const Createbacklink = () => {
                           options={optionBackLinkStaus}
                           classNamePrefix="select2-selection form-control"
                           onChange={e => setstatus(e.value)}
-
+                          defaultValue={{ value: 'In Review', label: 'In Review'}}
                         />
                       </div>
                     </Col>
@@ -314,6 +330,7 @@ const Createbacklink = () => {
                           id="id"
                           required
                           onChange={e => setid(e.target.value)}
+                          value={id}
                         />
                       </div>
                     </Col>
@@ -328,6 +345,7 @@ const Createbacklink = () => {
                           id="password"
                           required
                           onChange={e => setpassword(e.target.value)}
+                          value={password}
                         />
                       </div>
                     </Col>
