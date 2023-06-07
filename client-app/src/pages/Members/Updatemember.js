@@ -16,7 +16,7 @@ import { connect, useDispatch } from "react-redux"
 import { AvForm, AvField } from "availity-reactstrap-validation"
 import { updateMember as UpdateMember } from "../../store/actions"
 import { memberUpdate } from '../../helpers/backend_helper'
-import { optionGroupStaus, optionGroupType } from './Constants'
+import { optionMemberStaus as optionGroupStaus, optionMemberType as optionGroupType } from '../../Constants'
 
 
 const Updatemember = (props) => {

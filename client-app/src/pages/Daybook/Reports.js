@@ -8,11 +8,12 @@ import Select from "react-select";
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
 import { reportDaybookcolumns as columns } from './Constants';
+import { optionGroupCategory } from '../../Constants'
 
 import { useHistory } from 'react-router-dom';
 import { useAlert } from "react-alert";
 import { getAlldaybooks, getAllMembers, getWebsites, activityDaybook } from '../../helpers/backend_helper'
-import { memberPayload, optionGroupCategory, webpagePayload } from './Constants';
+import { memberPayload, webpagePayload } from './Constants';
 
 import Performance from "./Performance"
 import "flatpickr/dist/themes/material_blue.css";

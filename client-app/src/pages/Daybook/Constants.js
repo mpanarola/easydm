@@ -38,20 +38,6 @@ export const columns = [
 
 ];
 
-export const optionGroupCategory = [
-  {
-    label: "Category",
-    options: [
-      { label: "Services", value: "Services" },
-      { label: "Industry", value: "Industry" },
-      { label: "Technologies", value: "Technologies" },
-      { label: "Career", value: "Career" },
-      { label: "Blog Etc", value: "Blogs" }
-    ],
-  },
-
-];
-
 export const memberPayload = {
   "options": {
     "select": ['name']
@@ -63,20 +49,6 @@ export const webpagePayload = {
     "select": ['webpage', 'webpageUrl']
   }
 }
-
-export const optionCategory = [
-  {
-    label: "Category",
-    options: [
-      { label: "Services", value: "Services" },
-      { label: "Industry", value: "Industry" },
-      { label: "Technologies", value: "Technologies" },
-      { label: "Career", value: "Career" },
-      { label: "Blog Etc", value: "Blogs" }
-    ],
-  },
-
-];
 
 export const webpagesPayload = {
   "options": {

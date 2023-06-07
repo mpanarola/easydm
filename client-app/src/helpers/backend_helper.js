@@ -78,6 +78,7 @@ export const activitySchedular = (id) => get(`${url.VIEW_SCHEDULAR_ACTIVITY}/${i
 export const getBackLinks = backlink => post(url.GET_BACKLINKS, backlink)
 export const addBackLink = backlink => post(url.ADD_BACK_LINK, backlink)
 export const updateBackLink = (backlink, id) => put(`${url.UPDATE_BACK_LINK}/${id}`, backlink)
+export const checkBacklink = backlink => post(url.CHECK_BACK_LINK, backlink)
 // export const updateSchedular = (schedular, id) => put(`${url.UPDATE_SCHEDULAR}/${id}`, schedular )
 export const deleteBackLink = id =>
   del(`${url.DELETE_BACK_LINK}/${id}`, { headers: { id } })

@@ -107,7 +107,7 @@ const Updatepageview = (props) => {
     <>
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
-        <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
+        <Breadcrumbs title="Page Views" breadcrumbItem="Update Page View" />
         <Row>
           <Card>
             <CardBody>
@@ -312,7 +312,7 @@ const Updatepageview = (props) => {
                     <Col lg={12}>
                       <div className="text-right col-lg-10 d-flex">
                         <button type="submit" className="btn btn-primary" style={{ marginRight: "30px" }} >
-                          Update Back Link
+                          Update Page View
                         </button>
                         <button type="button" className="btn btn-secondary" onClick={() => goBack()}>
                           Back

@@ -11,28 +11,49 @@ import SweetAlert from "react-bootstrap-sweetalert"
 import Breadcrumbs from "../../components/Common/Breadcrumb"
 import "./datatables.scss"
 
-import { getBackLinks, deleteBackLink } from '../../helpers/backend_helper'
+import { getBackLinks, deleteBackLink, getAllMembers, getWebsites, getContentSchedulars } from '../../helpers/backend_helper'
 import Moment from 'moment';
-import { useHistory } from 'react-router-dom';
-import { columns, webpage_payload } from './Constants';
 
+import { useHistory } from 'react-router-dom';
+
+import { columns, webpage_payload } from './Constants';
+import { optionGroupCategory, offPageActivityType, optionBackLinkStaus } from '../../Constants'
+
+import "flatpickr/dist/themes/material_blue.css";
+import Flatpickr from "react-flatpickr";
+import Select from "react-select";
 
 const Backlink = () => {
 
   const history = useHistory();
   const alert = useAlert();
-
+  const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
+  const [schedulars_list, setschedulars_list] = useState([]);
   const [success_dlg, setsuccess_dlg] = useState(false)
   const [dynamic_title, setdynamic_title] = useState("")
   const [dynamic_description, setdynamic_description] = useState("")
   const [confirm_both, setconfirm_both] = useState(false)
   const [confirm_alert, setconfirm_alert] = useState(false)
 
+  const [members_list, setmembers_list] = useState(null)
+  const [default_members_list, setdefault_members_list] = useState(null)
+  const [webpages_list, setwebpages_list] = useState(null)
+  const [webpage_name, set_webpagename] = useState()
+  const [category_id, set_category] = useState(null)
+  const [contentSchedular, setcontentSchedular] = useState(null)
+
+  const [webpage_id, set_webpage] = useState(null)
+  const [domain_url, setdomain_url] = useState(null)
+
+  const [offPageActivity, setoffPageActivity] = useState(null)
+  const [status, setstatus] = useState(null)
+  const [start_date, set_start_date] = useState(Moment().format('YYYY-MM-DD'))
+  const [end_date, set_end_date] = useState(Moment().format('YYYY-MM-DD'))
   const [backlinks_list, setbacklinks_list] = useState([])
   const [record_id, set_id] = useState()
   const get_auth_user = JSON.parse(localStorage.getItem("authUser"))
   const [is_loading, setloading] = useState(true)
-  
+
   const confirmDelete = (id) => {
     setconfirm_both(true)
     set_id(id)
@@ -59,12 +80,137 @@ const Backlink = () => {
     })
   };
 
+
+  const handleWebpage = (e) => {
+    set_webpage(e.value);
+    set_webpagename(e.label);
+  }
+
+  // const resetSearch = () => {
+  //   setloading(true)
+  //   set_category('')
+  //   set_webpage('')
+  //   setcontentSchedular('')
+  //   set_webpagename('')
+  //   setmembers_list('')
+  //   setstatus('')
+  //   setdomain_url('')
+  //   setoffPageActivity('')
+  //   set_end_date(Moment().format('YYYY-MM-DD'))
+  //   set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
+  //   getAllBacklinks()
+  // }
+
+
+  const allMembers = () => {
+    const memberPayload = {
+      "options": {
+        "select": ['name']
+      },
+      "query": {
+        "_id": get_auth_user.user_id
+      }
+
+    }
+
+    const defaultmemberPayload = {
+      "options": {
+        "select": ['name']
+      }
+
+    }
+
+    getAllMembers(memberPayload).then(resp => {
+
+      setmembers_list(
+        resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
+          { label: user.name, value: user._id }
+        )
+        )
+      )
+
+    }).catch(err => {
+    })
+
+
+    getAllMembers(defaultmemberPayload).then(resp => {
+      setdefault_members_list(
+        resp?.data[0]?.list && resp?.data[0]?.list.map((user) => (
+          { label: user.name, value: user._id }
+        )
+        )
+      )
+
+    }).catch(err => {
+    })
+
+  }
+
+
+  const allWebpages = (category_id) => {
+    const webpagePayload = {
+      "options": {
+        "select": ['webpage', 'webpageUrl']
+      },
+      "query": {
+        "category": category_id !== '' && category_id
+      }
+    }
+
+    getWebsites(webpagePayload).then(resp => {
+      setwebpages_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
+
+  }
+
+  const allSchedulars = () => {
+    getContentSchedulars().then(resp => {
+      setschedulars_list(resp?.data[0]?.list)
+    }).catch(err => {
+    })
+
+  }
+
+ 
+
   const getAllBacklinks = (event, values) => {
+    setloading(true)
+    // members_list && members_list.push(get_auth_user.user_id)
+    const member_lists_comma_sep = members_list && members_list.length !== 0 && members_list.map(i => i.value ? i.value : i.value).join(",").split(',');
+    console.log('member_lists_comma_sep ',member_lists_comma_sep)
+   
+    const webpage_payload = {
+      "options": {
+        "populate": [
+          {
+            "path": "webpage",
+            "select": ["webpage", "webpageUrl"]
+          },
+
+        ]
+      },
+
+      "query": {
+        "date": {
+          "$gte": Moment(start_date).format('YYYY-MM-DD'),
+          "$lte": Moment(end_date).format('YYYY-MM-DD')
+        },
+        "status": status !== null ? status : undefined,
+        "webpage": webpage_id !== null ? webpage_id : undefined,
+        "addedBy":  member_lists_comma_sep !== false ? member_lists_comma_sep !== null ? member_lists_comma_sep : get_auth_user.userRole == 1 ?  undefined : [get_auth_user.user_id] : member_lists_comma_sep == false && undefined,
+        "category": category_id !== null ? category_id : undefined,
+        "contentSchedular": contentSchedular !== null ? contentSchedular : undefined,
+        "offPageActivity": offPageActivity !== null ? offPageActivity : undefined,
+        "domain": domain_url !== null ? domain_url !== "" ? domain_url : undefined : undefined
+      },
+    }
+
     getBackLinks(webpage_payload).then(resp => {
       setbacklinks_list(resp?.data[0]?.list)
       setloading(false)
       if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
+        history.push('/EasyDM/logout')
         alert.error('Session timeout');
       }
 
@@ -78,18 +224,22 @@ const Backlink = () => {
     backlinks_list && backlinks_list.map((row, order) => ({
       ...row,
       id: order + 1,
+      directUrl_search: row.domain,
+      domain_search: row.domain,
+      webpage_search: row.webpage && row.webpage.webpageUrl,
+      date: Moment(row.date).format('DD-MMM-YY'),
+      offPageActivity: row.offPageActivity,
+
       webpage: (
         <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
       ),
-      webpage_search: row.webpage && row.webpage.webpage,
-      webpage_url_search: row.webpage && row.webpage.webpageUrl,
-      date: row.webpage && Moment(row.webpage.publishedOn).format('DD-MMM-YY'),
-      // webpage_url: "",
-      category: row.webpage && row.webpage.category,
-      month_year: Moment(row.monthYear).format('MMM-YY'),
-      total_backlinks: (
-        row.numberOfBacklinks
-        // <span class="bg-info badge badge-secondary" style={{ fontSize: "14px" }}>{row.numberOfBacklinks}</span>
+
+      domain: (
+        <a href={row.domain} rel="noopener" target="_blank">{row.domain}</a>
+      ),
+
+      directUrl: (
+        <a href={row.directUrl} rel="noopener" target="_blank">{row.directUrl}</a>
       ),
       action: (
         <div className="d-flex" >
@@ -103,12 +253,12 @@ const Backlink = () => {
           >
           </div>
 
-          { get_auth_user.userRole == 1 &&
-              <div
-                className="btn btn-danger fas fa-trash"
-                onClick={() => confirmDelete(row._id)}
-              >
-              </div>
+          {get_auth_user.userRole == 1 &&
+            <div
+              className="btn btn-danger fas fa-trash"
+              onClick={() => confirmDelete(row._id)}
+            >
+            </div>
           }
         </div>
       )
@@ -116,9 +266,10 @@ const Backlink = () => {
     })), [backlinks_list])
 
   useEffect(() => {
-    setTimeout(function () {
-      getAllBacklinks()
-    }, 1000);
+    getAllBacklinks()
+    allWebpages()
+    allMembers()
+    allSchedulars()
 
   }, []);
 
@@ -137,6 +288,189 @@ const Backlink = () => {
             {dynamic_description}
           </SweetAlert>
         ) : null}
+
+        <Row>
+          <Card >
+            <CardBody >
+              <CardTitle className="mb-4 ">Search Filter</CardTitle>
+              <Col lg={12}>
+                <Row>
+                  <Col lg={6}>
+                    <div className="float-start while_bg_c col-lg-12">
+                      <div> <div className="card-title">Date Filter</div> </div>
+                      <div className="float-start  d-flex col-lg-12">
+                        <Flatpickr
+                          className="form-control d-block"
+                          name="start_date"
+                          id="start_date"
+                          onChange={date => set_start_date(date[0])}
+                          defaultValue={start_date}
+                          // isDisabled={true}
+                          //   placeholder="dd M,yyyy"
+                          options={{
+                            altInput: true,
+                            altFormat: "j-F-y",
+                            dateFormat: "Y-m-d",
+                            clickOpens: true,
+                          }}
+                        />
+
+                        <Flatpickr
+                          className="form-control d-block"
+                          name="end_date"
+                          id="end_date"
+                          onChange={date => set_end_date(date[0])}
+                          defaultValue={start_date}
+                          max={Moment().format('YYYY-MM-DD')}
+                          // isDisabled={true}
+                          //   placeholder="dd M,yyyy"
+                          options={{
+                            altInput: true,
+                            altFormat: "j-F-y",
+                            dateFormat: "Y-m-d",
+                            clickOpens: true,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Col>
+
+                  <Col lg={3}>
+                    <div className="mb-3">
+                      <label htmlFor="page_activity">Off Page Activity Type</label>
+                      <Select
+                        id="page_activity"
+                        name="page_activity"
+                        placeholder={<div></div>}
+                        options={offPageActivityType}
+                        classNamePrefix="select2-selection"
+                        onChange={e => setoffPageActivity(e.value)}
+                      />
+                    </div>
+                  </Col>
+
+                  <Col lg={3}>
+                    <div className="mb-3">
+                      <label htmlFor="category">Category</label>
+                      <Select
+                        id="category"
+                        isMulti={false}
+                        onChange={(e) => {
+                          set_category(e.value)
+                        }}
+                        options={
+                          optionGroupCategory
+                        }
+                        defaultValue={{ label: category_id, value: category_id }}
+                        classNamePrefix="select2-selection"
+                       
+                      />
+                    </div>
+                  </Col>
+
+                  {
+                    category_id !== 'Blogs' && is_show_contentshedular == false ?
+
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          <label htmlFor="webpage">Web Page</label>
+                          <Select
+                            id="webpage"
+                            isMulti={false}
+                            onChange={e => handleWebpage(e)}
+                            options={
+                              webpages_list && webpages_list.map(website => (
+                                { label: website.webpage, value: website._id }
+                              )
+                              )
+                            }
+                            value={{ label: webpage_name, value: webpage_id }}
+                            classNamePrefix="select2-selection"
+                          />
+                        </div>
+                      </Col>
+                      :
+                      <Col lg={6}>
+                        <div className="mb-3">
+                          <label htmlFor="contentscheduler" >Content Scheduler</label>
+                          <Select
+                            id="contentScheduler"
+                            name="contentScheduler"
+                            options={schedulars_list && schedulars_list.map(schedular => (
+                              { label: schedular.topicTitle, value: schedular._id }
+                            ))}
+                            classNamePrefix="select2-selection"
+                            placeholder={<div>Select Values</div>}
+                            onChange={e => setcontentSchedular(e.value)}
+
+                          />
+                          {/* {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''} */}
+                        </div>
+                      </Col>
+                  }
+
+<Col lg={6}>
+                    <div className="mb-3">
+                      <label htmlFor="members">Added By</label>
+                      <Select
+                        id="members"
+                        isMulti={true}
+                        onChange={setmembers_list}
+                        // onChange={e => console.log(e.target.value)}
+                        options={default_members_list}
+
+                        classNamePrefix="select2-selection"
+                        defaultValue= {  get_auth_user.userRole !== 1 && { value: get_auth_user.user_id , label: get_auth_user.name }}
+                      />
+                    </div>
+                  </Col>
+
+                  <Col lg={3}>
+                    <div className="mb-3">
+                      <label htmlFor="notes">Domain</label>
+                      <input
+                        type="url"
+                        name="domain_url"
+                        className="form-control"
+                        id="domain_url"
+                        onChange={e => setdomain_url(e.target.value)}
+                      />
+                    </div>
+                  </Col>
+
+                  <Col lg={3}>
+                    <div className="mb-3">
+                      <label htmlFor="status">Status</label>
+                      <Select
+                        name="status"
+                        options={optionBackLinkStaus}
+                        classNamePrefix="select2-selection form-control"
+                        onChange={e => setstatus(e.value)}
+
+                      />
+                    </div>
+                  </Col>
+
+                </Row>
+
+                <button type="button" className="btn btn-secondary w-auto"
+                  onClick={() => {
+                    getAllBacklinks()
+
+                  }} >
+                  Search
+                </button>
+
+                {/* <button type="button" className="btn btn-danger mx-2"
+                  onClick={() => {
+                    resetSearch()
+                  }}  >
+                  Reset
+                </button> */}
+              </Col>
+            </CardBody>
+          </Card>
+        </Row>
 
         <Card >
           <CardBody>
@@ -161,10 +495,10 @@ const Backlink = () => {
               <CardBody className="backlink_table">
                 <CardTitle>Back Links List</CardTitle>
                 {
-                  is_loading == true ?   <span className="spinner-grow spinner-grow-sm"></span> :
-                
-                <MDBDataTable responsive bordered data={{ rows, columns }} />
-              }
+                  is_loading == true ? <span className="spinner-grow spinner-grow-sm"></span> :
+
+                    <MDBDataTable responsive bordered data={{ rows, columns }} />
+                }
               </CardBody>
             </Card>
           </Col>
