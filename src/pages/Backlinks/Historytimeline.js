@@ -54,6 +54,7 @@ const HistoryTimeline = (props) => {
             {is_loading ? <span className="spinner-grow spinner-grow-sm"></span> : activity_list && activity_list.length == 0 ? <h5>Sorry, No Activities Found....</h5> : ''}
 
             {activity_list && activity_list.map(activity => (
+             
               <li className="activity-list">
                 <div className="d-flex align-items-start">
                   <div className="me-3">
@@ -68,10 +69,12 @@ const HistoryTimeline = (props) => {
                         {
                           activity.newData ?
                             Object.keys(activity.newData).map(key => (
+   
                               <li key={key} className="mt-2 mb-2">
                                 {insertSpaces(key) + ' To : '}
                                 {
-                                  <b>{activity.newData[key]}</b>
+                                  
+                                  <b>{activity.newData[key] == null  ? 'Removed' : activity.newData[key]}</b>
                                 }
 
                               </li>

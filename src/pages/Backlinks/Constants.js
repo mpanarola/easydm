@@ -44,7 +44,7 @@ export const columns = [
     width: 200,
   },
   {
-    label: "Web Page",
+    label: "Web Page / Content Scheduler",
     field: "webpage",
     sort: "disabled",
     width: 150,

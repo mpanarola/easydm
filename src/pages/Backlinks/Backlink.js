@@ -172,7 +172,6 @@ const Backlink = () => {
 
   }
 
- 
 
   const getAllBacklinks = (event, values) => {
     setloading(true)
@@ -184,6 +183,10 @@ const Backlink = () => {
           {
             "path": "webpage",
             "select": ["webpage", "webpageUrl"]
+          },
+          {
+            "path": "contentScheduler",
+            "select": ["docLink"]
           },
 
         ]
@@ -224,12 +227,12 @@ const Backlink = () => {
       id: order + 1,
       directUrl_search: row.domain,
       domain_search: row.domain,
-      webpage_search: row.webpage && row.webpage.webpageUrl,
+      webpage_search: row.contentTopicTitle == null ? row.webpage && row.webpage.webpage : row.contentTopicTitle,
       date: Moment(row.date).format('DD-MMM-YY'),
       offPageActivity: row.offPageActivity,
 
       webpage: (
-        <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
+        <a href={ row.contentTopicTitle ==null ? row.webpage && row.webpage.webpageUrl : row.contentScheduler && row.contentScheduler.docLink} rel="noopener" target="_blank">{row.contentTopicTitle == null ? row.webpage && row.webpage.webpage : row.contentTopicTitle}</a>
       ),
 
       domain: (
