@@ -30,15 +30,15 @@ const Createbacklink = () => {
   const [webpage, setwebpage] = useState(null);
   const [webpage_err, setwebpage_err] = useState(false);
   const [monthyear, setmonthyear] = useState(Moment().subtract(1, "month").format("YYYY-MM"));
-  const [category, setcategory] = useState(null);
+  const [category, setcategory] = useState('Services');
   const [scheduler, setscheduler] = useState(null);
-  const [activity, setactivity] = useState(null);
+  const [activity, setactivity] = useState('Social Bookmarking');
   const [domain, setdomain] = useState(null);
   const [direct_url, setdirect_url] = useState(null);
   const [id, setid] = useState(null);
   const [password, setpassword] = useState(null);
   const [notes, setnotes] = useState(null);
-  const [status, setstatus] = useState(null);
+  const [status, setstatus] = useState('In Review');
   const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
   const [schedulars_list, setschedulars_list] = useState([]);
   const [total_backlinks, settotal_backlinks] = useState();
@@ -47,9 +47,10 @@ const Createbacklink = () => {
   const history = useHistory();
   const alert = useAlert();
 
-  const insertBackLink = (event, values) => {
+  const insertBackLink = () => {
     const backlink_data = {
-      webpage: webpage,
+      webpage: scheduler == null ? webpage : null,
+      contentScheduler: webpage == null ? scheduler : null,
       category: category,
       offPageActivity: activity,
       domain: domain,
@@ -57,16 +58,10 @@ const Createbacklink = () => {
       password: password,
       notes: notes,
       directUrl: direct_url,
-      contentScheduler: scheduler,
       status: status,
       date: published_on
     }
 
-
-    if (webpage == null) {
-      alert.error('Please select webpage');
-    }
-    else {
       addBackLink(backlink_data).then(resp => {
         if (resp.status == true) {
           alert.success('Backlink Created Successfully');
@@ -83,7 +78,6 @@ const Createbacklink = () => {
       }).catch(err => {
         alert.error('Backend server not responding, Please try again....');
       })
-    }
   }
 
   const handleInput = (name, value) => {
@@ -98,7 +92,7 @@ const Createbacklink = () => {
         "select": ['webpage', 'webpageUrl', 'category', 'publishedOn']
       },
       "query": {
-        "category": category !== '' && category
+        "category": category
       }
     }
 
@@ -111,16 +105,29 @@ const Createbacklink = () => {
   }
 
   const handleWebpage = (e) => {
+    checkIdPass()
     if (e) {
       setwebpage(e.value);
       setwebpage_err(false);
-      checkIdPass()
+      setscheduler(null)
+      setid(null)  
+      setpassword(null) 
+    }
+    // setwebpageurl(e.url);
+  }
+
+  const handleScheduler = (e) => {
+    checkIdPass()
+    if (e) {
+      setscheduler(e.value);
+      setwebpage(null)
+      setid(null)  
+      setpassword(null) 
     }
     // setwebpageurl(e.url);
   }
 
   const allSchedulars = () => {
-
     getContentSchedulars().then(resp => {
       setschedulars_list(resp?.data[0]?.list)
     }).catch(err => {
@@ -130,7 +137,7 @@ const Createbacklink = () => {
 
   useEffect(() => {
     setTimeout(function () {
-      allWebpages()
+      allWebpages(category)
       allSchedulars()
       // handleWebpage()
     }, 1000);
@@ -139,21 +146,32 @@ const Createbacklink = () => {
 
 
   const checkIdPass = () => {
+    setid(null)  
+    setpassword(null) 
+    
     const backlink_data = {
       domain: domain,
-      webpage: webpage,
+      webpage: webpage !== null ? webpage : undefined,
+      contentScheduler: scheduler !== null ? scheduler : undefined
     }
 
-    checkBacklink(backlink_data).then(resp => {
+checkBacklink(backlink_data).then(resp => {
+  console.log('resp ', resp)
       const data = resp.data[0];
-      setid(data.id)
-      setpassword(data.password)
+      if(resp.data !== null){
+        setid(data.id)  
+        setpassword(data.password)
+      }
+      else{
+        setid(null)  
+        setpassword(null) 
+      }
+
     }).catch(err => {
-      setid(null)
-      setpassword(null)
+      setid('')  
+      setpassword('') 
     })
   }
-
 
   const goBack = (e) => {
     history.push('/EasyDM/backlinks');
@@ -170,7 +188,7 @@ const Createbacklink = () => {
               <CardBody >
                 <CardTitle className="mb-4">Create Back Link</CardTitle>
                 <AvForm onValidSubmit={(e, v) => {
-                  insertBackLink(e, v)
+                  insertBackLink()
                 }}>
 
                   <Row>
@@ -223,7 +241,7 @@ const Createbacklink = () => {
                           label="Category"
                           options={optionGroupCategory}
                           classNamePrefix="select2-selection"
-                          defaultValue={{ value: 'Services', label: 'Services' }}
+                          defaultValue={{ value: category, label: category }}
                           onChange={e => handleInput("category", e.value)}
                         />
                       </div>
@@ -261,11 +279,8 @@ const Createbacklink = () => {
                                 { label: schedular.topicTitle, value: schedular._id }
                               ))}
                               classNamePrefix="select2-selection"
-                              // defaultValue={{ value: field.webpage, label: field.webpageName }}
                               placeholder={<div>Select Values</div>}
-                              // onChange={e => handleInput(key, "contentScheduler", e.value)}
-                              onChange={e => setscheduler(e.value)}
-
+                              onChange={e => handleScheduler(e)}
                             />
                             {/* {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''} */}
                           </div>
@@ -311,13 +326,13 @@ const Createbacklink = () => {
                           options={optionBackLinkStaus}
                           classNamePrefix="select2-selection form-control"
                           onChange={e => setstatus(e.value)}
-                          defaultValue={{ value: 'In Review', label: 'In Review' }}
+                          defaultValue={{ value: 'In Review', label: 'In Review'}}
                         />
                       </div>
                     </Col>
-                  </Row>
+                    </Row>
 
-                  <Row>
+                    <Row>
                     <Col lg={6}>
                       <div className="mb-3">
                         <AvField

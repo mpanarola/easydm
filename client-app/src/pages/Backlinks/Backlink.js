@@ -80,7 +80,6 @@ const Backlink = () => {
     })
   };
 
-
   const handleWebpage = (e) => {
     set_webpage(e.value);
     set_webpagename(e.label);
@@ -100,7 +99,6 @@ const Backlink = () => {
   //   set_start_date(Moment().startOf('month').format('YYYY-MM-DD'))
   //   getAllBacklinks()
   // }
-
 
   const allMembers = () => {
     const memberPayload = {
@@ -146,7 +144,6 @@ const Backlink = () => {
 
   }
 
-
   const allWebpages = (category_id) => {
     const webpagePayload = {
       "options": {
@@ -172,13 +169,10 @@ const Backlink = () => {
 
   }
 
- 
 
   const getAllBacklinks = (event, values) => {
     setloading(true)
-    // members_list && members_list.push(get_auth_user.user_id)
     const member_lists_comma_sep = members_list && members_list.length !== 0 && members_list.map(i => i.value ? i.value : i.value).join(",").split(',');
-    console.log('member_lists_comma_sep ',member_lists_comma_sep)
    
     const webpage_payload = {
       "options": {
@@ -186,6 +180,10 @@ const Backlink = () => {
           {
             "path": "webpage",
             "select": ["webpage", "webpageUrl"]
+          },
+          {
+            "path": "contentScheduler",
+            "select": ["docLink"]
           },
 
         ]
@@ -213,7 +211,6 @@ const Backlink = () => {
         history.push('/EasyDM/logout')
         alert.error('Session timeout');
       }
-
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
     })
@@ -226,12 +223,12 @@ const Backlink = () => {
       id: order + 1,
       directUrl_search: row.domain,
       domain_search: row.domain,
-      webpage_search: row.webpage && row.webpage.webpageUrl,
+      webpage_search: row.contentTopicTitle == null ? row.webpage && row.webpage.webpage : row.contentTopicTitle,
       date: Moment(row.date).format('DD-MMM-YY'),
       offPageActivity: row.offPageActivity,
 
       webpage: (
-        <a href={row.webpage && row.webpage.webpageUrl} rel="noopener" target="_blank">{row.webpage && row.webpage.webpage}</a>
+        <a href={ row.contentTopicTitle ==null ? row.webpage && row.webpage.webpageUrl : row.contentScheduler && row.contentScheduler.docLink} rel="noopener" target="_blank">{row.contentTopicTitle == null ? row.webpage && row.webpage.webpage : row.contentTopicTitle}</a>
       ),
 
       domain: (

@@ -20,7 +20,7 @@ const HistoryTimeline = (props) => {
       }
 
       if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
+        history.push('/EasyDM/logout')
         alert.error('Session timeout');
       }
     }).catch(err => {

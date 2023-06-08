@@ -21,7 +21,7 @@ const HistoryTimeline = (props) => {
       }
 
       if (resp?.message == 'Unauthorized User!!') {
-        history.push('/logout')
+        history.push('/EasyDM/logout')
         alert.error('Session timeout');
       }
     }).catch(err => {
@@ -71,7 +71,7 @@ const HistoryTimeline = (props) => {
                               <li key={key} className="mt-2 mb-2">
                                 {insertSpaces(key) + ' To : '}
                                 {
-                                  <b>{activity.newData[key]}</b>
+                                  <b>{activity.newData[key] == null ? 'Removed' : activity.newData[key]}</b>
                                 }
 
                               </li>

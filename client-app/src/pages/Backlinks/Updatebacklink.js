@@ -33,12 +33,9 @@ const Updatebacklink = (props) => {
   const [webpage_id, setwebpage_id] = useState(data && data.data.webpage && data.data.webpage._id);
   const [webpage_url, setwebpage_url] = useState(data && data.data.webpage && data.data.webpage.webpageUrl);
   const [webpage_err, setwebpage_err] = useState(false);
-
   const [category, setcategory] = useState(data && data.data.category);
-
-  const [contentScheduler, setscheduler] = useState(data && data.data.contentScheduler);
+  const [contentScheduler, setscheduler] = useState(data && data.data.contentScheduler && data.data.contentScheduler._id);
   const [contentTopicTitle, setcontentTopicTitle] = useState(data && data.data.contentTopicTitle);
-
   const [offPageActivity, setactivity] = useState(data && data.data.offPageActivity);
   const [domain, setdomain] = useState(data && data.data.domain);
   const [directUrl, setdirect_url] = useState(data && data.data.directUrl);
@@ -46,34 +43,33 @@ const Updatebacklink = (props) => {
   const [password, setpassword] = useState(data && data.data.password);
   const [notes, setnotes] = useState(data && data.data.notes);
   const [status, setstatus] = useState(data && data.data.status);
-
   const [is_show_contentshedular, setis_show_contentshedular] = useState(false)
   const [schedulars_list, setschedulars_list] = useState([]);
-
   const [total_backlinks, settotal_backlinks] = useState(data && data.data.numberOfBacklinks);
   const [published_on, setpublished_on] = useState(Moment(data && data.data.date).format('YYYY-MM-DD'));
   const [webpages_list, setwebpages_list] = useState([]);
   // const [date, setdate] = useState(today_date);
   const [backlink_id, setbacklink_id] = useState(data && data.data._id);
 
-  const updateBacklink = (event, values) => {
+
+  const updateBacklink = () => {
     const backlink_data = {
-      webpage: data && data.data.webpage._id !== webpage_id ? webpage_id : undefined,
-      category: data && data.data.category !== category ? category : undefined ,
-      offPageActivity: data && data.data.offPageActivity !== offPageActivity ? offPageActivity : undefined ,
-      domain: data && data.data.domain !== domain ? domain : undefined,
-      id: data && data.data.id !== id ? id : undefined ,
-      password: data && data.data.password !== password ? password : undefined,
-      notes: data && data.data.notes !== notes ? notes : undefined,
-      directUrl: data && data.data.directUrl !== directUrl ? directUrl : undefined,
-      contentScheduler: data && data.data.contentScheduler !== contentScheduler ? contentScheduler : undefined,
-      status: data && data.data.status !== status ? status : undefined,
+      webpage: contentScheduler == null ?  data.data.webpage && data.data.webpage._id !== webpage_id ? webpage_id :  undefined: webpage_id !== null ? contentScheduler == null ? webpage_id : undefined : undefined,
+      category: data.data.webpage && data.data.webpage._id !== webpage_id ? category :  data.data.contentScheduler && data.data.contentScheduler._id !== contentScheduler ? category : undefined,
+      flag: data.data.category !== category && (data.data.webpage && data.data.webpage._id !== webpage_id  && data.data.contentScheduler && data.data.contentScheduler._id !== contentScheduler) ? 1 : data.data.category !== category ? 1 : 0,
+      offPageActivity: data.data.offPageActivity !== offPageActivity ? offPageActivity : undefined,
+      domain: data.data.domain !== domain ? domain : undefined,
+      id: data.data.id !== id ? id : undefined ,
+      password: data.data.password !== password ? password : undefined,
+      notes: data.data.notes !== notes ? notes : undefined,
+      directUrl: data.data.directUrl !== directUrl ? directUrl : undefined,
+      contentScheduler: webpage_id == null ? contentScheduler : data.data.contentScheduler && data.data.contentScheduler._id !== contentScheduler ? contentScheduler : undefined ,
+      status: data.data.status !== status ? status : undefined,
       // date: data && data.data.published_on !== published_on ? published_on : undefined 
     }
 
 // console.log('backlink_data ', backlink_data)
     updateBackLink(backlink_data, backlink_id).then(resp => {
-
       if (resp.status == true) {
         alert.success('Backlink Updated Successfully');
         history.push('/EasyDM/backlinks')
@@ -85,9 +81,10 @@ const Updatebacklink = (props) => {
       else {
         alert.error('BackLink already exists for same webpage/contentscheduler and Direct URL.');
       }
+
     }).catch(err => {
       alert.error('Backend server not responding, Please try again....');
-      // history.push('/EasyDM/logout')
+      history.push('/EasyDM/logout')
     })
 
   }
@@ -95,24 +92,28 @@ const Updatebacklink = (props) => {
   const checkIdPass = () => {
     setid(null)  
     setpassword(null) 
-
+    
     const backlink_data = {
       domain: domain,
       webpage: webpage_id !== null ? webpage_id : undefined,
       contentScheduler: contentScheduler !== null ? contentScheduler : undefined
     }
 
-    checkBacklink(backlink_data).then(resp => {
+checkBacklink(backlink_data).then(resp => {
       const data = resp.data[0];
-      setid(data.id)  
-      setpassword(data.password) 
+      if(resp.data !== null){
+        setid(data.id)  
+        setpassword(data.password)
+      }
+      else{
+        setid(null)  
+        setpassword(null) 
+      }
     }).catch(err => {
-      setid(id)  
-      setpassword(password) 
+      setid('')  
+      setpassword('') 
     })
-
   }
-
 
   const handleInput = (name, value) => {
     name == 'category' && value !== '' && allWebpages(value)
@@ -146,18 +147,39 @@ const Updatebacklink = (props) => {
 
   }
 
+  const handleWebpage = (e) => {
+    checkIdPass()
+    if (e) {
+      setwebpage_id(e.value);
+      setscheduler(null)
+      setid(null)  
+      setpassword(null) 
+    }
+    // setwebpageurl(e.url);
+  }
+
+  const handleScheduler = (e) => {
+    checkIdPass()
+    // console.log('e.value ',e.value)
+    if (e) {
+      setscheduler(e.value);
+      // setwebpage_id(null)
+      setid(null)  
+      setpassword(null) 
+    }
+    // setwebpageurl(e.url);
+  }
 
   useEffect(() => {
     !data && goBack();
     setTimeout(function () {
-      allWebpages()
+      allWebpages(category)
       allSchedulars()
     }, 500);
 
   }, []);
 
   const goBack = (e) => {
-    // history.goBack();
     history.push('/EasyDM/backlinks');
   };
 
@@ -167,7 +189,6 @@ const Updatebacklink = (props) => {
       <div className="page-content view_page">
         {/* Render Breadcrumbs */}
         <Breadcrumbs title="Back Links" breadcrumbItem="Update Back Link" />
-        {console.log('password', password)}
         <Row>
           <Card>
             <CardBody>
@@ -258,7 +279,8 @@ const Updatebacklink = (props) => {
                               }
                               defaultValue={{ value: webpage_id, label: webpage }}
                               classNamePrefix="select2-selection"
-                              onChange={e => setwebpage_id(e.value)}
+                              // onChange={e => setwebpage_id(e.value)}
+                              onChange={e => handleWebpage(e)}
                             />
                             {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''}
                           </div>
@@ -276,7 +298,8 @@ const Updatebacklink = (props) => {
                               classNamePrefix="select2-selection"
                               defaultValue={{ value: contentScheduler, label: contentTopicTitle }}
                               placeholder={<div>Select Values</div>}
-                              onChange={e => setscheduler(e.value)}
+                              // onChange={e => setscheduler(e.value)}
+                              onChange={e => handleScheduler(e)}
 
                             />
                             {/* {webpage_err ? <div style={{ marginTop: '0.25rem', fontSize: '0.875em', color: '#ff715b' }}>This field is required</div> : ''} */}
